@@ -10,6 +10,10 @@ public:
   T r, d;
   Dual() : r(T()), d(T()) {}
   Dual(const T& r, const T& d) : r(r), d(d) {};
+
+  Dual<T> norm() const {
+    return Dual<T>(*this * conjugate(*this));
+  }
 };
 
 template <typename T>
