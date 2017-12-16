@@ -37,5 +37,11 @@ TEST_CASE("Dual") {
       REQUIRE(c.d == s * d);
       REQUIRE(e.d == s * d);
     }
+
+    SECTION("equality") {
+      const auto c = Dual<Quaternion>(r, d);
+
+      REQUIRE(c == b);
+    }
   }
 }
