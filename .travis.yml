@@ -1,0 +1,17 @@
+language: cpp
+sudo: required
+
+compiler:
+  - clang
+  - gcc
+
+before_script:
+  - mkdir build
+  - mkdir bin
+  - cd build
+  - cmake ..
+
+script:
+  - pwd
+  - make
+  - ../bin/RobotTest
