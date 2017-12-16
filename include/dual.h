@@ -21,4 +21,14 @@ Dual<T> operator*(const Dual<T>& a, const Dual<T>& b) {
   return Dual<T>(a.r * b.r, a.r * b.d + b.r * a.d);
 }
 
+template <typename T>
+Dual<T> operator*(const Dual<T>& a, const Real& s) {
+  return Dual<T>(s * a.r, s * a.d);
+}
+
+template <typename T>
+Dual<T> operator*(const Real& s, const Dual<T>& a) {
+  return Dual<T>(s * a.r, s * a.d);
+}
+
 #endif /* __DUAL_H__ */

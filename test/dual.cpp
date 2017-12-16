@@ -20,4 +20,16 @@ TEST_CASE("Dual Quaternions") {
     REQUIRE(c.r == (r * r));
     REQUIRE(c.d == (r * d + r * d));
   }
+
+  SECTION("scalar multiply") {
+    const Real s = 4;
+    const auto c = s * b;
+    const auto e = b * s;
+
+    REQUIRE(c.r == s * r);
+    REQUIRE(e.r == s * r);
+
+    REQUIRE(c.d == s * d);
+    REQUIRE(e.d == s * d);
+  }
 }
