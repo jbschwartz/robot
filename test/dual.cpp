@@ -10,6 +10,11 @@ TEST_CASE("Dual") {
       const auto c = conjugate(a);
       REQUIRE(c == Dual<Real>(1, -2));
     }
+
+    SECTION("norm") {
+      const auto n = a.norm();
+      REQUIRE(n == a * conjugate(a));
+    }
   }
 
   SECTION("Quaternions") {
@@ -54,6 +59,11 @@ TEST_CASE("Dual") {
 
       REQUIRE(c.r == conjugate(r));
       REQUIRE(c.d == conjugate(d));
+    }
+
+    SECTION("norm")  {
+      const auto n = b.norm();
+      REQUIRE(n == b * conjugate(b));
     }
   }
 }
