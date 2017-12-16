@@ -3,10 +3,15 @@
 #include "../include/quaternion.h"
 
 TEST_CASE("Dual Quaternions") {
+  auto r = Quaternion(1, 2, 3, 4);
+  auto d = Quaternion(0, 1, 2, 3);
+
   auto a = Dual<Quaternion>();
-  auto b = Dual<Quaternion>(Quaternion(1, 2, 3, 4), Quaternion(0, 1, 2, 3));
+  auto b = Dual<Quaternion>(r, d);
 
   SECTION("add") {
     auto c = b + b;
+    REQUIRE(c.r == (r + r));
+    REQUIRE(c.d == (d + d));
   }
 }
