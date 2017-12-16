@@ -1,6 +1,9 @@
 language: cpp
 sudo: required
 
+notifications:
+  email: false
+
 compiler:
   - clang
   - gcc
