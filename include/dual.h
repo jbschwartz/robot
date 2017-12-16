@@ -10,6 +10,8 @@ public:
 };
 
 template <typename T>
-Dual<T> operator+(const Dual<T>& a, const Dual<T>& b);
+Dual<T> operator+(const Dual<T>& a, const Dual<T>& b) {
+  return Dual<T>(a.r + b.r, a.d + b.d);
+};
 
 #endif /* __DUAL_H__ */
