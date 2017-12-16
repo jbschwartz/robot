@@ -14,4 +14,10 @@ TEST_CASE("Dual Quaternions") {
     REQUIRE(c.r == (r + r));
     REQUIRE(c.d == (d + d));
   }
+
+  SECTION("multiply") {
+    auto c = b * b;
+    REQUIRE(c.r == (r * r));
+    REQUIRE(c.d == (d * d + d * d));
+  }
 }
