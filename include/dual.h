@@ -2,6 +2,7 @@
 #define __DUAL_H__
 
 #include "typedefs.h"
+#include "quaternion.h"
 
 template <typename T>
 class Dual {
@@ -34,6 +35,16 @@ Dual<T> operator*(const Real& s, const Dual<T>& a) {
 template <typename T>
 bool operator==(const Dual<T>& a, const Dual<T>& b) {
   return a.r == b.r && a.d == b.d;
+}
+
+template <typename T>
+Dual<T> conjugate(const Dual<T>& a) {
+  return Dual<T>(a.r, -a.d);
+}
+
+template <>
+Dual<Quaternion> conjugate(const Dual<Quaternion>& a) {
+  return Dual<Quaternion>(conjugate(a.r), conjugate(a.d));
 }
 
 #endif /* __DUAL_H__ */
