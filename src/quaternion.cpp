@@ -14,6 +14,14 @@ Quaternion operator+(const Quaternion& a, const Quaternion& b) {
   return Quaternion(a.r + b.r, a.x + b.x, a.y + b.y, a.z + b.z);
 }
 
+Quaternion operator*(const Quaternion& a, const Real& s) {
+  return Quaternion(a.r * s, a.x * s, a.y * s, a.z * s);
+}
+
+Quaternion operator*(const Real& s, const Quaternion& a) {
+  return Quaternion(s * a.r, s * a.x, s * a.y, s * a.z);
+}
+
 Quaternion operator*(const Quaternion& a, const Quaternion& b) {
   const auto r = a.r * b.r - a.x * b.x - a.y * b.y - a.z * b.z;
   const auto x = a.r * b.x + a.x * b.r + a.y * b.z - a.z * b.y;
