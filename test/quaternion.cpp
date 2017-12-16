@@ -60,4 +60,9 @@ TEST_CASE("Quaternions") {
     const auto c = b * b;
     REQUIRE(Quaternion(-14/15.f, 2/15.f, 1/5.f, 4/15.f) == normalize(c));
   }
+
+  SECTION("unary minus (negate)") {
+    const auto c = -b;
+    REQUIRE(Quaternion(-1, -2, -3, -4) == c);
+  }
 }
