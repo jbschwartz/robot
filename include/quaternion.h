@@ -1,7 +1,7 @@
 #ifndef __QUATERNION_H__
 #define __QUATERNION_H__
 
-typedef float Real;
+#include "typedefs.h"
 
 class Quaternion {
 public:

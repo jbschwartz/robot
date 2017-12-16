@@ -1,6 +1,8 @@
 #ifndef __DUAL_H__
 #define __DUAL_H__
 
+#include "typedefs.h"
+
 template <typename T>
 class Dual {
 public:
