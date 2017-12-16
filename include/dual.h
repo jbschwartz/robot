@@ -31,4 +31,9 @@ Dual<T> operator*(const Real& s, const Dual<T>& a) {
   return Dual<T>(s * a.r, s * a.d);
 }
 
+template <typename T>
+bool operator==(const Dual<T>& a, const Dual<T>& b) {
+  return a.r == b.r && a.d == b.d;
+}
+
 #endif /* __DUAL_H__ */
