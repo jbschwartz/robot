@@ -4,7 +4,12 @@
 
 TEST_CASE("Dual") {
   SECTION("Number") {
+    const auto a = Dual<Real>(1, 2);
 
+    SECTION("conjugate") {
+      const auto c = conjugate(a);
+      REQUIRE(c == Dual<Real>(1, -2));
+    }
   }
 
   SECTION("Quaternions") {
@@ -42,6 +47,13 @@ TEST_CASE("Dual") {
       const auto c = Dual<Quaternion>(r, d);
 
       REQUIRE(c == b);
+    }
+
+    SECTION("conjugate") {
+      const auto c = conjugate(b);
+
+      REQUIRE(c.r == conjugate(r));
+      REQUIRE(c.d == conjugate(d));
     }
   }
 }
