@@ -10,6 +10,8 @@ public:
   Quaternion(Real r, Real x, Real y, Real z) : r(r), x(x), y(y), z(z) {};
 
   Real norm() const;
+
+  Quaternion operator-() const;
 };
 
 Quaternion operator+(const Quaternion& a, const Quaternion& b);

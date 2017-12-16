@@ -10,6 +10,10 @@ Real Quaternion::norm() const {
     this->z * this->z);
 }
 
+Quaternion Quaternion::operator-() const {
+  return Quaternion(-this->r, -this->x, -this->y, -this->z);
+}
+
 Quaternion operator+(const Quaternion& a, const Quaternion& b) {
   return Quaternion(a.r + b.r, a.x + b.x, a.y + b.y, a.z + b.z);
 }
