@@ -39,9 +39,12 @@ TEST_CASE("Quaternions") {
   SECTION("scalar multiply") {
     const Real s = 4;
     const auto c = s * b;
+    const auto d = b * s;
 
     const auto expected = Quaternion(s * b.r, s * b.x, s * b.y, s * b.z);
+
     REQUIRE(expected == c);
+    REQUIRE(expected == d);
   }
 
   SECTION("conjugate") {
