@@ -3,20 +3,20 @@
 #include "../include/quaternion.h"
 
 TEST_CASE("Dual Quaternions") {
-  auto r = Quaternion(1, 2, 3, 4);
-  auto d = Quaternion(0, 1, 2, 3);
+  const auto r = Quaternion(1, 2, 3, 4);
+  const auto d = Quaternion(0, 1, 2, 3);
 
-  auto a = Dual<Quaternion>();
-  auto b = Dual<Quaternion>(r, d);
+  const auto a = Dual<Quaternion>();
+  const auto b = Dual<Quaternion>(r, d);
 
   SECTION("add") {
-    auto c = b + b;
+    const auto c = b + b;
     REQUIRE(c.r == (r + r));
     REQUIRE(c.d == (d + d));
   }
 
   SECTION("multiply") {
-    auto c = b * b;
+    const auto c = b * b;
     REQUIRE(c.r == (r * r));
     REQUIRE(c.d == (r * d + r * d));
   }

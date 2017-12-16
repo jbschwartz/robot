@@ -4,8 +4,8 @@
 #include <cmath>
 
 TEST_CASE("Quaternions") {
-  auto a = Quaternion();
-  auto b = Quaternion(1, 2, 3, 4);
+  const auto a = Quaternion();
+  const auto b = Quaternion(1, 2, 3, 4);
 
   SECTION("defaults to identity") {
     REQUIRE(a.r == 1);
@@ -14,7 +14,7 @@ TEST_CASE("Quaternions") {
     REQUIRE(a.z == 0);
 
     SECTION("identity is multiplicative identity") {
-      auto c = a * b;
+      const auto c = a * b;
       REQUIRE(b == c);
     }
   }
@@ -27,12 +27,12 @@ TEST_CASE("Quaternions") {
   }
 
   SECTION("add") {
-    auto c = b + b;
+    const auto c = b + b;
     REQUIRE(Quaternion(2, 4, 6, 8) == c);
   }
 
   SECTION("multiply") {
-    auto c = b * b;
+    const auto c = b * b;
     REQUIRE(Quaternion(-28, 4, 6, 8) == c);
   }
 
@@ -45,7 +45,7 @@ TEST_CASE("Quaternions") {
   }
 
   SECTION("conjugate") {
-    auto c = conjugate(b);
+    const auto c = conjugate(b);
     REQUIRE(Quaternion(1, -2, -3, -4) == c);
   }
 
@@ -54,7 +54,7 @@ TEST_CASE("Quaternions") {
   }
 
   SECTION("normalize") {
-    auto c = b * b;
+    const auto c = b * b;
     REQUIRE(Quaternion(-14/15.f, 2/15.f, 1/5.f, 4/15.f) == normalize(c));
   }
 }
