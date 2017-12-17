@@ -4,6 +4,10 @@
 #include "typedefs.h"
 #include "quaternion.h"
 
+#ifdef DEBUG
+#include <iostream>
+#endif
+
 template <typename T>
 class Dual {
 public:
@@ -50,5 +54,13 @@ template <>
 Dual<Quaternion> conjugate(const Dual<Quaternion>& a) {
   return Dual<Quaternion>(conjugate(a.r), conjugate(a.d));
 }
+
+#ifdef DEBUG
+template <typename T>
+std::ostream& operator<<(std::ostream& os, const Dual<T>& a) {
+  os << a.r << " + " << a.d << "\u03B5";
+  return os;
+};
+#endif
 
 #endif /* __DUAL_H__ */
