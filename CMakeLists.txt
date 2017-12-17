@@ -11,6 +11,12 @@ set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
+option(DEFINE_DEBUG "Build in Debug Mode" ON)
+if(DEFINE_DEBUG)
+  message("Building in debug mode")
+  add_definitions(-DDEBUG)
+ENDIF(DEFINE_DEBUG)
+
 include_directories(include)
 add_subdirectory(test)
 
