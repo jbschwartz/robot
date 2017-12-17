@@ -12,6 +12,7 @@ public:
   Vector(const std::array<T, N>& v = {}) : v(v) {};
 
   const T& operator[](std::size_t index) const { return this->v[index]; }
+  T& operator[](std::size_t index) { return this->v[index]; }
 
   template <typename U, std::size_t M>
   friend bool operator==(const Vector<U, M>& a, const Vector<U, M>& b);
