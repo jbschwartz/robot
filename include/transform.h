@@ -10,6 +10,8 @@
 #include <iostream>
 #endif
 
+namespace rbt {
+
 class Transform {
   Dual<Quaternion> dual;
 public:
@@ -23,5 +25,7 @@ public:
 #ifdef DEBUG
 std::ostream& operator<<(std::ostream& os, const Transform& t);
 #endif
+
+}
 
 #endif /* __TRANSFORM_H__ */

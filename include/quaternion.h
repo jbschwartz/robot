@@ -8,6 +8,8 @@
 #include <iostream>
 #endif
 
+namespace rbt {
+
 class Quaternion {
 public:
   Real r, x, y, z;
@@ -33,5 +35,7 @@ Quaternion normalize(const Quaternion& a);
 #ifdef DEBUG
 std::ostream& operator<<(std::ostream& os, const Quaternion& a);
 #endif
+
+}
 
 #endif /* __QUATERNION_H__ */

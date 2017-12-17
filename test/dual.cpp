@@ -2,6 +2,10 @@
 #include "../include/dual.h"
 #include "../include/quaternion.h"
 
+using rbt::Dual;
+using rbt::Real;
+using rbt::Quaternion;
+
 TEST_CASE("Dual") {
   SECTION("Number") {
     const auto a = Dual<Real>(1, 2);

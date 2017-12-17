@@ -1,6 +1,9 @@
 #include "third_party/catch.hpp"
 #include "vector.h"
 
+using rbt::Real;
+using rbt::Vector3;
+
 TEST_CASE("Vector") {
   const auto v1 = Vector3();
   const auto v2 = Vector3({-1, 2, -3});

@@ -8,6 +8,8 @@
 #include <iostream>
 #endif
 
+namespace rbt {
+
 template <typename T>
 class Dual {
 public:
@@ -60,5 +62,7 @@ std::ostream& operator<<(std::ostream& os, const Dual<T>& a) {
   return os;
 };
 #endif
+
+}
 
 #endif /* __DUAL_H__ */

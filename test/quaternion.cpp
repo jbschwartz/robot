@@ -3,6 +3,9 @@
 
 #include <cmath>
 
+using rbt::Real;
+using rbt::Quaternion;
+
 TEST_CASE("Quaternions") {
   const auto a = Quaternion();
   const auto b = Quaternion(1, 2, 3, 4);

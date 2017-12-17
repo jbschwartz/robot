@@ -6,6 +6,8 @@
 #include <iostream>
 #endif
 
+namespace rbt {
+
 Real Quaternion::norm() const {
   return std::sqrt(
     this->r * this->r +
@@ -58,3 +60,5 @@ std::ostream& operator<<(std::ostream& os, const Quaternion& a) {
   return os;
 }
 #endif
+
+}

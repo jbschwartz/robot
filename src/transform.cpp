@@ -7,6 +7,7 @@
 #include <iostream>
 #endif
 
+namespace rbt {
 
 Transform::Transform(const Vector3& axis, Real angle, const Vector3& translation) {
   const auto radians = toRadians(angle);
@@ -33,3 +34,5 @@ std::ostream& operator<<(std::ostream& os, const Transform& t) {
   return os;
 }
 #endif
+
+}

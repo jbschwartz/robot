@@ -5,6 +5,8 @@
 
 #include "typedefs.h"
 
+namespace rbt {
+
 template<typename T, std::size_t N>
 class Vector {
   std::array<T, N> v;
@@ -46,5 +48,7 @@ Vector<T, N> operator/(const Vector<T, N>& a, const U& s) {
 }
 
 typedef Vector<Real, 3> Vector3;
+
+}
 
 #endif /* __VECTOR_H__ */
