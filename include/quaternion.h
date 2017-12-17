@@ -2,6 +2,7 @@
 #define __QUATERNION_H__
 
 #include "typedefs.h"
+#include "vector.h"
 
 #ifdef DEBUG
 #include <iostream>
@@ -12,6 +13,7 @@ public:
   Real r, x, y, z;
   Quaternion() : r(1), x(0), y(0), z(0) {};
   Quaternion(Real r, Real x, Real y, Real z) : r(r), x(x), y(y), z(z) {};
+  Quaternion(Real r, const Vector3& axis) : r(r), x(axis[0]), y(axis[1]), z(axis[2]) {};
 
   Real norm() const;
 
