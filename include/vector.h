@@ -23,8 +23,8 @@ bool operator==(const Vector<T, N>& a, const Vector<T, N>& b) {
   return a.v == b.v;
 }
 
-template <typename T, std::size_t N>
-Vector<T, N> operator*(const T& s, const Vector<T, N>& a) {
+template <typename T, typename U, std::size_t N>
+Vector<T, N> operator*(const U& s, const Vector<T, N>& a) {
   auto v = Vector<T,N>();
 
   for(std::size_t i = 0; i < N; i++) {
@@ -34,13 +34,13 @@ Vector<T, N> operator*(const T& s, const Vector<T, N>& a) {
   return v;
 }
 
-template <typename T, std::size_t N>
-Vector<T, N> operator*(const Vector<T, N>& a, const T& s) {
+template <typename T, typename U, std::size_t N>
+Vector<T, N> operator*(const Vector<T, N>& a, const U& s) {
   return s * a;
 }
 
-template <typename T, std::size_t N>
-Vector<T, N> operator/(const Vector<T, N>& a, const T& s) {
+template <typename T, typename U, std::size_t N>
+Vector<T, N> operator/(const Vector<T, N>& a, const U& s) {
   const auto q = 1 / s;
   return q * a;
 }

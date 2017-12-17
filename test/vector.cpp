@@ -20,6 +20,9 @@ TEST_CASE("Vector") {
     const Real s = 3;
     REQUIRE(s * v2 == Vector3({-3, 6, -9}));
     REQUIRE(v2 * s == Vector3({-3, 6, -9}));
+
+    REQUIRE(3 * v2 == Vector3({-3, 6, -9}));
+    REQUIRE(v2 * 3 == Vector3({-3, 6, -9}));
   }
 
   SECTION("scalar division") {
