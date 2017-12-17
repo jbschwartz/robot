@@ -16,4 +16,9 @@ TEST_CASE("Vector") {
     REQUIRE_FALSE(v1 == v2);
   }
 
+  SECTION("scalar multiplication") {
+    const Real s = 3;
+    REQUIRE(s * v2 == Vector3({-3, 6, -9}));
+    REQUIRE(v2 * s == Vector3({-3, 6, -9}));
+  }
 }
