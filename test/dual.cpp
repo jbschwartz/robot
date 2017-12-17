@@ -66,7 +66,7 @@ TEST_CASE("Dual") {
 
     SECTION("conjugate") {
       const auto result = conjugate(q1);
-      const auto expected = Dual<Quaternion>(conjugate(r1), conjugate(d1));
+      const auto expected = Dual<Quaternion>(conjugate(r1), -conjugate(d1));
 
       REQUIRE(result == expected);
     }
