@@ -21,4 +21,9 @@ TEST_CASE("Vector") {
     REQUIRE(s * v2 == Vector3({-3, 6, -9}));
     REQUIRE(v2 * s == Vector3({-3, 6, -9}));
   }
+
+  SECTION("scalar division") {
+    const Real s = 2;
+    REQUIRE(v2 / s == Vector3({-0.5, 1, -1.5}));
+  }
 }

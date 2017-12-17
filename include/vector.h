@@ -39,6 +39,12 @@ Vector<T, N> operator*(const Vector<T, N>& a, const T& s) {
   return s * a;
 }
 
+template <typename T, std::size_t N>
+Vector<T, N> operator/(const Vector<T, N>& a, const T& s) {
+  const auto q = 1 / s;
+  return q * a;
+}
+
 typedef Vector<Real, 3> Vector3;
 
 #endif /* __VECTOR_H__ */
