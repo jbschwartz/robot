@@ -3,6 +3,10 @@
 
 #include "typedefs.h"
 
+#ifdef DEBUG
+#include <iostream>
+#endif
+
 class Quaternion {
 public:
   Real r, x, y, z;
@@ -23,5 +27,9 @@ bool operator==(const Quaternion& a, const Quaternion& b);
 
 Quaternion conjugate(const Quaternion& a);
 Quaternion normalize(const Quaternion& a);
+
+#ifdef DEBUG
+std::ostream& operator<<(std::ostream& os, const Quaternion& a);
+#endif
 
 #endif /* __QUATERNION_H__ */

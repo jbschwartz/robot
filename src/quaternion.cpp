@@ -2,6 +2,10 @@
 
 #include "../include/quaternion.h"
 
+#ifdef DEBUG
+#include <iostream>
+#endif
+
 Real Quaternion::norm() const {
   return std::sqrt(
     this->r * this->r +
@@ -47,3 +51,10 @@ Quaternion normalize(const Quaternion& a) {
   const auto norm = a.norm();
   return Quaternion(a.r / norm, a.x / norm, a.y / norm, a.z / norm);
 }
+
+#ifdef DEBUG
+std::ostream& operator<<(std::ostream& os, const Quaternion& a) {
+  os << "(" << a.r << " + " << a.x << "i + " << a.y << "j + " << a.z << "k)";
+  return os;
+}
+#endif
