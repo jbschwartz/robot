@@ -36,13 +36,7 @@ Vector<T, N> operator*(const T& s, const Vector<T, N>& a) {
 
 template <typename T, std::size_t N>
 Vector<T, N> operator*(const Vector<T, N>& a, const T& s) {
-  auto v = Vector<T,N>();
-
-  for(std::size_t i = 0; i < N; i++) {
-    v[i] = s * a[i];
-  }
-
-  return v;
+  return s * a;
 }
 
 typedef Vector<Real, 3> Vector3;
