@@ -10,4 +10,10 @@ TEST_CASE("Vector") {
     REQUIRE(v1[1] == 0);
     REQUIRE(v1[2] == 0);
   }
+
+  SECTION("equality operator") {
+    REQUIRE(v1 == v1);
+    REQUIRE_FALSE(v1 == v2);
+  }
+
 }
