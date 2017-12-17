@@ -1,6 +1,6 @@
-#include "../include/quaternion.h"
-#include "../include/dual.h"
-#include "../include/transform.h"
+#include "../include/quaternion.hpp"
+#include "../include/dual.hpp"
+#include "../include/transform.hpp"
 
 #include <iostream>
 

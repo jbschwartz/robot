@@ -3,7 +3,7 @@
 
 #include <array>
 
-#include "typedefs.h"
+#include "typedefs.hpp"
 
 namespace rbt {
 

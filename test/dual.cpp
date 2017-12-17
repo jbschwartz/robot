@@ -1,6 +1,6 @@
 #include "third_party/catch.hpp"
-#include "../include/dual.h"
-#include "../include/quaternion.h"
+#include "../include/dual.hpp"
+#include "../include/quaternion.hpp"
 
 using rbt::Dual;
 using rbt::Real;

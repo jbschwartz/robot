@@ -1,9 +1,9 @@
 #ifndef __TRANSFORM_H__
 #define __TRANSFORM_H__
 
-#include "dual.h"
-#include "vector.h"
-#include "utilities.h"
+#include "dual.hpp"
+#include "vector.hpp"
+#include "utilities.hpp"
 
 #include <cmath>
 #ifdef DEBUG

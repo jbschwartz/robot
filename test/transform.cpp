@@ -1,5 +1,5 @@
 #include "third_party/catch.hpp"
-#include "../include/transform.h"
+#include "../include/transform.hpp"
 
 using rbt::Transform;
 using rbt::Vector3;

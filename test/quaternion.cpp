@@ -1,5 +1,5 @@
 #include "third_party/catch.hpp"
-#include "../include/quaternion.h"
+#include "../include/quaternion.hpp"
 
 #include <cmath>
 

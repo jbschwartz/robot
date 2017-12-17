@@ -1,7 +1,7 @@
 #ifndef __UTILITIES_H_
 #define __UTILITIES_H_
 
-#include "typedefs.h"
+#include "typedefs.hpp"
 
 #include <cmath>
 

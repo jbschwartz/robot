@@ -1,4 +1,4 @@
-#include "../include/dual.h"
+#include "../include/dual.hpp"
 
 namespace rbt {
 

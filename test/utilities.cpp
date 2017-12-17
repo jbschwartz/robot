@@ -1,5 +1,5 @@
 #include "third_party/catch.hpp"
-#include "utilities.h"
+#include "utilities.hpp"
 
 using rbt::toDegrees;
 using rbt::toRadians;

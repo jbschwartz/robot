@@ -1,8 +1,8 @@
 #ifndef __QUATERNION_H__
 #define __QUATERNION_H__
 
-#include "typedefs.h"
-#include "vector.h"
+#include "typedefs.hpp"
+#include "vector.hpp"
 
 #ifdef DEBUG
 #include <iostream>

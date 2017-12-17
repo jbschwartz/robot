@@ -1,5 +1,5 @@
 #include "third_party/catch.hpp"
-#include "vector.h"
+#include "vector.hpp"
 
 using rbt::Real;
 using rbt::Vector3;

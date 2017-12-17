@@ -1,8 +1,8 @@
 #ifndef __DUAL_H__
 #define __DUAL_H__
 
-#include "typedefs.h"
-#include "quaternion.h"
+#include "typedefs.hpp"
+#include "quaternion.hpp"
 
 #ifdef DEBUG
 #include <iostream>
