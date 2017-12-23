@@ -17,6 +17,14 @@ public:
   Dual() : r(T()), d(T()) {}
   Dual(const T& r, const T& d) : r(r), d(d) {};
 
+  Dual<T>& operator*=(const Dual<T>& a) {
+    const auto r = this->r * a.r;
+    const auto d = this->r * a.d + this->d * a.r;
+
+    this->r = r; this->d = d;
+    return *this;
+  }
+
   Dual<T> norm() const {
     return Dual<T>(*this * conjugate(*this));
   }

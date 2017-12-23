@@ -37,6 +37,10 @@ TEST_CASE("Quaternions") {
   SECTION("multiply") {
     const auto c = b * b;
     REQUIRE(Quaternion(-28, 4, 6, 8) == c);
+
+    auto d = b;
+    d *= b;
+    REQUIRE(Quaternion(-28, 4, 6, 8) == d);
   }
 
   SECTION("scalar multiply") {

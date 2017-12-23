@@ -25,6 +25,7 @@ public:
   #endif
 
   friend Transform operator*(const Transform& a, const Transform& b);
+  Transform& operator*=(const Transform& a);
 
   Vector3 operator()(const Vector3& p) const;
 };

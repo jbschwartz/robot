@@ -47,6 +47,16 @@ TEST_CASE("Dual") {
       REQUIRE(result.d == expected.d);
     }
 
+    SECTION("multiply assignment") {
+      auto result = q1;
+      result *= q2;
+      const auto expected = Dual<Quaternion>(r1 * r2, r1 * d2 + d1 * r2);
+
+      REQUIRE(result.r == expected.r);
+      REQUIRE(result.d == expected.d);
+    }
+
+
     SECTION("scalar multiply") {
       const Real s = 4;
 

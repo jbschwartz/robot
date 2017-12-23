@@ -32,6 +32,11 @@ Transform operator*(const Transform& a, const Transform& b) {
   return Transform(a.dual * b.dual);
 }
 
+Transform& Transform::operator*=(const Transform& a) {
+  this->dual *= a.dual;
+  return *this;
+}
+
 #ifdef DEBUG
 std::ostream& operator<<(std::ostream& os, const Transform& t) {
   os << t.dual;

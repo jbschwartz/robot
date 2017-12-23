@@ -20,6 +20,17 @@ Quaternion Quaternion::operator-() const {
   return Quaternion(-this->r, -this->x, -this->y, -this->z);
 }
 
+Quaternion& Quaternion::operator*=(const Quaternion& a) {
+  const auto r = this->r * a.r - this->x * a.x - this->y * a.y - this->z * a.z;
+  const auto x = this->r * a.x + this->x * a.r + this->y * a.z - this->z * a.y;
+  const auto y = this->r * a.y - this->x * a.z + this->y * a.r + this->z * a.x;
+  const auto z = this->r * a.z + this->x * a.y - this->y * a.x + this->z * a.r;
+
+  this->r = r; this->x = x; this->y = y; this->z = z;
+  
+  return *this;
+}
+
 Quaternion operator+(const Quaternion& a, const Quaternion& b) {
   return Quaternion(a.r + b.r, a.x + b.x, a.y + b.y, a.z + b.z);
 }
