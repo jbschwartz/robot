@@ -23,12 +23,16 @@ public:
   friend std::ostream& operator<<(std::ostream& os, const Transform& t);
   #endif
 
+  friend Transform operator*(const Transform& a, const Transform& b);
+
   Vector3 operator()(const Vector3& p) const;
 };
 
 #ifdef DEBUG
 std::ostream& operator<<(std::ostream& os, const Transform& t);
 #endif
+
+Transform operator*(const Transform& a, const Transform& b);
 
 }
 

@@ -39,6 +39,17 @@ TEST_CASE("Transform") {
     REQUIRE(Approx(result[2]) == expected[2]);
   }
 
+  SECTION("combining two transformations") {
+    const Transform t = pureRotate * pureTranslate;
+    auto result = t(point);
+    auto expected = Vector3({7, -6, -11});
+
+    REQUIRE(Approx(result[0]) == expected[0]);
+    REQUIRE(Approx(result[1]) == expected[1]);
+    REQUIRE(Approx(result[2]) == expected[2]);
+  }
+
+
   SECTION("combined translate then rotate") {
     auto result = combined(point);
     auto expected = Vector3({7, -6, -11});

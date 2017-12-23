@@ -28,6 +28,10 @@ Vector3 Transform::operator()(const Vector3& p) const {
   return Vector3({t.x, t.y, t.z});
 }
 
+Transform operator*(const Transform& a, const Transform& b) {
+  return Transform(a.dual * b.dual);
+}
+
 #ifdef DEBUG
 std::ostream& operator<<(std::ostream& os, const Transform& t) {
   os << t.dual;
