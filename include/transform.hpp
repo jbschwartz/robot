@@ -23,7 +23,7 @@ public:
   friend std::ostream& operator<<(std::ostream& os, const Transform& t);
   #endif
 
-  Vector3 operator()(const Vector3& p);
+  Vector3 operator()(const Vector3& p) const;
 };
 
 #ifdef DEBUG

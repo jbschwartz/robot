@@ -20,7 +20,7 @@ Transform::Transform(const Vector3& axis, Real angle, const Vector3& translation
   this->dual = Dual<Quaternion>(r, 0.5 * r * t);
 }
 
-Vector3 Transform::operator()(const Vector3& p) {
+Vector3 Transform::operator()(const Vector3& p) const {
   auto d = Dual<Quaternion>(Quaternion(), 0.5 * Quaternion(0, p));
   auto q = this->dual * d * conjugate(this->dual);
   auto t = 2 * q.d * conjugate(q.r);
