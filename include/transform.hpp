@@ -18,7 +18,9 @@ public:
   Transform(const Vector3& axis, Real angle, const Vector3& translation = Vector3());
   Transform(const Vector3& translation) : Transform(Vector3(), 0, translation) {};
 
+  #ifdef DEBUG
   friend std::ostream& operator<<(std::ostream& os, const Transform& t);
+  #endif
 
   Vector3 operator()(const Vector3& p);
 };
