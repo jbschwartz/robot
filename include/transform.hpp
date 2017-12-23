@@ -15,6 +15,7 @@ namespace rbt {
 class Transform {
   Dual<Quaternion> dual;
 public:
+  Transform(const Dual<Quaternion>& dual) : dual(dual) {};
   Transform(const Vector3& axis, Real angle, const Vector3& translation = Vector3());
   Transform(const Vector3& translation) : Transform(Vector3(), 0, translation) {};
 
