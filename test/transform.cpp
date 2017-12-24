@@ -1,4 +1,6 @@
 #include "third_party/catch.hpp"
+#include "matchers/vector.hpp"
+
 #include "../include/transform.hpp"
 
 using rbt::Transform;
@@ -16,18 +18,14 @@ TEST_CASE("Transform") {
     auto result = pureTranslate(point);
     auto expected = Vector3({7, 6, 11});
 
-    REQUIRE(Approx(result[0]) == expected[0]);
-    REQUIRE(Approx(result[1]) == expected[1]);
-    REQUIRE(Approx(result[2]) == expected[2]);
+    CHECK_THAT(result, ComponentsEqual(expected));
   }
 
   SECTION("rotates") {
     auto result = pureRotate(point);
     auto expected = Vector3({3, -4, -5});
 
-    REQUIRE(Approx(result[0]) == expected[0]);
-    REQUIRE(Approx(result[1]) == expected[1]);
-    REQUIRE(Approx(result[2]) == expected[2]);
+    CHECK_THAT(result, ComponentsEqual(expected));
   }
 
   SECTION("composition of transforms") {
@@ -39,8 +37,17 @@ TEST_CASE("Transform") {
     REQUIRE(Approx(result[2]) == expected[2]);
   }
 
-  SECTION("combining two transformations") {
-    const Transform t = pureRotate * pureTranslate;
+      CHECK_THAT(result, ComponentsEqual(expected));
+    }
+
+    REQUIRE(Approx(result[0]) == expected[0]);
+    REQUIRE(Approx(result[1]) == expected[1]);
+    REQUIRE(Approx(result[2]) == expected[2]);
+  }
+
+      CHECK_THAT(result, ComponentsEqual(expected));
+    }
+
     auto result = t(point);
     auto expected = Vector3({7, -6, -11});
 
@@ -49,25 +56,15 @@ TEST_CASE("Transform") {
     REQUIRE(Approx(result[2]) == expected[2]);
   }
 
-  SECTION("combining two transformations with assignment") {
-    Transform t = pureRotate;
-    t *= pureTranslate;
-
-    auto result = t(point);
-    auto expected = Vector3({7, -6, -11});
+      CHECK_THAT(result, ComponentsEqual(expected));
+    }
 
     REQUIRE(Approx(result[0]) == expected[0]);
     REQUIRE(Approx(result[1]) == expected[1]);
     REQUIRE(Approx(result[2]) == expected[2]);
   }
 
-  SECTION("combined translate then rotate") {
-    auto result = combined(point);
-    auto expected = Vector3({7, -6, -11});
-
-    REQUIRE(Approx(result[0]) == expected[0]);
-    REQUIRE(Approx(result[1]) == expected[1]);
-    REQUIRE(Approx(result[2]) == expected[2]);
+      CHECK_THAT(result, ComponentsEqual(expected));
+    }
   }
-
 }
