@@ -35,16 +35,14 @@ TEST_CASE("Dual") {
       const auto result = q1 + q2;
       const auto expected = Dual<Quaternion>(r1 + r2, d1 + d2);
 
-      REQUIRE(result.r == expected.r);
-      REQUIRE(result.d == expected.d);
+      REQUIRE(result == expected);
     }
 
     SECTION("multiply") {
       const auto result = q1 * q2;
       const auto expected = Dual<Quaternion>(r1 * r2, r1 * d2 + d1 * r2);
 
-      REQUIRE(result.r == expected.r);
-      REQUIRE(result.d == expected.d);
+      REQUIRE(result == expected);
     }
 
     SECTION("multiply assignment") {
@@ -52,8 +50,7 @@ TEST_CASE("Dual") {
       result *= q2;
       const auto expected = Dual<Quaternion>(r1 * r2, r1 * d2 + d1 * r2);
 
-      REQUIRE(result.r == expected.r);
-      REQUIRE(result.d == expected.d);
+      REQUIRE(result == expected);
     }
 
 
@@ -63,12 +60,10 @@ TEST_CASE("Dual") {
       const auto resultPre = s * q1;
       const auto expected = Dual<Quaternion>(s * r1, s * d1);
 
-      REQUIRE(resultPre.r == expected.r);
-      REQUIRE(resultPre.d == expected.d);
+      REQUIRE(resultPre == expected);
 
       const auto resultPost = q1 * s;
-      REQUIRE(resultPost.r == expected.r);
-      REQUIRE(resultPost.d == expected.d);
+      REQUIRE(resultPost == expected);
     }
 
     SECTION("equality") {
