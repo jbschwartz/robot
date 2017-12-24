@@ -7,62 +7,53 @@ using rbt::Transform;
 using rbt::Vector3;
 
 TEST_CASE("Transform") {
-  auto pureTranslate = Transform(Vector3({4, 2, 6}));
-  auto pureRotate = Transform(Vector3({1, 0, 0}), 180);
+  const auto pureTranslate = Transform(Vector3({4, 2, 6}));
+  const auto pureRotate = Transform(Vector3({1, 0, 0}), 180);
 
-  auto combined = Transform(Vector3({1, 0, 0}), 180, Vector3({4, 2, 6}));
+  const auto point = Vector3({3, 4, 5});
 
-  auto point = Vector3({3, 4, 5});
-
-  SECTION("translates") {
-    auto result = pureTranslate(point);
-    auto expected = Vector3({7, 6, 11});
+  SECTION("translates a point") {
+    const auto result = pureTranslate(point);
+    const auto expected = Vector3({7, 6, 11});
 
     CHECK_THAT(result, ComponentsEqual(expected));
   }
 
-  SECTION("rotates") {
-    auto result = pureRotate(point);
-    auto expected = Vector3({3, -4, -5});
+  SECTION("rotates a point") {
+    const auto result = pureRotate(point);
+    const auto expected = Vector3({3, -4, -5});
 
     CHECK_THAT(result, ComponentsEqual(expected));
   }
 
-  SECTION("composition of transforms") {
-    auto result = pureRotate(pureTranslate(point));
-    auto expected = Vector3({7, -6, -11});
+  SECTION("translates then rotates") {
+    const auto expected = Vector3({7, -6, -11});
 
-    REQUIRE(Approx(result[0]) == expected[0]);
-    REQUIRE(Approx(result[1]) == expected[1]);
-    REQUIRE(Approx(result[2]) == expected[2]);
-  }
+    SECTION("through composition (operator())") {
+      const auto result = pureRotate(pureTranslate(point));
 
       CHECK_THAT(result, ComponentsEqual(expected));
     }
 
-    REQUIRE(Approx(result[0]) == expected[0]);
-    REQUIRE(Approx(result[1]) == expected[1]);
-    REQUIRE(Approx(result[2]) == expected[2]);
-  }
+    SECTION("by combining two transformations (operator*)") {
+      const auto combined = pureRotate * pureTranslate;
+      const auto result = combined(point);
 
       CHECK_THAT(result, ComponentsEqual(expected));
     }
 
-    auto result = t(point);
-    auto expected = Vector3({7, -6, -11});
+    SECTION("by transforming one transformation with another (operator*=)") {
+      auto combined = pureRotate;
+      combined *= pureTranslate;
 
-    REQUIRE(Approx(result[0]) == expected[0]);
-    REQUIRE(Approx(result[1]) == expected[1]);
-    REQUIRE(Approx(result[2]) == expected[2]);
-  }
+      const auto result = combined(point);
 
       CHECK_THAT(result, ComponentsEqual(expected));
     }
 
-    REQUIRE(Approx(result[0]) == expected[0]);
-    REQUIRE(Approx(result[1]) == expected[1]);
-    REQUIRE(Approx(result[2]) == expected[2]);
-  }
+    SECTION("by a-priori combination") {
+      const auto combined = Transform(Vector3({1, 0, 0}), 180, Vector3({4, 2, 6}));
+      const auto result = combined(point);
 
       CHECK_THAT(result, ComponentsEqual(expected));
     }
