@@ -34,6 +34,7 @@ public:
   EulerAngles euler() const;
 
   Vector3 position() const;
+  Quaternion orientation() const;
 };
 
 template <Extrinsic R>

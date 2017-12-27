@@ -16,6 +16,10 @@ Vector3 Frame::position() const {
   return Vector3({t.x, t.y, t.z});
 };
 
+Quaternion Frame::orientation() const {
+  return this->pose.r;
+}
+
 template<>
 EulerAngles Frame::euler<Intrinsic::ZYX>() const {
   const auto r = this->pose.r.r;
