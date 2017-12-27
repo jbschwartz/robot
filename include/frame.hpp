@@ -33,6 +33,7 @@ public:
   template <Extrinsic R>
   EulerAngles euler() const;
 
+  Vector3 position() const;
 };
 
 template <Extrinsic R>

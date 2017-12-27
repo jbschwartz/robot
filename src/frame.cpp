@@ -1,5 +1,6 @@
 #include "../include/frame.hpp"
 #include "../include/utilities.hpp"
+#include "../include/vector.hpp"
 #include <cmath>
 #include <algorithm>
 
@@ -8,6 +9,12 @@ namespace rbt {
 Frame::Frame() {};
 
 Frame::Frame(const Dual<Quaternion>& pose) : pose(pose) {};
+
+Vector3 Frame::position() const {
+  auto t = 2 * this->pose.d * conjugate(this->pose.r);
+
+  return Vector3({t.x, t.y, t.z});
+};
 
 template<>
 EulerAngles Frame::euler<Intrinsic::ZYX>() const {
