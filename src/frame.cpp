@@ -8,24 +8,28 @@ namespace rbt {
 
 Frame::Frame() {};
 
-Frame::Frame(const Dual<Quaternion>& pose) : pose(pose) {};
+Frame::Frame(const Dual<Quaternion>& pose) : p(pose) {};
 
 Vector3 Frame::position() const {
-  auto t = 2 * this->pose.d * conjugate(this->pose.r);
+  auto t = 2 * this->p.d * conjugate(this->p.r);
 
   return Vector3({t.x, t.y, t.z});
 };
 
 Quaternion Frame::orientation() const {
-  return this->pose.r;
+  return this->p.r;
+}
+
+Dual<Quaternion> Frame::pose() const {
+  return this->p;
 }
 
 template<>
 EulerAngles Frame::euler<Intrinsic::ZYX>() const {
-  const auto r = this->pose.r.r;
-  const auto x = this->pose.r.x;
-  const auto y = this->pose.r.y;
-  const auto z = this->pose.r.z;
+  const auto r = this->p.r.r;
+  const auto x = this->p.r.x;
+  const auto y = this->p.r.y;
+  const auto z = this->p.r.z;
 
   const auto rSq = r * r;
   const auto xSq = x * x;

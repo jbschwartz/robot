@@ -21,7 +21,7 @@ enum class Extrinsic {
 };
 
 class Frame {
-  Dual<Quaternion> pose;
+  Dual<Quaternion> p;
 
 public:
   Frame();
@@ -35,6 +35,7 @@ public:
 
   Vector3 position() const;
   Quaternion orientation() const;
+  Dual<Quaternion> pose() const;
 };
 
 template <Extrinsic R>
