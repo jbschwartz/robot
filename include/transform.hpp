@@ -3,7 +3,6 @@
 
 #include "dual.hpp"
 #include "vector.hpp"
-#include "utilities.hpp"
 
 #include <cmath>
 #ifdef DEBUG
