@@ -1,10 +1,12 @@
 #include "third_party/catch.hpp"
 #include "../include/dual.hpp"
 #include "../include/quaternion.hpp"
+#include "../include/norm.hpp"
 
 using rbt::Dual;
 using rbt::Real;
 using rbt::Quaternion;
+using rbt::norm;
 
 TEST_CASE("Dual") {
   SECTION("Number") {
@@ -16,7 +18,7 @@ TEST_CASE("Dual") {
     }
 
     SECTION("norm") {
-      const auto n = a.norm();
+      const auto n = norm(a);
       REQUIRE(n == a * conjugate(a));
     }
   }
@@ -81,8 +83,8 @@ TEST_CASE("Dual") {
     }
 
     SECTION("norm") {
-      const auto result = q1.norm();
-      const auto expected = q1 * conjugate(q1);
+      const auto result = norm(q1);
+      const auto expected = norm(q1.r);
 
       REQUIRE(result == expected);
     }

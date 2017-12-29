@@ -24,10 +24,6 @@ public:
     this->r = r; this->d = d;
     return *this;
   }
-
-  Dual<T> norm() const {
-    return Dual<T>(*this * conjugate(*this));
-  }
 };
 
 template <typename T>
