@@ -15,17 +15,15 @@ Transform::Transform(const Vector3& axis, Real angle, const Vector3& translation
   const auto s = std::sin(radians / (Real)2);
 
   const auto r = Quaternion(c, s * axis);
-  const auto t = Quaternion(0, translation / (Real)2);
+  const auto t = Quaternion(0, translation);
 
-  this->dual = Dual<Quaternion>(r, 0.5 * r * t);
+  this->dual = Dual<Quaternion>(r, 0.5 * t * r);
 }
 
 Vector3 Transform::operator()(const Vector3& p) const {
-  auto d = Dual<Quaternion>(Quaternion(), 0.5 * Quaternion(0, p));
+  auto d = Dual<Quaternion>(Quaternion(), Quaternion(0, p));
   auto q = this->dual * d * conjugate(this->dual);
-  auto t = 2 * q.d * conjugate(q.r);
-
-  return Vector3({t.x, t.y, t.z});
+  return Vector3({q.d.x, q.d.y, q.d.z});
 }
 
 Transform operator*(const Transform& a, const Transform& b) {
