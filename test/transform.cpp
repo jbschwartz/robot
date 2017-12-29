@@ -27,24 +27,24 @@ TEST_CASE("Transform") {
   }
 
   SECTION("translates then rotates") {
-    const auto expected = Vector3({7, -6, -11});
+    const auto expected = Vector3({7, -2, 1});
 
     SECTION("through composition (operator())") {
-      const auto result = pureRotate(pureTranslate(point));
+      const auto result = pureTranslate(pureRotate(point));
 
       CHECK_THAT(result, ComponentsEqual(expected));
     }
 
     SECTION("by combining two transformations (operator*)") {
-      const auto combined = pureRotate * pureTranslate;
+      const auto combined = pureTranslate * pureRotate;
       const auto result = combined(point);
 
       CHECK_THAT(result, ComponentsEqual(expected));
     }
 
     SECTION("by transforming one transformation with another (operator*=)") {
-      auto combined = pureRotate;
-      combined *= pureTranslate;
+      auto combined = pureTranslate;
+      combined *= pureRotate;
 
       const auto result = combined(point);
 

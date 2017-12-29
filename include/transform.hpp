@@ -3,7 +3,6 @@
 
 #include "dual.hpp"
 #include "vector.hpp"
-#include "utilities.hpp"
 
 #include <cmath>
 #ifdef DEBUG
@@ -13,8 +12,8 @@
 namespace rbt {
 
 class Transform {
-  Dual<Quaternion> dual;
 public:
+  Dual<Quaternion> dual;
   Transform(const Dual<Quaternion>& dual) : dual(dual) {};
   Transform(const Vector3& axis, Real angle, const Vector3& translation = Vector3());
   Transform(const Vector3& translation) : Transform(Vector3(), 0, translation) {};

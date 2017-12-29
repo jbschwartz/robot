@@ -1,19 +1,29 @@
 #include "../include/quaternion.hpp"
 #include "../include/dual.hpp"
+#include "../include/serial.hpp"
+#include "../include/joint.hpp"
 #include "../include/transform.hpp"
 
 #include <iostream>
 
 using rbt::Transform;
 using rbt::Vector3;
+using rbt::Serial;
+using rbt::Joint;
 
 int main() {
-	auto t = Transform(Vector3({1, 0, 0}), 180.f, Vector3({4, 2, 6}));
-	std::cout << t << std::endl;
+	// ABB IRB120
+	auto s = Serial({
+		Joint(-90,	0, 		0, 		290),
+    Joint(0,   	270,	-90, 	0),
+    Joint(90,		-70, 	180,	0),
+    Joint(-90, 	0,  	0, 		302),
+    Joint(90, 	0, 		0, 		0),
+    Joint(0,   	0, 		0,   	72)
+	});
 
-	auto v = Vector3({3, 4, 5});
+	auto result = s.pose({45, 45, 45, 45, 45, 45});
 
-	auto result = t(v);
-
-	std::cout << result << std::endl;
+	std::cout << result.position() << std::endl;
+	std::cout << result.orientation() << std::endl;
 }
