@@ -16,7 +16,7 @@ public:
   // Return the pose of the final joint
   Frame pose(const std::vector<Real>& angles);
   // Return the poses of all joints
-  // std::array<Frame, N> poses() const;
+  std::vector<Frame> poses(const std::vector<Real>& angles);
 };
 
 }
