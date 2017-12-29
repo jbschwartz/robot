@@ -12,7 +12,7 @@ class Joint {
   Real alpha, a, theta, d;
 public:
   Joint(const Real& alpha, const Real& a, const Real& theta, const Real& d) : alpha(alpha), a(a), theta(theta), d(d) {};
-  Transform create();
+  Transform transform(const Real& theta = 0.0);
 };
 
 }

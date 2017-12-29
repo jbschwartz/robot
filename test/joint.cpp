@@ -18,12 +18,12 @@ TEST_CASE("Joint") {
     auto j5 = Joint(90, 	0, 		0, 		0);
     auto j6 = Joint(0,   	0, 		0,   	72);
 
-    auto j1t = j1.create();
-    auto j2t = j2.create();
-    auto j3t = j3.create();
-    auto j4t = j4.create();
-    auto j5t = j5.create();
-    auto j6t = j6.create();
+    auto j1t = j1.transform();
+    auto j2t = j2.transform();
+    auto j3t = j3.transform();
+    auto j4t = j4.transform();
+    auto j5t = j5.transform();
+    auto j6t = j6.transform();
 
     auto origin = Vector3({0, 0, 0});
 
