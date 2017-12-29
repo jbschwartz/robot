@@ -27,20 +27,17 @@ public:
   Frame();
   Frame(const Dual<Quaternion>& pose);
 
-  template <Intrinsic R>
-  EulerAngles euler() const;
-
-  template <Extrinsic R>
-  EulerAngles euler() const;
-
   Vector3 position() const;
   Quaternion orientation() const;
   Dual<Quaternion> pose() const;
 };
 
+template <Intrinsic R>
+EulerAngles euler(const Frame& f);
+
 template <Extrinsic R>
-EulerAngles Frame::euler() const {
-  auto intrinsic = this->euler<static_cast<Intrinsic>(R)>();
+EulerAngles euler(const Frame& f) {
+  auto intrinsic = euler<static_cast<Intrinsic>(R)>(f);
   std::reverse(intrinsic.begin(), intrinsic.end());
   return intrinsic;
 };

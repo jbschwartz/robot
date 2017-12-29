@@ -25,11 +25,12 @@ Dual<Quaternion> Frame::pose() const {
 }
 
 template<>
-EulerAngles Frame::euler<Intrinsic::ZYX>() const {
-  const auto r = this->p.r.r;
-  const auto x = this->p.r.x;
-  const auto y = this->p.r.y;
-  const auto z = this->p.r.z;
+EulerAngles euler<Intrinsic::ZYX>(const Frame& f) {
+  const auto orientation = f.orientation();
+  const auto r = orientation.r;
+  const auto x = orientation.x;
+  const auto y = orientation.y;
+  const auto z = orientation.z;
 
   const auto rSq = r * r;
   const auto xSq = x * x;
