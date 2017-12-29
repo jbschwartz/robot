@@ -1,24 +1,22 @@
 language: cpp
 sudo: required
 
-script:
-  - sudo unlink /usr/bin/gcc && sudo ln -s /usr/bin/gcc-5 /usr/bin/gcc
-  - gcc --version
+before_install:
+  # C++14
+  - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+  - sudo apt-get update -qq
 
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    packages:
-    - gcc-5
-    - g++-5
+install:
+  # C++14
+  - sudo apt-get install -qq g++-5
+  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 90
 
 notifications:
   email: false
 
 compiler:
   - clang
-  - gcc
+  - g++
 
 before_script:
   - mkdir build
@@ -27,6 +25,7 @@ before_script:
   - cmake ..
 
 script:
+  - g++ --version
   - pwd
   - make
   - ../bin/RobotTest
