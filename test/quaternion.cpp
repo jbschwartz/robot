@@ -9,69 +9,89 @@ using rbt::Quaternion;
 using rbt::norm;
 
 TEST_CASE("Quaternions") {
-  const auto a = Quaternion();
-  const auto b = Quaternion(1, 2, 3, 4);
+  const auto q1 = Quaternion(1, 2, 3, 4);
+  const auto q2 = Quaternion(4, -3, 2, -1);
 
   SECTION("defaults to identity") {
-    REQUIRE(a.r == 1);
-    REQUIRE(a.x == 0);
-    REQUIRE(a.y == 0);
-    REQUIRE(a.z == 0);
+    const auto identity = Quaternion();
+
+    REQUIRE(identity.r == 1);
+    REQUIRE(identity.x == 0);
+    REQUIRE(identity.y == 0);
+    REQUIRE(identity.z == 0);
 
     SECTION("identity is multiplicative identity") {
-      const auto c = a * b;
-      REQUIRE(b == c);
+      REQUIRE(identity * q1 == q1);
+      REQUIRE(q1 * identity == q1);
     }
   }
 
   SECTION("construct in r, x, y, z order") {
-    REQUIRE(b.r == 1);
-    REQUIRE(b.x == 2);
-    REQUIRE(b.y == 3);
-    REQUIRE(b.z == 4);
+    REQUIRE(q1.r == 1);
+    REQUIRE(q1.x == 2);
+    REQUIRE(q1.y == 3);
+    REQUIRE(q1.z == 4);
   }
 
   SECTION("add") {
-    const auto c = b + b;
-    REQUIRE(Quaternion(2, 4, 6, 8) == c);
+    const auto result = q1 + q2;
+    const auto expected = Quaternion(5, -1, 5, 3);
+
+    REQUIRE(result == expected);
   }
 
   SECTION("multiply") {
-    const auto c = b * b;
-    REQUIRE(Quaternion(-28, 4, 6, 8) == c);
+    const auto result = q1 * q1;
+    const auto expected = Quaternion(-28, 4, 6, 8);
 
-    auto d = b;
-    d *= b;
-    REQUIRE(Quaternion(-28, 4, 6, 8) == d);
+    REQUIRE(result == expected);
+  }
+
+  SECTION("multiply assignment") {
+    auto result = q1;
+    result *= q1;
+    const auto expected = Quaternion(-28, 4, 6, 8);
+
+    REQUIRE(result == expected);
   }
 
   SECTION("scalar multiply") {
     const Real s = 4;
-    const auto c = s * b;
-    const auto d = b * s;
 
-    const auto expected = Quaternion(s * b.r, s * b.x, s * b.y, s * b.z);
+    const auto resultPre = s * q1;
+    const auto expected = Quaternion(4, 8, 12, 16);
 
-    REQUIRE(expected == c);
-    REQUIRE(expected == d);
+    REQUIRE(resultPre == expected);
+
+    const auto resultPost = q1 * s;
+    REQUIRE(resultPost == expected);
   }
 
   SECTION("conjugate") {
-    const auto c = conjugate(b);
-    REQUIRE(Quaternion(1, -2, -3, -4) == c);
+    const auto result = conjugate(q1);
+    const auto expected = Quaternion(1, -2, -3, -4);
+
+    REQUIRE(result == expected);
   }
 
   SECTION("norm") {
-    REQUIRE(Approx(std::sqrt(30)) == norm(b));
+    const auto result = norm(q1);
+    const auto expected = std::sqrt(30);
+
+    REQUIRE(result == Approx(expected));
   }
 
   SECTION("normalize") {
-    const auto c = b * b;
-    REQUIRE(Quaternion(-14/15.f, 2/15.f, 1/5.f, 4/15.f) == normalize(c));
+    const auto result = normalize(q1 * q1);
+    const auto expected = Quaternion(-14/15.f, 2/15.f, 1/5.f, 4/15.f);
+
+    REQUIRE(result == expected);
   }
 
   SECTION("unary minus (negate)") {
-    const auto c = -b;
-    REQUIRE(Quaternion(-1, -2, -3, -4) == c);
+    const auto result = -q1;
+    const auto expected = Quaternion(-1, -2, -3, -4);
+
+    REQUIRE(result == expected);
   }
 }
