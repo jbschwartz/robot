@@ -36,6 +36,9 @@ template <typename T>
 Dual<T> operator*(const Real& s, const Dual<T>& a);
 
 template <typename T>
+Dual<T> operator/(const Dual<T>& a, const Real& s);
+
+template <typename T>
 bool operator==(const Dual<T>& a, const Dual<T>& b);
 
 template <typename T>

@@ -38,7 +38,7 @@ TEST_CASE("Dual") {
       const auto expected = Dual<Quaternion>(Quaternion(1,0,0,0), Quaternion(0,0,0,0));
 
       REQUIRE(result == expected);
-      
+
       SECTION("identity is multiplicative identity") {
         REQUIRE(q1 * result == q1);
         REQUIRE(result * q1 == q1);
@@ -85,6 +85,15 @@ TEST_CASE("Dual") {
 
       const auto resultPost = q1 * s;
       REQUIRE(resultPost == expected);
+    }
+
+    SECTION("scalar divide") {
+      const Real s = 4;
+
+      const auto result = q1 / s;
+      const auto expected = Dual<Quaternion>(r1 / s, d1 / s);
+
+      REQUIRE(result == expected);
     }
 
     SECTION("equality") {

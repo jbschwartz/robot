@@ -33,6 +33,12 @@ Dual<T> operator*(const Real& s, const Dual<T>& a) {
 }
 
 template <typename T>
+Dual<T> operator/(const Dual<T>& a, const Real& s) {
+  const Real reciprocal = 1. / s;
+  return Dual<T>(reciprocal * a.r, reciprocal * a.d);
+}
+
+template <typename T>
 bool operator==(const Dual<T>& a, const Dual<T>& b) {
   return a.r == b.r && a.d == b.d;
 }
