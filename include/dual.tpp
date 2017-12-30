@@ -8,6 +8,24 @@ Dual<T>& Dual<T>::operator*=(const Dual<T>& a) {
 }
 
 template <typename T>
+Dual<T>& Dual<T>::operator+=(const Dual<T>& a) {
+  const auto r = this->r + a.r;
+  const auto d = this->d + a.d;
+
+  this->r = r; this->d = d;
+  return *this;
+}
+
+template <typename T>
+Dual<T>& Dual<T>::operator-=(const Dual<T>& a) {
+  const auto r = this->r - a.r;
+  const auto d = this->d - a.d;
+
+  this->r = r; this->d = d;
+  return *this;
+}
+
+template <typename T>
 Dual<T> operator+(const Dual<T>& a, const Dual<T>& b) {
   return Dual<T>(a.r + b.r, a.d + b.d);
 }

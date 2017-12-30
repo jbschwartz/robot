@@ -18,6 +18,8 @@ public:
   Dual(const T& r, const T& d) : r(r), d(d) {};
 
   Dual<T>& operator*=(const Dual<T>& a);
+  Dual<T>& operator+=(const Dual<T>& a);
+  Dual<T>& operator-=(const Dual<T>& a);
 };
 
 template <typename T>
