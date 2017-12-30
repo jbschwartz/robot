@@ -89,7 +89,7 @@ TEST_CASE("Quaternions") {
     REQUIRE(resultPost == expected);
   }
 
-  SECTION("scalar multiply") {
+  SECTION("scalar divide") {
     const Real s = 4;
 
     const auto result = q1 / s;
