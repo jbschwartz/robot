@@ -90,7 +90,6 @@ TEST_CASE("Dual") {
       REQUIRE(result == expected);
     }
 
-
     SECTION("scalar multiply") {
       const Real s = 4;
 
