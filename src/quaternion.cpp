@@ -1,20 +1,13 @@
 #include <cmath>
 
 #include "../include/quaternion.hpp"
+#include "../include/norm.hpp"
 
 #ifdef DEBUG
 #include <iostream>
 #endif
 
 namespace rbt {
-
-Real Quaternion::norm() const {
-  return std::sqrt(
-    this->r * this->r +
-    this->x * this->x +
-    this->y * this->y +
-    this->z * this->z);
-}
 
 Quaternion Quaternion::operator-() const {
   return Quaternion(-this->r, -this->x, -this->y, -this->z);
@@ -27,7 +20,7 @@ Quaternion& Quaternion::operator*=(const Quaternion& a) {
   const auto z = this->r * a.z + this->x * a.y - this->y * a.x + this->z * a.r;
 
   this->r = r; this->x = x; this->y = y; this->z = z;
-  
+
   return *this;
 }
 
@@ -61,8 +54,8 @@ Quaternion conjugate(const Quaternion& a) {
 }
 
 Quaternion normalize(const Quaternion& a) {
-  const auto norm = a.norm();
-  return Quaternion(a.r / norm, a.x / norm, a.y / norm, a.z / norm);
+  const auto n = norm(a);
+  return Quaternion(a.r / n, a.x / n, a.y / n, a.z / n);
 }
 
 #ifdef DEBUG

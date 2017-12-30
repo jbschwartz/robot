@@ -1,10 +1,12 @@
 #include "third_party/catch.hpp"
 #include "../include/quaternion.hpp"
+#include "../include/norm.hpp"
 
 #include <cmath>
 
 using rbt::Real;
 using rbt::Quaternion;
+using rbt::norm;
 
 TEST_CASE("Quaternions") {
   const auto a = Quaternion();
@@ -60,7 +62,7 @@ TEST_CASE("Quaternions") {
   }
 
   SECTION("norm") {
-    REQUIRE(Approx(std::sqrt(30)) == b.norm());
+    REQUIRE(Approx(std::sqrt(30)) == norm(b));
   }
 
   SECTION("normalize") {
