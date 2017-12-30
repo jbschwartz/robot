@@ -1,6 +1,5 @@
 #include "third_party/catch.hpp"
 #include "../include/quaternion.hpp"
-#include "../include/norm.hpp"
 
 #include <cmath>
 

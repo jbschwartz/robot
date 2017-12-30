@@ -1,7 +1,6 @@
 #include <cmath>
 
 #include "../include/quaternion.hpp"
-#include "../include/norm.hpp"
 
 #ifdef DEBUG
 #include <iostream>
@@ -65,6 +64,15 @@ Quaternion conjugate(const Quaternion& a) {
 Quaternion normalize(const Quaternion& a) {
   const auto n = norm(a);
   return Quaternion(a.r / n, a.x / n, a.y / n, a.z / n);
+}
+
+Real norm(const Quaternion& a) {
+  return std::sqrt(
+    a.r * a.r +
+    a.x * a.x +
+    a.y * a.y +
+    a.z * a.z
+  );
 }
 
 #ifdef DEBUG

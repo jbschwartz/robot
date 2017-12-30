@@ -49,6 +49,11 @@ Dual<T> conjugate(const Dual<T>& a);
 template <>
 Dual<Quaternion> conjugate(const Dual<Quaternion>& a);
 
+template <typename T>
+Dual<T> norm(const Dual<Quaternion>& a);
+
+Real norm(const Dual<Quaternion>& a);
+
 #ifdef DEBUG
 template <typename T>
 std::ostream& operator<<(std::ostream& os, const Dual<T>& a);

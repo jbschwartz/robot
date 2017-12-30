@@ -66,6 +66,11 @@ Dual<T> conjugate(const Dual<T>& a) {
   return Dual<T>(a.r, -a.d);
 }
 
+template <typename T>
+Dual<T> norm(const Dual<T>& a) {
+  return Dual<T>(a * conjugate(a));
+}
+
 #ifdef DEBUG
 template <typename T>
 std::ostream& operator<<(std::ostream& os, const Dual<T>& a) {

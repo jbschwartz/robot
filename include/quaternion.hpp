@@ -33,6 +33,7 @@ bool operator==(const Quaternion& a, const Quaternion& b);
 
 Quaternion conjugate(const Quaternion& a);
 Quaternion normalize(const Quaternion& a);
+Real norm(const Quaternion& a);
 
 #ifdef DEBUG
 std::ostream& operator<<(std::ostream& os, const Quaternion& a);
