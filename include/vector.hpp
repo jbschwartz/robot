@@ -55,6 +55,7 @@ std::ostream& operator<<(std::ostream& os, const Vector<T, N>& a) {
 }
 #endif
 
+typedef Vector<Real, 2> Vector2;
 typedef Vector<Real, 3> Vector3;
 
 }
