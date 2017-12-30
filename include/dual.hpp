@@ -17,60 +17,39 @@ public:
   Dual() : r(T()), d(T()) {}
   Dual(const T& r, const T& d) : r(r), d(d) {};
 
-  Dual<T>& operator*=(const Dual<T>& a) {
-    const auto r = this->r * a.r;
-    const auto d = this->r * a.d + this->d * a.r;
-
-    this->r = r; this->d = d;
-    return *this;
-  }
+  Dual<T>& operator*=(const Dual<T>& a);
 };
 
 template <typename T>
-Dual<T> operator+(const Dual<T>& a, const Dual<T>& b) {
-  return Dual<T>(a.r + b.r, a.d + b.d);
-}
+Dual<T> operator+(const Dual<T>& a, const Dual<T>& b);
 
 template <typename T>
-Dual<T> operator-(const Dual<T>& a, const Dual<T>& b) {
-  return Dual<T>(a.r - b.r, a.d - b.d);
-}
+Dual<T> operator-(const Dual<T>& a, const Dual<T>& b);
 
 template <typename T>
-Dual<T> operator*(const Dual<T>& a, const Dual<T>& b) {
-  return Dual<T>(a.r * b.r, a.r * b.d + a.d * b.r);
-}
+Dual<T> operator*(const Dual<T>& a, const Dual<T>& b);
 
 template <typename T>
-Dual<T> operator*(const Dual<T>& a, const Real& s) {
-  return Dual<T>(s * a.r, s * a.d);
-}
+Dual<T> operator*(const Dual<T>& a, const Real& s);
 
 template <typename T>
-Dual<T> operator*(const Real& s, const Dual<T>& a) {
-  return Dual<T>(s * a.r, s * a.d);
-}
+Dual<T> operator*(const Real& s, const Dual<T>& a);
 
 template <typename T>
-bool operator==(const Dual<T>& a, const Dual<T>& b) {
-  return a.r == b.r && a.d == b.d;
-}
+bool operator==(const Dual<T>& a, const Dual<T>& b);
 
 template <typename T>
-Dual<T> conjugate(const Dual<T>& a) {
-  return Dual<T>(a.r, -a.d);
-}
+Dual<T> conjugate(const Dual<T>& a);
 
 template <>
 Dual<Quaternion> conjugate(const Dual<Quaternion>& a);
 
 #ifdef DEBUG
 template <typename T>
-std::ostream& operator<<(std::ostream& os, const Dual<T>& a) {
-  os << a.r << " + " << a.d << "\u03B5";
-  return os;
-}
+std::ostream& operator<<(std::ostream& os, const Dual<T>& a);
 #endif
+
+#include "dual.tpp"
 
 }
 
