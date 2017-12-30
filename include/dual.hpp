@@ -32,6 +32,11 @@ Dual<T> operator+(const Dual<T>& a, const Dual<T>& b) {
 }
 
 template <typename T>
+Dual<T> operator-(const Dual<T>& a, const Dual<T>& b) {
+  return Dual<T>(a.r - b.r, a.d - b.d);
+}
+
+template <typename T>
 Dual<T> operator*(const Dual<T>& a, const Dual<T>& b) {
   return Dual<T>(a.r * b.r, a.r * b.d + a.d * b.r);
 }

@@ -52,6 +52,13 @@ TEST_CASE("Dual") {
       REQUIRE(result == expected);
     }
 
+    SECTION("subtract") {
+      const auto result = q1 - q2;
+      const auto expected = Dual<Quaternion>(r1 - r2, d1 - d2);
+
+      REQUIRE(result == expected);
+    }
+
     SECTION("multiply") {
       const auto result = q1 * q2;
       const auto expected = Dual<Quaternion>(r1 * r2, r1 * d2 + d1 * r2);
