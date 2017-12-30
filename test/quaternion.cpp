@@ -40,6 +40,13 @@ TEST_CASE("Quaternions") {
     REQUIRE(result == expected);
   }
 
+  SECTION("subtract") {
+    const auto result = q1 - q2;
+    const auto expected = Quaternion(-3, 5, 1, 5);
+
+    REQUIRE(result == expected);
+  }
+
   SECTION("multiply") {
     const auto result = q1 * q1;
     const auto expected = Quaternion(-28, 4, 6, 8);
