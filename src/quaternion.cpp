@@ -23,6 +23,18 @@ Quaternion& Quaternion::operator*=(const Quaternion& a) {
   return *this;
 }
 
+Quaternion& Quaternion::operator+=(const Quaternion& a) {
+  this->r += a.r; this->x += a.x; this->y += a.y; this->z += a.z;
+
+  return *this;
+}
+
+Quaternion& Quaternion::operator-=(const Quaternion& a) {
+  this->r -= a.r; this->x -= a.x; this->y -= a.y; this->z -= a.z;
+
+  return *this;
+}
+
 Quaternion operator+(const Quaternion& a, const Quaternion& b) {
   return Quaternion(a.r + b.r, a.x + b.x, a.y + b.y, a.z + b.z);
 }
