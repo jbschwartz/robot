@@ -33,6 +33,18 @@ TEST_CASE("Dual") {
     const auto q1 = Dual<Quaternion>(r1, d1);
     const auto q2 = Dual<Quaternion>(r2, d2);
 
+    SECTION("defaults to identity") {
+      const auto result = Dual<Quaternion>();
+      const auto expected = Dual<Quaternion>(Quaternion(1,0,0,0), Quaternion(0,0,0,0));
+
+      REQUIRE(result == expected);
+      
+      SECTION("identity is multiplicative identity") {
+        REQUIRE(q1 * result == q1);
+        REQUIRE(result * q1 == q1);
+      }
+    }
+
     SECTION("add") {
       const auto result = q1 + q2;
       const auto expected = Dual<Quaternion>(r1 + r2, d1 + d2);
