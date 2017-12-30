@@ -89,6 +89,15 @@ TEST_CASE("Quaternions") {
     REQUIRE(resultPost == expected);
   }
 
+  SECTION("scalar multiply assignment") {
+    const Real s = 4;
+    auto result = q1;
+    result *= s;
+    const auto expected = Quaternion(4, 8, 12, 16);
+
+    REQUIRE(result == expected);
+  }
+
   SECTION("scalar divide") {
     const Real s = 4;
 

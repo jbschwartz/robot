@@ -20,6 +20,7 @@ public:
   Quaternion operator-() const;
 
   Quaternion& operator*=(const Quaternion& a);
+  Quaternion& operator*=(const Real& s);
   Quaternion& operator+=(const Quaternion& a);
   Quaternion& operator-=(const Quaternion& a);
 };
