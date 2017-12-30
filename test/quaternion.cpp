@@ -74,6 +74,15 @@ TEST_CASE("Quaternions") {
     REQUIRE(resultPost == expected);
   }
 
+  SECTION("scalar multiply") {
+    const Real s = 4;
+
+    const auto result = q1 / s;
+    const auto expected = Quaternion(0.25, 0.5, 0.75, 1);
+
+    REQUIRE(result == expected);
+  }
+
   SECTION("conjugate") {
     const auto result = conjugate(q1);
     const auto expected = Quaternion(1, -2, -3, -4);

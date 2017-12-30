@@ -40,6 +40,11 @@ Quaternion operator*(const Real& s, const Quaternion& a) {
   return Quaternion(s * a.r, s * a.x, s * a.y, s * a.z);
 }
 
+Quaternion operator/(const Quaternion& a, const Real& s) {
+  const Real reciprocal = 1. / s;
+  return Quaternion(a.r * reciprocal, a.x * reciprocal, a.y * reciprocal, a.z * reciprocal);
+}
+
 Quaternion operator*(const Quaternion& a, const Quaternion& b) {
   const auto r = a.r * b.r - a.x * b.x - a.y * b.y - a.z * b.z;
   const auto x = a.r * b.x + a.x * b.r + a.y * b.z - a.z * b.y;

@@ -27,6 +27,7 @@ Quaternion operator-(const Quaternion& a, const Quaternion& b);
 Quaternion operator*(const Quaternion& a, const Quaternion& b);
 Quaternion operator*(const Quaternion& a, const Real& s);
 Quaternion operator*(const Real& s, const Quaternion& a);
+Quaternion operator/(const Quaternion& a, const Real& s);
 
 bool operator==(const Quaternion& a, const Quaternion& b);
 
