@@ -16,9 +16,7 @@ Angles waistAngles(const Real& x, const Real& y) {
   const auto phi = std::atan2(y, x);
 
   // Give solutions for both "left" and "right" shoulder configurations
-  auto angles = Angles({phi, phi + PI});
-
-  return angles;
+  return Angles({phi, phi + PI});
 }
 
 // Project the wrist center onto the XY plane, solve for the angle in the plane with a shoulder offset.
@@ -36,9 +34,7 @@ Angles waistAngles(const Real& x, const Real& y, const Real& offset) {
   const auto alpha = std::atan2(offset, std::sqrt(delta));
 
   // Give solutions for both "left" and "right" shoulder configurations
-  auto angles = Angles({phi - alpha, phi + alpha + PI});
-
-  return angles;
+  return Angles({phi - alpha, phi + alpha + PI});
 }
 
 }}
