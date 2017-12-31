@@ -17,14 +17,14 @@ TEST_CASE("Inverse Kinematics") {
 
       SECTION("calculates waist angles in radians with no limits") {
         const auto result = waistAngles(x, y);
-        const auto expected = Angles({toRadians(30), toRadians(210)});
+        const auto expected = Angles({toRadians(angle), toRadians(angle + 180)});
 
         REQUIRE(result == expected);
       }
 
       SECTION("calculates waist angles in radians with limits") {
-        const auto result = waistAngles(x, y, Vector2({toRadians(100), toRadians(300)}));
-        const auto expected = Angles({toRadians(210)});
+        const auto result = waistAngles(x, y, Vector2({toRadians(angle + 70), toRadians(angle + 70 + 180)}));
+        const auto expected = Angles({toRadians(angle + 180)});
 
         REQUIRE(result == expected);
       }
