@@ -2,11 +2,8 @@
 #include "../include/ik.hpp"
 #include "../include/utilities.hpp"
 
-using rbt::Vector2;
-using rbt::ik::Angles;
-using rbt::ik::removeIfOutsideLimits;
-using rbt::ik::SINGULAR;
-using rbt::INF;
+using namespace rbt;
+using namespace rbt::ik;
 
 TEST_CASE("Inverse Kinematics") {
   SECTION("removeIfOutsideLimits") {
