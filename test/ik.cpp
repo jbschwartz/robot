@@ -37,6 +37,38 @@ TEST_CASE("Inverse Kinematics") {
         CHECK_THAT(result, ComponentsEqual(expected));
       }
     }
+
+    SECTION("with shoulder offset") {
+      const Real x = 0;
+      const Real y = 5;
+      const Real offset = 2;
+
+      SECTION("calculates waist angles in radians with no limits") {
+        const auto result = waistAngles(x, y, offset);
+
+        // This calculation is a special case when x = 0:
+        //            ^ Y
+        //            |
+        //            X <--- (0, Y)
+        //          / |
+        //        /   |
+        //  -\--- \   |
+        // offset  \  |
+        //     \    \-| <--- Angle = acos(offset / Y)
+        //     _\___ \|
+        // -----------X--(0,0)------> X
+        const auto expected = Angles({std::acos(offset / y), std::asin(offset / y) + toRadians(270)});
+
+        CHECK_THAT(result, ComponentsEqual(expected));
+      }
+
+      SECTION("calculates waist angles in radians with limits") {
+        const auto result = waistAngles(x, y, offset, Vector2({toRadians(180), toRadians(360)}));
+        const auto expected = Angles({std::asin(offset / y) + toRadians(270)});
+
+        CHECK_THAT(result, ComponentsEqual(expected));
+      }
+    }
   }
 
   SECTION("removeIfOutsideLimits") {

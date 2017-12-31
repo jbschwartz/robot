@@ -17,6 +17,8 @@ const auto SINGULAR = std::numeric_limits<Real>::infinity();
 
 // Calculate the waist (joint 0) angles satisfying actuator limits for location (x,y)
 Angles waistAngles(const Real&, const Real& y, const Vector2& limits = Vector2({-INF, INF}));
+// Calculate the waist (joint 0) angles satisfying actuator limits for location (x,y) with a shoulder offset
+Angles waistAngles(const Real&, const Real& y, const Real& offset, const Vector2& limits = Vector2({-INF, INF}));
 
 // Remove angles from a vector should the exceed actuator limits
 // TODO: This could potentially be more generic
