@@ -1,11 +1,43 @@
 #include "third_party/catch.hpp"
 #include "../include/ik.hpp"
 #include "../include/utilities.hpp"
+#include "../include/typedefs.hpp"
+
+#include <algorithm>
 
 using namespace rbt;
 using namespace rbt::ik;
 
 TEST_CASE("Inverse Kinematics") {
+  SECTION("waistAngles") {
+    SECTION("with no shoulder offset") {
+      const Real angle = 30;
+      const Real x = 3 * cos(toRadians(angle));
+      const Real y = 3 * sin(toRadians(angle));
+
+      SECTION("calculates waist angles in radians with no limits") {
+        const auto result = waistAngles(x, y);
+        const auto expected = Angles({toRadians(30), toRadians(210)});
+
+        REQUIRE(result == expected);
+      }
+
+      SECTION("calculates waist angles in radians with limits") {
+        const auto result = waistAngles(x, y, Vector2({toRadians(100), toRadians(300)}));
+        const auto expected = Angles({toRadians(210)});
+
+        REQUIRE(result == expected);
+      }
+
+      SECTION("appropriately determines singular position") {
+        const auto result = waistAngles(0, 0);
+        const auto expected = Angles({SINGULAR});
+
+        REQUIRE(result == expected);
+      }
+    }
+  }
+
   SECTION("removeIfOutsideLimits") {
     auto angles = Angles({-140.5, 212.25, 170, 212.1, 0, 400.40});
     const auto limits = Vector2({-100, 212.1});

@@ -1,7 +1,28 @@
 #include "../include/ik.hpp"
 #include "../include/vector.hpp"
+#include "../include/utilities.hpp"
+
+#include <algorithm>
 
 namespace rbt { namespace ik {
+
+// Project the wrist center onto the XY plane, solve for the angle in the plane.
+Angles waistAngles(const Real& x, const Real& y, const Vector2& limits) {
+  // No shoulder offset means possibility of shoulder singularities
+  // Shoulder singularities occur when the center of the wrist intersects the waist axis
+  bool shoulderIsSingular = (x == 0) && (y == 0);
+  if(shoulderIsSingular) return Angles({SINGULAR}); // Infinite possible solutions
+
+  const auto phi = std::atan2(y, x);
+
+  // Give solutions for both "left" and "right" shoulder configurations
+  auto angles = Angles({phi, phi + PI});
+
+  // Make sure that angles are within actuator limits
+  removeIfOutsideLimits(angles, limits);
+
+  return angles;
+}
 
 void removeIfOutsideLimits(Angles& angles, const Vector2& limits) {
   Real low = limits[0];
