@@ -1,10 +1,12 @@
 #include "third_party/catch.hpp"
 #include "../include/ik.hpp"
+#include "../include/utilities.hpp"
 
 using rbt::Vector2;
 using rbt::ik::Angles;
 using rbt::ik::removeIfOutsideLimits;
 using rbt::ik::SINGULAR;
+using rbt::INF;
 
 TEST_CASE("Inverse Kinematics") {
   SECTION("removeIfOutsideLimits") {
@@ -25,6 +27,16 @@ TEST_CASE("Inverse Kinematics") {
       const auto expected = Angles({170, 0, SINGULAR});
 
       removeIfOutsideLimits(angles, limits);
+
+      REQUIRE(angles == expected);
+    }
+
+    SECTION("does not remove anything if limits are infinite") {
+      const auto equalLimits = Vector2({-INFINITY, INFINITY});
+
+      const auto expected = angles;
+
+      removeIfOutsideLimits(angles, equalLimits);
 
       REQUIRE(angles == expected);
     }
