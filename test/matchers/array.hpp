@@ -1,7 +1,5 @@
 #include "../third_party/catch.hpp"
 
-#include <iostream>
-
 template <typename T, std::size_t N>
 class ArrayMatcher : public Catch::MatcherBase<std::array<T,N>>
 {
