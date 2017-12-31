@@ -16,23 +16,21 @@ TEST_CASE("Inverse Kinematics") {
       const Real x = 3 * cos(toRadians(angle));
       const Real y = 3 * sin(toRadians(angle));
 
-      SECTION("calculates waist angles in radians with no limits") {
+      SECTION("calculates waist angles in radians") {
         const auto result = waistAngles(x, y);
-        const auto expected = Angles({toRadians(angle), toRadians(angle + 180)});
-
-        CHECK_THAT(result, ComponentsEqual(expected));
-      }
-
-      SECTION("calculates waist angles in radians with limits") {
-        const auto result = waistAngles(x, y, Vector2({toRadians(angle + 70), toRadians(angle + 70 + 180)}));
-        const auto expected = Angles({toRadians(angle + 180)});
+        const auto expected = AngleSets({
+          AngleSet({toRadians(angle)}),
+          AngleSet({toRadians(angle + 180)})
+        });
 
         CHECK_THAT(result, ComponentsEqual(expected));
       }
 
       SECTION("appropriately determines singular position") {
         const auto result = waistAngles(0, 0);
-        const auto expected = Angles({SINGULAR});
+        const auto expected = AngleSets({
+          AngleSet({SINGULAR})
+        });
 
         CHECK_THAT(result, ComponentsEqual(expected));
       }
@@ -43,7 +41,7 @@ TEST_CASE("Inverse Kinematics") {
       const Real y = 5;
       const Real offset = 2;
 
-      SECTION("calculates waist angles in radians with no limits") {
+      SECTION("calculates waist angles in radians") {
         const auto result = waistAngles(x, y, offset);
 
         // This calculation is a special case when x = 0:
@@ -57,61 +55,13 @@ TEST_CASE("Inverse Kinematics") {
         //     \    \-| <--- Angle = acos(offset / Y)
         //     _\___ \|
         // -----------X--(0,0)------> X
-        const auto expected = Angles({std::acos(offset / y), std::asin(offset / y) + toRadians(270)});
-
-        CHECK_THAT(result, ComponentsEqual(expected));
-      }
-
-      SECTION("calculates waist angles in radians with limits") {
-        const auto result = waistAngles(x, y, offset, Vector2({toRadians(180), toRadians(360)}));
-        const auto expected = Angles({std::asin(offset / y) + toRadians(270)});
+        const auto expected = AngleSets({
+          AngleSet({std::acos(offset / y)}),
+          AngleSet({std::asin(offset / y) + toRadians(270)})
+        });
 
         CHECK_THAT(result, ComponentsEqual(expected));
       }
     }
-  }
-
-  SECTION("removeIfOutsideLimits") {
-    auto angles = Angles({-140.5, 212.25, 170, 212.1, 0, 400.40});
-    const auto limits = Vector2({-100, 212.1});
-
-    SECTION("prunes angles outside the limits") {
-      const auto expected = Angles({170, 212.1, 0});
-
-      removeIfOutsideLimits(angles, limits);
-
-      REQUIRE(angles == expected);
-    }
-
-    SECTION("does not remove singularities") {
-      angles.push_back(SINGULAR);
-
-      const auto expected = Angles({170, 212.1, 0, SINGULAR});
-
-      removeIfOutsideLimits(angles, limits);
-
-      REQUIRE(angles == expected);
-    }
-
-    SECTION("does not remove anything if limits are infinite") {
-      const auto equalLimits = Vector2({-INFINITY, INFINITY});
-
-      const auto expected = angles;
-
-      removeIfOutsideLimits(angles, equalLimits);
-
-      REQUIRE(angles == expected);
-    }
-
-    SECTION("handles swapped low and high limits") {
-      const auto switchedLimits = Vector2({212.1, -100});
-
-      const auto expected = Angles({170, 212.1, 0});
-
-      removeIfOutsideLimits(angles, switchedLimits);
-
-      REQUIRE(angles == expected);
-    }
-
   }
 }

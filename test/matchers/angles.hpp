@@ -1,19 +1,23 @@
 #include "../third_party/catch.hpp"
 #include "../include/ik.hpp"
 
-using rbt::ik::Angles;
+using rbt::ik::AngleSets;
 
-class AnglesMatcher : public Catch::MatcherBase<Angles>
+// TODO: This should really be order agnostic as order does not matter.
+class AngleSetsMatcher : public Catch::MatcherBase<AngleSets>
 {
-  Angles a;
+  AngleSets a;
 public:
-  AnglesMatcher(const Angles& a) : a(a) {};
+  AngleSetsMatcher(const AngleSets& a) : a(a) {};
 
-  virtual bool match(const Angles& b) const override {
-    auto bElement = b.begin();
+  virtual bool match(const AngleSets& b) const override {
+    auto bSet = b.begin();
 
-    for(const auto& aElement : this->a) {
-      if(Approx(aElement) != *bElement++) return false;
+    for(const auto& aSet : this->a) {
+      auto bElement = (*bSet++).begin();
+      for(const auto& aElement : aSet) {
+        if(Approx(aElement) != *bElement++) return false;
+      }
     }
     return true;
   }
@@ -25,6 +29,6 @@ public:
   }
 };
 
-inline AnglesMatcher ComponentsEqual(const Angles& a) {
-  return AnglesMatcher(a);
+inline AngleSetsMatcher ComponentsEqual(const AngleSets& a) {
+  return AngleSetsMatcher(a);
 }
