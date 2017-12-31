@@ -10,12 +10,13 @@
 
 namespace rbt { namespace ik {
 
-typedef std::vector<Real> Angles;
+typedef Real Angle;
+typedef std::vector<Angle> Angles;
 // A set of joint angles, one for each joint in a serial link manipulator
-typedef std::vector<Real> AngleSet;
+typedef std::vector<Angle> AngleSet;
 // A set of joint angle sets, one for each configuration
 // (e.g. one for each solution to an inverse kinematics problem)
-typedef std::vector<std::vector<Real>> AngleSets;
+typedef std::vector<std::vector<Angle>> AngleSets;
 
 static_assert(std::numeric_limits<Real>::has_infinity, "Type Real does not have infinity value");
 const auto SINGULAR = std::numeric_limits<Real>::infinity();
