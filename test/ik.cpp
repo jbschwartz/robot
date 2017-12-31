@@ -18,9 +18,9 @@ TEST_CASE("Inverse Kinematics") {
 
       SECTION("calculates waist angles in radians") {
         const auto result = waistAngles(x, y);
-        const auto expected = AngleSets({
-          AngleSet({toRadians(angle)}),
-          AngleSet({toRadians(angle + 180)})
+        const auto expected = Angles({
+          toRadians(angle),
+          toRadians(angle + 180)
         });
 
         CHECK_THAT(result, ComponentsEqual(expected));
@@ -28,9 +28,7 @@ TEST_CASE("Inverse Kinematics") {
 
       SECTION("appropriately determines singular position") {
         const auto result = waistAngles(0, 0);
-        const auto expected = AngleSets({
-          AngleSet({SINGULAR})
-        });
+        const auto expected = Angles({ SINGULAR });
 
         CHECK_THAT(result, ComponentsEqual(expected));
       }
@@ -55,9 +53,9 @@ TEST_CASE("Inverse Kinematics") {
         //     \    \-| <--- Angle = acos(offset / Y)
         //     _\___ \|
         // -----------X--(0,0)------> X
-        const auto expected = AngleSets({
-          AngleSet({std::acos(offset / y)}),
-          AngleSet({std::asin(offset / y) + toRadians(270)})
+        const auto expected = Angles({
+          std::acos(offset / y),
+          std::asin(offset / y) + toRadians(270)
         });
 
         CHECK_THAT(result, ComponentsEqual(expected));

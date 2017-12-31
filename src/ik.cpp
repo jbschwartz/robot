@@ -7,28 +7,22 @@
 namespace rbt { namespace ik {
 
 // Project the wrist center onto the XY plane, solve for the angle in the plane.
-AngleSets waistAngles(const Real& x, const Real& y) {
+Angles waistAngles(const Real& x, const Real& y) {
   // No shoulder offset means possibility of shoulder singularities
   // Shoulder singularities occur when the center of the wrist intersects the waist axis
   bool shoulderIsSingular = (x == 0) && (y == 0);
-  if(shoulderIsSingular) // Infinite possible solutions
-    return AngleSets({
-      AngleSet({SINGULAR})
-    });
+  if(shoulderIsSingular) return Angles({SINGULAR}); // Infinite possible solutions
 
   const auto phi = std::atan2(y, x);
 
   // Give solutions for both "left" and "right" shoulder configurations
-  auto angles = AngleSets({
-    AngleSet({phi}),
-    AngleSet({phi + PI})
-  });
+  auto angles = Angles({phi, phi + PI});
 
   return angles;
 }
 
 // Project the wrist center onto the XY plane, solve for the angle in the plane with a shoulder offset.
-AngleSets waistAngles(const Real& x, const Real& y, const Real& offset) {
+Angles waistAngles(const Real& x, const Real& y, const Real& offset) {
   if(offset == 0) return waistAngles(x, y);
 
   // Shoulder offsets create potential for unreachable locations (so we check)
@@ -36,16 +30,13 @@ AngleSets waistAngles(const Real& x, const Real& y, const Real& offset) {
   //   i.e. if the point is "inside" the (circle produced by the) offset shoulder
   const auto delta = (x * x) + (y * y) - (offset * offset);
 
-  if(delta < 0) return AngleSets(); // No solution
+  if(delta < 0) return Angles(); // No solution
 
   const auto phi = std::atan2(y, x);
   const auto alpha = std::atan2(offset, std::sqrt(delta));
 
   // Give solutions for both "left" and "right" shoulder configurations
-  auto angles = AngleSets({
-    AngleSet({phi - alpha}),
-    AngleSet({phi + alpha + PI})
-  });
+  auto angles = Angles({phi - alpha, phi + alpha + PI});
 
   return angles;
 }

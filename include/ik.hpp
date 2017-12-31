@@ -10,6 +10,7 @@
 
 namespace rbt { namespace ik {
 
+typedef std::vector<Real> Angles;
 // A set of joint angles, one for each joint in a serial link manipulator
 typedef std::vector<Real> AngleSet;
 // A set of joint angle sets, one for each configuration
@@ -20,9 +21,9 @@ static_assert(std::numeric_limits<Real>::has_infinity, "Type Real does not have 
 const auto SINGULAR = std::numeric_limits<Real>::infinity();
 
 // Calculate the waist (joint 0) angles satisfying actuator limits for location (x,y)
-AngleSets waistAngles(const Real&, const Real& y);
+Angles waistAngles(const Real&, const Real& y);
 // Calculate the waist (joint 0) angles satisfying actuator limits for location (x,y) with a shoulder offset
-AngleSets waistAngles(const Real&, const Real& y, const Real& offset);
+Angles waistAngles(const Real&, const Real& y, const Real& offset);
 
 }}
 
