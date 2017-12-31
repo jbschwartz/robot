@@ -1,4 +1,5 @@
 #include "third_party/catch.hpp"
+#include "matchers/angles.hpp"
 #include "../include/ik.hpp"
 #include "../include/utilities.hpp"
 #include "../include/typedefs.hpp"
@@ -19,21 +20,21 @@ TEST_CASE("Inverse Kinematics") {
         const auto result = waistAngles(x, y);
         const auto expected = Angles({toRadians(angle), toRadians(angle + 180)});
 
-        REQUIRE(result == expected);
+        CHECK_THAT(result, ComponentsEqual(expected));
       }
 
       SECTION("calculates waist angles in radians with limits") {
         const auto result = waistAngles(x, y, Vector2({toRadians(angle + 70), toRadians(angle + 70 + 180)}));
         const auto expected = Angles({toRadians(angle + 180)});
 
-        REQUIRE(result == expected);
+        CHECK_THAT(result, ComponentsEqual(expected));
       }
 
       SECTION("appropriately determines singular position") {
         const auto result = waistAngles(0, 0);
         const auto expected = Angles({SINGULAR});
 
-        REQUIRE(result == expected);
+        CHECK_THAT(result, ComponentsEqual(expected));
       }
     }
   }
