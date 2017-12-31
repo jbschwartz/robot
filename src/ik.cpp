@@ -4,8 +4,10 @@
 namespace rbt { namespace ik {
 
 void removeIfOutsideLimits(Angles& angles, const Vector2& limits) {
-  const Real low = limits[0];
-  const Real high = limits[1];
+  Real low = limits[0];
+  Real high = limits[1];
+
+  if(low > high) std::swap(low, high);
 
   // Optimization: don't bother looping through items if there are infnite limits
   if(low == -INF && high == INF) return;

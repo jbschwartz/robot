@@ -40,5 +40,16 @@ TEST_CASE("Inverse Kinematics") {
 
       REQUIRE(angles == expected);
     }
+
+    SECTION("handles swapped low and high limits") {
+      const auto switchedLimits = Vector2({212.1, -100});
+
+      const auto expected = Angles({170, 212.1, 0});
+
+      removeIfOutsideLimits(angles, switchedLimits);
+
+      REQUIRE(angles == expected);
+    }
+
   }
 }
