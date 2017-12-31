@@ -64,7 +64,7 @@ template <typename T>
 std::ostream& operator<<(std::ostream& os, const Dual<T>& a) {
   os << a.r << " + " << a.d << "\u03B5";
   return os;
-};
+}
 #endif
 
 }

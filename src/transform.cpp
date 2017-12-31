@@ -11,8 +11,8 @@ namespace rbt {
 
 Transform::Transform(const Vector3& axis, Real angle, const Vector3& translation) {
   const auto radians = toRadians(angle);
-  const auto c = std::cos(radians / (Real)2);
-  const auto s = std::sin(radians / (Real)2);
+  const auto c = std::cos(radians / static_cast<Real>(2));
+  const auto s = std::sin(radians / static_cast<Real>(2));
 
   const auto r = Quaternion(c, s * axis);
   const auto t = Quaternion(0, translation);

@@ -6,15 +6,15 @@
 
 namespace rbt {
 
-Frame::Frame() {};
+Frame::Frame() {}
 
-Frame::Frame(const Dual<Quaternion>& pose) : p(pose) {};
+Frame::Frame(const Dual<Quaternion>& pose) : p(pose) {}
 
 Vector3 Frame::position() const {
   auto t = 2 * this->p.d * conjugate(this->p.r);
 
   return Vector3({t.x, t.y, t.z});
-};
+}
 
 Quaternion Frame::orientation() const {
   return this->p.r;

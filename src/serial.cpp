@@ -15,7 +15,7 @@ Frame Serial::pose(const std::vector<Real>& angles) {
   });
 
   return Frame(t.dual);
-};
+}
 
 std::vector<Frame> Serial::poses(const std::vector<Real>& angles) {
   auto t = Transform();

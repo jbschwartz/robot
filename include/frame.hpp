@@ -40,7 +40,7 @@ EulerAngles euler(const Frame& f) {
   auto intrinsic = euler<static_cast<Intrinsic>(R)>(f);
   std::reverse(intrinsic.begin(), intrinsic.end());
   return intrinsic;
-};
+}
 
 }
 
