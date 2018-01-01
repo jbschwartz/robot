@@ -9,6 +9,7 @@
 namespace rbt {
 
 const Real PI = 3.141592653589793;
+const Real EPSILON = 0.00001;
 
 static_assert(std::numeric_limits<Real>::has_infinity, "Type Real does not have infinity value");
 const auto INF = std::numeric_limits<Real>::infinity();
@@ -18,6 +19,8 @@ Real toDegrees(const Real& radians);
 
 Real inchesToMillimeters(const Real& inches);
 Real millimetersToInches(const Real& millimeters);
+
+bool approxZero(const Real& value);
 
 }
 

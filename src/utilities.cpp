@@ -18,4 +18,8 @@ Real millimetersToInches(const Real& millimeters) {
   return millimeters / 25.4;
 }
 
+bool approxZero(const Real& value) {
+  return std::abs(value) <= EPSILON;
+}
+
 }
