@@ -22,9 +22,9 @@ static_assert(std::numeric_limits<Real>::has_infinity, "Type Real does not have 
 const auto SINGULAR = std::numeric_limits<Real>::infinity();
 
 // Calculate the waist (joint 0) angles
-Angles waistAngles(const Real&, const Real& y);
+Angles waistAngles(const Real& x, const Real& y);
 // Calculate the waist (joint 0) angles with a shoulder offset
-Angles waistAngles(const Real&, const Real& y, const Real& offset);
+Angles waistAngles(const Real& x, const Real& y, const Real& offset);
 
 // Calculate the elbow (joint 2) angles
 Angles elbowAngles(const Real& r, const Real& s, const Real& l1, const Real& l2);
