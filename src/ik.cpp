@@ -10,7 +10,7 @@ namespace rbt { namespace ik {
 Angles waistAngles(const Real& x, const Real& y) {
   // No shoulder offset means possibility of shoulder singularities
   // Shoulder singularities occur when the center of the wrist intersects the waist axis
-  bool shoulderIsSingular = (x == 0) && (y == 0);
+  bool shoulderIsSingular = approxZero(x) && approxZero(y);
   if(shoulderIsSingular) return Angles({SINGULAR}); // Infinite possible solutions
 
   const auto phi = std::atan2(y, x);
@@ -21,7 +21,7 @@ Angles waistAngles(const Real& x, const Real& y) {
 
 // Project the wrist center onto the XY plane, solve for the angle in the plane with a shoulder offset.
 Angles waistAngles(const Real& x, const Real& y, const Real& offset) {
-  if(offset == 0) return waistAngles(x, y);
+  if(approxZero(offset)) return waistAngles(x, y);
 
   // Shoulder offsets create potential for unreachable locations (so we check)
   // A point is unreachable is x^2 + y^2 < d^2,
