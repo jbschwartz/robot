@@ -94,6 +94,24 @@ Angles shoulderAngles(const Real& r, const Real& s, const Real& l1, const Real& 
   return Angles({ theta1 });
 }
 
+/* Project the problem onto a 2R manipulator. That is: find the wrist center on the RS plane
+ *             (Side)                                (Top)
+ *               ^ Z          Target (x, y, z)        ^ Y
+ *               |           /    => (r, s)           |
+ *               ^ S (O)====X                         |
+ *     Shoulder  |  // \                              |/---- r ----/
+ *             \ |//    Elbow                 ---^--- (O)==(O)=====X (x, y)
+ *    --^---    (O)-----------> R                |    ||       _ /
+ *   offset    =====                           offset ||   _ /   \
+ *      |      || ||                             |    || /        sqrt(x^2 + y^2)
+ *   ---V--- ----|---------> X                ---V--- (O)-----------> X */
+Vector2 rsCoordinates(const Real& x, const Real& y, const Real& z, const Real& shoulderOffset, const Real& baseOffset) {
+  const auto r = std::sqrt(x * x + y + y - shoulderOffset * shoulderOffset);
+  const auto s = z - baseOffset;
+
+  return Vector2({ r, s });
+}
+
 bool withinLimits(const Real& angle, const Vector2& limits) {
   // Do not remove singular values as they represent _all_ values within limits
   if(angle == SINGULAR) return true;

@@ -1,7 +1,9 @@
 #include "third_party/catch.hpp"
 #include "matchers/angles.hpp"
+#include "matchers/vector.hpp"
 #include "../include/ik.hpp"
 #include "../include/utilities.hpp"
+#include "../include/vector.hpp"
 #include "../include/typedefs.hpp"
 
 #include <algorithm>
@@ -162,6 +164,37 @@ TEST_CASE("Inverse Kinematics") {
 
       REQUIRE(result.size() == 1);
       CHECK_THAT(result, ComponentsEqual(expected));
+    }
+  }
+
+  SECTION("rsCoordinates") {
+    const Real x = 5;
+    const Real y = -5;
+    const Real z = 10;
+    const Real shoulderOffset = 3;
+    const Real baseOffset = 4;
+
+    SECTION("calculates RS coordinates") {
+      SECTION("with no offsets") {
+        const Vector2 result = rsCoordinates(x, y, z, 0, 0);
+        const auto expected = Vector2({ 7.07106, 10 });
+
+        CHECK_THAT(result, ComponentsEqual(expected));
+      }
+
+      SECTION("with a shoulder offset") {
+        const auto result = rsCoordinates(x, y, z, shoulderOffset, 0);
+        const auto expected = Vector2({ 6.40312, 10 });
+
+        CHECK_THAT(result, ComponentsEqual(expected));
+      }
+
+      SECTION("with both shoulder and base offsets") {
+        const auto result = rsCoordinates(x, y, z, shoulderOffset, baseOffset);
+        const auto expected = Vector2({ 6.40312, 6 });
+
+        CHECK_THAT(result, ComponentsEqual(expected));
+      }
     }
   }
 

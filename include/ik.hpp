@@ -32,6 +32,9 @@ Angles elbowAngles(const Real& r, const Real& s, const Real& l1, const Real& l2)
 // Calculate the shoulder (joint 1) angles from elbow angles
 Angles shoulderAngles(const Real& r, const Real& s, const Real& l1, const Real& l2, const Angles& elbow);
 
+// calculate RS coordinates for the given XYZ position.
+Vector2 rsCoordinates(const Real& x, const Real& y, const Real& z, const Real& shoulderOffset, const Real& baseOffset);
+
 // Return true if the angle is within the given limits
 bool withinLimits(const Real& angle, const Vector2& limits);
 }}
