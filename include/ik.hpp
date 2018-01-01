@@ -35,6 +35,9 @@ Angles shoulderAngles(const Real& r, const Real& s, const Real& l1, const Real& 
 // calculate RS coordinates for the given XYZ position.
 Vector2 rsCoordinates(const Real& x, const Real& y, const Real& z, const Real& shoulderOffset, const Real& baseOffset);
 
+// Check each solution against the joint limits and prune if any angles are outside their limit.
+void removeIfBeyondLimits(AngleSets& sets, const std::vector<Vector2>& limits);
+
 // Return true if the angle is within the given limits
 bool withinLimits(const Real& angle, const Vector2& limits);
 }}

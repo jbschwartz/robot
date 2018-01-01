@@ -242,4 +242,28 @@ TEST_CASE("Inverse Kinematics") {
     }
   }
 
+  SECTION("removeIfBeyondLimits") {
+    auto sets = AngleSets({
+      AngleSet({ SINGULAR, 200, -100 }),  // Valid
+      AngleSet({ SINGULAR, 400, 0 }),     // Invalid
+      AngleSet({ 20, SINGULAR, -100 }),   // Valid
+      AngleSet({ 300, SINGULAR, -100 }),  // Invalid
+      AngleSet({ 20, 200, SINGULAR }),    // Valid
+      AngleSet({ 0, -200, SINGULAR }),    // Invalid
+      AngleSet({ 20, 200, -120 }),        // Valid
+      AngleSet({ 300, 0, -100 }),         // Invalid
+      AngleSet({ 20, 20, -20 }),          // Valid
+    });
+
+    const auto limits = std::vector<Vector2>({
+      Vector2({ -100, 100 }),
+      Vector2({ -150, 250 }),
+      Vector2({ 200, -120 })
+    });
+
+    removeIfBeyondLimits(sets, limits);
+
+    //TODO: Something more thorough...
+    REQUIRE(sets.size() == 5);
+  }
 }

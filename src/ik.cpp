@@ -3,6 +3,7 @@
 #include "../include/utilities.hpp"
 
 #include <algorithm>
+#include <iterator>
 
 namespace rbt { namespace ik {
 
@@ -122,6 +123,18 @@ bool withinLimits(const Real& angle, const Vector2& limits) {
   if(low > high) std::swap(low, high);
 
   return (angle >= low) && (angle <= high);
+}
+
+void removeIfBeyondLimits(AngleSets& sets, const std::vector<Vector2>& limits) {
+  const auto last = std::remove_if(sets.begin(), sets.end(), [limits](const AngleSet& set) {
+    auto limIter = limits.begin();
+    for(auto& angle : set) {
+      if (!withinLimits(angle, *limIter++)) return true;
+    }
+    return false;
+  });
+
+  sets.erase(last, sets.end());
 }
 
 }}
