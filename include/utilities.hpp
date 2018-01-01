@@ -21,6 +21,7 @@ Real inchesToMillimeters(const Real& inches);
 Real millimetersToInches(const Real& millimeters);
 
 bool approxZero(const Real& value);
+bool approxEqual(const Real& a, const Real& b);
 
 }
 

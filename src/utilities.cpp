@@ -22,4 +22,8 @@ bool approxZero(const Real& value) {
   return std::abs(value) <= EPSILON;
 }
 
+bool approxEqual(const Real& a, const Real& b) {
+  return approxZero(a - b);
+}
+
 }
