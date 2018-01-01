@@ -26,6 +26,8 @@ Angles waistAngles(const Real&, const Real& y);
 // Calculate the waist (joint 0) angles with a shoulder offset
 Angles waistAngles(const Real&, const Real& y, const Real& offset);
 
+// Return true if the angle is within the given limits
+bool withinLimits(const Real& angle, const Vector2& limits);
 }}
 
 #endif /* __IK_H_ */

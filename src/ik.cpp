@@ -37,4 +37,16 @@ Angles waistAngles(const Real& x, const Real& y, const Real& offset) {
   return Angles({phi - alpha, phi + alpha + PI});
 }
 
+bool withinLimits(const Real& angle, const Vector2& limits) {
+  // Do not remove singular values as they represent _all_ values within limits
+  if(angle == SINGULAR) return true;
+
+  Real low = limits[0];
+  Real high = limits[1];
+
+  if(low > high) std::swap(low, high);
+
+  return (angle >= low) && (angle <= high);
+}
+
 }}

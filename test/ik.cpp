@@ -62,4 +62,49 @@ TEST_CASE("Inverse Kinematics") {
       }
     }
   }
+
+  SECTION("withinLimits") {
+    const Real low = -100;
+    const Real high = 212.1;
+    const auto limits = Vector2({ low, high });
+
+    SECTION("returns false for angles outside limits") {
+      REQUIRE_FALSE(withinLimits(low - 100, limits));
+      REQUIRE_FALSE(withinLimits(high + 100, limits));
+    }
+
+    SECTION("returns true for angles inside the limits") {
+      REQUIRE(withinLimits(low + 10, limits));
+      REQUIRE(withinLimits(0, limits));
+      REQUIRE(withinLimits(high - 10, limits));
+    }
+
+    SECTION("returns true for angles at the limits") {
+      REQUIRE(withinLimits(low, limits));
+      REQUIRE(withinLimits(high, limits));
+    }
+
+    SECTION("returns true for singularities") {
+      REQUIRE(withinLimits(SINGULAR, limits));
+    }
+
+    SECTION("returns true if limits are infinite") {
+      const auto infiniteLimits = Vector2({-INFINITY, INFINITY});
+
+      REQUIRE(withinLimits(low, infiniteLimits));
+      REQUIRE(withinLimits(high, infiniteLimits));
+      REQUIRE(withinLimits(0, infiniteLimits));
+      REQUIRE(withinLimits(SINGULAR, infiniteLimits));
+    }
+
+    SECTION("swaps low and high limits") {
+      const auto switchedLimits = Vector2({212.1, -100});
+
+      REQUIRE(withinLimits(low, switchedLimits));
+      REQUIRE(withinLimits(high, switchedLimits));
+      REQUIRE(withinLimits(0, switchedLimits));
+      REQUIRE(withinLimits(SINGULAR, switchedLimits));
+    }
+  }
+
 }
