@@ -63,6 +63,60 @@ TEST_CASE("Inverse Kinematics") {
     }
   }
 
+  SECTION("elbowAngles") {
+    const auto theta = Vector2({ toRadians(10), toRadians(45) });
+    const auto l = Vector2({ 10, 10 });
+
+    const Real x = l[0] * std::cos(theta[0]) + l[1] * std::cos(theta[0] + theta[1]);
+    const Real y = l[0] * std::sin(theta[0]) + l[1] * std::sin(theta[0] + theta[1]);
+
+    SECTION("calculates elbow angles in radians") {
+      const auto result = elbowAngles(x, y, l[0], l[1]);
+      const auto expected = Angles({
+        theta[1],
+        -theta[1]
+      });
+
+      REQUIRE(result.size() == 2);
+      CHECK_THAT(result, ComponentsEqual(expected));
+    }
+
+    SECTION("returns an empty set for a point out of reach") {
+      const auto outOfReach = l[0] + l[1];
+      const auto result = elbowAngles(outOfReach, outOfReach, l[0], l[1]);
+      const auto expected = Angles();
+
+      REQUIRE(result.size() == 0);
+      REQUIRE(result.empty());
+    }
+
+    SECTION("returns an empty set for a point too close to reach") {
+      const auto result = elbowAngles(0, 0, l[0], l[1] + 3);
+      const auto expected = Angles();
+
+      REQUIRE(result.size() == 0);
+      REQUIRE(result.empty());
+    }
+
+    SECTION("returns two solutions for a position on internal workspace boundary") {
+      const auto result = elbowAngles(0, 0, l[0], l[1]);
+      const auto expected = Angles({ toRadians(180), toRadians(-180) });
+
+      REQUIRE(result.size() == 2);
+      CHECK_THAT(result, ComponentsEqual(expected));
+    }
+
+    SECTION("returns one solution for a position on external workspace boundary") {
+      const auto fullReach = l[0] + l[1];
+      const auto angle = toRadians(30);
+      const auto result = elbowAngles(std::cos(angle) * fullReach, std::sin(angle) * fullReach, l[0], l[1]);
+      const auto expected = Angles({ 0 });
+
+      REQUIRE(result.size() == 1);
+      CHECK_THAT(result, ComponentsEqual(expected));
+    }
+  }
+
   SECTION("withinLimits") {
     const Real low = -100;
     const Real high = 212.1;

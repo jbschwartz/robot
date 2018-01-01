@@ -26,6 +26,9 @@ Angles waistAngles(const Real&, const Real& y);
 // Calculate the waist (joint 0) angles with a shoulder offset
 Angles waistAngles(const Real&, const Real& y, const Real& offset);
 
+// Calculate the elbow (joint 2) angles
+Angles elbowAngles(const Real& r, const Real& s, const Real& l1, const Real& l2);
+
 // Return true if the angle is within the given limits
 bool withinLimits(const Real& angle, const Vector2& limits);
 }}
