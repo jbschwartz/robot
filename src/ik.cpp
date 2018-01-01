@@ -47,9 +47,9 @@ Angles elbowAngles(const Real& r, const Real& s, const Real& l1, const Real& l2)
   if(!withinLimits(cosTheta, Vector2({ -1, 1 }))) return Angles();
 
   // Arm is on the edge of the external boundary; upper and lower arms are colinear and not overlapping
-  if(approxZero(cosTheta - 1)) return Angles({ 0 });
+  if(approxEqual(cosTheta, 1)) return Angles({ 0 });
   // Arm is on the edge of the internal boundary; upper and lower arms are colinear and overlapping
-  if(approxZero(cosTheta + 1)) return Angles({ toRadians(180), toRadians(-180) });
+  if(approxEqual(cosTheta, -1)) return Angles({ toRadians(180), toRadians(-180) });
 
   // Use atan instead of acos as atan performs better for very small angle values
   // Also the atan formulation naturally produces the elbow up and down solutions
