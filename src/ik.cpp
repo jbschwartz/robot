@@ -41,25 +41,24 @@ Angles waistAngles(const Real& x, const Real& y, const Real& offset) {
 // Uses the law of cosines
 Angles elbowAngles(const Real& r, const Real& s, const Real& l1, const Real& l2) {
   // Law of cosines
-  const auto arccos = ((r * r) + (s * s) - (l1 * l1) - (l2 * l2)) / (2 * l1 * l2);
+  const auto cosTheta = ((r * r) + (s * s) - (l1 * l1) - (l2 * l2)) / (2 * l1 * l2);
 
-  // There is no solution if arccos is outside the range of (-1, 1) inclusive
-  if(!withinLimits(arccos, Vector2({ -1, 1 }))) return Angles();
+  // There is no solution if cosTheta is outside the range of (-1, 1) inclusive
+  if(!withinLimits(cosTheta, Vector2({ -1, 1 }))) return Angles();
 
   // Arm is on the edge of the external boundary; upper and lower arms are colinear and not overlapping
-  if(approxZero(arccos - 1)) return Angles({ 0 });
+  if(approxZero(cosTheta - 1)) return Angles({ 0 });
   // Arm is on the edge of the internal boundary; upper and lower arms are colinear and overlapping
-  if(approxZero(arccos + 1)) return Angles({ toRadians(180), toRadians(-180) });
+  if(approxZero(cosTheta + 1)) return Angles({ toRadians(180), toRadians(-180) });
 
   // Use atan instead of acos as atan performs better for very small angle values
   // Also the atan formulation naturally produces the elbow up and down solutions
-  // i.e. +/- sqrt(1 - arccos^2)
-  const auto y = std::sqrt(1 - arccos * arccos);
-  // std::cout << toDegrees(std::atan2(arccos, y)) << " " << toDegrees(std::atan2(arccos, -y)) << std::endl;
-  // std::cout << arccos << " " << y << std::endl;
+  // i.e. +/- sqrt(1 - cosTheta^2)
+  const auto y = std::sqrt(1 - cosTheta * cosTheta);
+
   return Angles({
-    std::atan2(y, arccos),
-    std::atan2(-y, arccos)
+    std::atan2(y, cosTheta),
+    std::atan2(-y, cosTheta)
   });
 }
 
