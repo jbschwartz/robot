@@ -62,6 +62,38 @@ Angles elbowAngles(const Real& r, const Real& s, const Real& l1, const Real& l2)
   });
 }
 
+// Does not do any checking for points out of reach as there would be no valid elbow angle to pass in.
+Angles shoulderAngles(const Real& r, const Real& s, const Real& l1, const Real& l2, const Angles& elbow) {
+  // Must check this here as .front() and .back() are called below. Stay away UB!
+  if(elbow.empty()) return Angles();
+
+  // A 2R manipulator is singular if the target point coincides with the shoulder axis
+  bool isSingular =
+    approxZero(r) &&
+    approxZero(s) &&
+    approxEqual(l1, l2);
+
+  if(isSingular) return Angles({ SINGULAR });
+
+  const auto phi = std::atan2(s, r);
+
+  // Lambda for calculating a shoulder angle from one elbow angle
+  const auto shoulder = [phi, l1, l2](auto& elbow) {
+    return phi - std::atan2(l2 * std::sin(elbow), l1 + l2 * std::cos(elbow));
+  };
+
+  const auto theta1 = shoulder(elbow.front());
+
+  if(elbow.size() == 2) {
+    const auto theta2 = shoulder(elbow.back());
+    // Check if both elbow angles produce the same result
+    if(!approxEqual(theta1, theta2))
+      return Angles({ theta1, theta2 });
+  }
+
+  return Angles({ theta1 });
+}
+
 bool withinLimits(const Real& angle, const Vector2& limits) {
   // Do not remove singular values as they represent _all_ values within limits
   if(angle == SINGULAR) return true;
