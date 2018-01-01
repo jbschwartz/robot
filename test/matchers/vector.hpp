@@ -13,7 +13,7 @@ public:
     return a[0] == Approx(b[0]) && a[1] == Approx(b[1]) && a[2] == Approx(b[2]);
   }
 
-  virtual std::string describe() const {
+  virtual std::string describe() const override {
       std::ostringstream ss;
       ss << "is equal to " << a[0] << " " << a[1] << " " << a[2];
       return ss.str();

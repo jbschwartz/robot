@@ -18,7 +18,7 @@ public:
     return true;
   }
 
-  virtual std::string describe() const {
+  virtual std::string describe() const override {
       std::ostringstream ss;
       ss << "is not equal to";
       return ss.str();
