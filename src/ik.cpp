@@ -95,6 +95,28 @@ Angles shoulderAngles(const Real& r, const Real& s, const Real& l1, const Real& 
   return Angles({ theta1 });
 }
 
+AngleSets buildPositionSets(const Angles& waist, const Angles& shoulder, const Angles& elbow) {
+  auto sets = AngleSets();
+
+  // When the shoulder switches handedness, it's necessary to flip shoulder and elbow angles
+  // We assume that the first waist angle is always in the "correct" quadrant
+  // TODO: write a function to check if waist angle is in the proper quadrant instead
+  bool flip = false;
+  for(auto w = waist.begin(); w != waist.end(); ++w) {
+    for(auto s = shoulder.begin(), e = elbow.begin(); s != shoulder.end(); ++s, ++e) {
+      if(flip) {
+        const auto PI = toRadians(180);
+        sets.emplace_back(AngleSet({ *w, PI - *s, PI - *e }));
+      } else {
+        sets.emplace_back(AngleSet({ *w, *s, *e }));
+      }
+    }
+    flip = !flip;
+  }
+
+  return sets;
+}
+
 /* Project the problem onto a 2R manipulator. That is: find the wrist center on the RS plane
  *             (Side)                                (Top)
  *               ^ Z          Target (x, y, z)        ^ Y

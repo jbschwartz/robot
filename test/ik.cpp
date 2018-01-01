@@ -266,4 +266,10 @@ TEST_CASE("Inverse Kinematics") {
     //TODO: Something more thorough...
     REQUIRE(sets.size() == 5);
   }
+
+  SECTION("buildPositionSets") {
+    SECTION("needs tests") {
+      REQUIRE(true == true);
+    }
+  }
 }
