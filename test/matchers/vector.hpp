@@ -12,7 +12,7 @@ public:
   VectorMatcher(const Vector<N>& a) : a(a) {};
 
   virtual bool match(const Vector<N>& b) const override {
-    for(std::size_t i; i < N; ++i) {
+    for(std::size_t i = 0; i < N; ++i) {
       if(Approx(a[i]) != b[i]) return false;
     }
     return true;
@@ -20,9 +20,9 @@ public:
 
   virtual std::string describe() const override {
       std::ostringstream ss;
-      ss << "is equal to {";
-      for(std::size_t i; i < N; ++i) {
-        ss << a[i];
+      ss << "is equal to { ";
+      for(std::size_t i = 0; i < N; ++i) {
+        ss << a[i] << " ";
       }
       ss << "}";
       return ss.str();
