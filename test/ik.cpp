@@ -4,6 +4,7 @@
 #include "../include/ik.hpp"
 #include "../include/utilities.hpp"
 #include "../include/vector.hpp"
+#include "../include/joint.hpp"
 #include "../include/typedefs.hpp"
 
 #include <algorithm>
@@ -164,6 +165,27 @@ TEST_CASE("Inverse Kinematics") {
 
       REQUIRE(result.size() == 1);
       CHECK_THAT(result, ComponentsEqual(expected));
+    }
+  }
+
+  SECTION("positionSets") {
+    auto j1 = Joint(-90,	0, 		0, 		290);
+    auto j2 = Joint(0,   	270,	-90, 	0);
+    auto j3 = Joint(90,		-70, 	180,	0);
+    auto j4 = Joint(-90, 	0,  	0, 		302);
+    auto j5 = Joint(90, 	0, 		0, 		0);
+    auto j6 = Joint(0,   	0, 		0,   	72);
+
+    std::vector<Joint> joints = {j1, j2, j3, j4, j5, j6};
+    const auto result = positionSets(302, 0, 630, joints);
+
+    SECTION("calculates position solutions to inverse kinematics") {
+      const auto expectedSize = 4;
+      REQUIRE(result.size() == expectedSize);
+
+      SECTION("needs tests") {
+        REQUIRE(true == true);
+      }
     }
   }
 

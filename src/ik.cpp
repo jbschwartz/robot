@@ -95,6 +95,26 @@ Angles shoulderAngles(const Real& r, const Real& s, const Real& l1, const Real& 
   return Angles({ theta1 });
 }
 
+AngleSets positionSets(const Real& x, const Real& y, const Real& z, const std::vector<Joint>& joints) {
+  const auto shoulderOffset = joints[1].offset() + joints[2].offset();
+  const auto baseOffset = joints[0].offset();
+  const auto l1 = joints[1].length();
+  const auto l2 = std::sqrt((joints[2].length() * joints[2].length()) + (joints[3].offset() * joints[3].offset()));
+
+  const auto rs = rsCoordinates(x, y, z, shoulderOffset, baseOffset);
+  const auto r = rs[0]; const auto s = rs[1];
+
+  const auto waist = waistAngles(x, y, shoulderOffset);
+  const auto elbow = elbowAngles(r, s, l1, l2);
+  const auto shoulder = shoulderAngles(r, s, l1, l2, elbow);
+
+  // We could optimize by checking immediately following ____Angles() calls but this suffices for now
+  // There are no solutions if any of these are empty; return an empty set
+  if(waist.empty() || elbow.empty() || shoulder.empty()) return AngleSets();
+
+  return buildPositionSets(waist, shoulder, elbow);
+}
+
 AngleSets buildPositionSets(const Angles& waist, const Angles& shoulder, const Angles& elbow) {
   auto sets = AngleSets();
 

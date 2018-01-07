@@ -4,6 +4,7 @@
 #include "typedefs.hpp"
 #include "vector.hpp"
 #include "utilities.hpp"
+#include "joint.hpp"
 
 #include <limits>
 #include <vector>
@@ -31,6 +32,10 @@ Angles elbowAngles(const Real& r, const Real& s, const Real& l1, const Real& l2)
 
 // Calculate the shoulder (joint 1) angles from elbow angles
 Angles shoulderAngles(const Real& r, const Real& s, const Real& l1, const Real& l2, const Angles& elbow);
+
+// // Get angle sets for the first three joints. This determines the position of the wrist.
+// // This may return AngleSets that are not physically achievable (i.e. joints may be beyond their limits)
+AngleSets positionSets(const Real& x, const Real& y, const Real& z, const std::vector<Joint>& joints);
 
 // Construct AngleSets by combining all individual solutions to the waist, shoulder, and elbow subproblems.
 AngleSets buildPositionSets(const Angles& waist, const Angles& shoulder, const Angles& elbow);
