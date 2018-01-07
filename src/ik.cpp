@@ -129,7 +129,7 @@ AngleSets buildPositionSets(const Angles& waist, const Angles& shoulder, const A
  *      |      || ||                             |    || /        sqrt(x^2 + y^2)
  *   ---V--- ----|---------> X                ---V--- (O)-----------> X */
 Vector2 rsCoordinates(const Real& x, const Real& y, const Real& z, const Real& shoulderOffset, const Real& baseOffset) {
-  const auto r = std::sqrt(x * x + y + y - shoulderOffset * shoulderOffset);
+  const auto r = std::sqrt(x * x + y * y - shoulderOffset * shoulderOffset);
   const auto s = z - baseOffset;
 
   return Vector2({ r, s });
