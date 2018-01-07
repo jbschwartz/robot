@@ -106,7 +106,7 @@ AngleSets buildPositionSets(const Angles& waist, const Angles& shoulder, const A
     for(auto s = shoulder.begin(), e = elbow.begin(); s != shoulder.end(); ++s, ++e) {
       if(flip) {
         const auto PI = toRadians(180);
-        sets.emplace_back(AngleSet({ *w, PI - *s, PI - *e }));
+        sets.emplace_back(AngleSet({ *w, PI - *s, -*e }));
       } else {
         sets.emplace_back(AngleSet({ *w, *s, *e }));
       }
