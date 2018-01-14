@@ -47,6 +47,17 @@ Vector<T, N> operator/(const Vector<T, N>& a, const U& s) {
   return q * a;
 }
 
+template <typename T, std::size_t N>
+Vector<T, N> operator-(const Vector<T, N> a, const Vector<T, N> b) {
+  auto v = Vector<T, N>();
+
+  for(std::size_t i = 0; i < N; ++i) {
+    v[i] = a[i] - b[i];
+  }
+
+  return v;
+}
+
 #ifdef DEBUG
 template <typename T, std::size_t N>
 std::ostream& operator<<(std::ostream& os, const Vector<T, N>& a) {

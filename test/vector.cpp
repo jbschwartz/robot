@@ -29,4 +29,11 @@ TEST_CASE("Vector") {
     const Real s = 2;
     REQUIRE(v2 / s == Vector3({-0.5, 1, -1.5}));
   }
+
+  SECTION("vector subtraction") {
+    const auto result = v1 - v2;
+    const auto expected = Vector3({ 1, -2, 3 });
+
+    REQUIRE(result == expected);
+  }
 }
