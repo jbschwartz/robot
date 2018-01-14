@@ -50,7 +50,13 @@ Vector<T, N> operator/(const Vector<T, N>& a, const U& s) {
 #ifdef DEBUG
 template <typename T, std::size_t N>
 std::ostream& operator<<(std::ostream& os, const Vector<T, N>& a) {
-  os << a[0] << " " << a[1] << " " << a[2];
+  for(std::size_t i = 0; i < N; ++i) {
+    if(i != N) {
+      os << a[i] << " ";
+    } else {
+      os << a[i];
+    }
+  }
   return os;
 }
 #endif
