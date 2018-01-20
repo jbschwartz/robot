@@ -37,11 +37,11 @@ EulerAngles euler<Intrinsic::ZYX>(const Frame& f) {
   const auto ySq = y * y;
   const auto zSq = z * z;
 
-  const auto X = std::atan2(2 * (y * z + r * x), rSq - xSq - ySq + zSq);
-  const auto Y = std::asin(-2 * (x * z - r * y));
   const auto Z = std::atan2(2 * (x * y + r * z), rSq + xSq - ySq - zSq);
+  const auto Yp = std::asin(-2 * (x * z - r * y));
+  const auto Xpp = std::atan2(2 * (y * z + r * x), rSq - xSq - ySq + zSq);
 
-  return {Z, Y, X};
+  return {Z, Yp, Xpp};
 }
 
 }
