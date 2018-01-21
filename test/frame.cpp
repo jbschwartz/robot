@@ -16,6 +16,7 @@ using rbt::euler;
 using rbt::toRadians;
 
 TEST_CASE("Frame") {
+  // Rotate around Z 45 degrees, rotation around new Y 135 degrees
   const auto f = Frame(Dual<Quaternion>(
     Quaternion(0.353553, -0.353553, 0.853553, 0.146447),
     Quaternion(0, 0, 0, 0)
