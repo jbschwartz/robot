@@ -44,4 +44,25 @@ EulerAngles euler<Intrinsic::ZYX>(const Frame& f) {
   return {Z, Yp, Xpp};
 }
 
+template<>
+EulerAngles euler<Intrinsic::ZYZ>(const Frame& f) {
+  const auto orientation = f.orientation();
+  const auto r = orientation.r;
+  const auto x = orientation.x;
+  const auto y = orientation.y;
+  const auto z = orientation.z;
+
+  const auto rSq = r * r;
+  const auto zSq = z * z;
+
+  const auto t1 = std::atan2(x, y);
+  const auto t2 = std::atan2(z, r);
+
+  const auto Z = t2 - t1;
+  const auto Yp = 2 * std::acos(std::sqrt(rSq + zSq));
+  const auto Zpp = t2 + t1;
+
+  return {Z, Yp, Zpp};
+}
+
 }

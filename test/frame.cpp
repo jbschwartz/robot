@@ -34,5 +34,29 @@ TEST_CASE("Frame") {
       const auto expected = EulerAngles({toRadians(180), toRadians(45), toRadians(-135)});
       CHECK_THAT(result, ComponentsEqual(expected));
     }
+
+    SECTION("intrinsic Euler ZYZ angles") {
+      auto result = euler<Intrinsic::ZYZ>(f);
+      const auto expected = EulerAngles({toRadians(45), toRadians(135), toRadians(0)});
+
+      // TODO: Alter the matcher so that it's not necessary to round to 5 decimal places
+      std::transform(result.begin(), result.end(), result.begin(), [](auto angle) {
+        return std::round(angle * 10000) / 10000;
+      });
+
+      CHECK_THAT(result, ComponentsEqual(expected));
+    }
+
+    SECTION("extrinsic Euler ZYZ angles") {
+      auto result = euler<Extrinsic::ZYZ>(f);
+      const auto expected = EulerAngles({toRadians(0), toRadians(135), toRadians(45)});
+
+      // TODO: Alter the matcher so that it's not necessary to round to 5 decimal places
+      std::transform(result.begin(), result.end(), result.begin(), [](auto angle) {
+        return std::round(angle * 10000) / 10000;
+      });
+
+      CHECK_THAT(result, ComponentsEqual(expected));
+    }
   }
 }

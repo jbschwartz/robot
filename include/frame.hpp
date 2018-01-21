@@ -11,13 +11,15 @@ namespace rbt {
 
 // Rotations occur about axes of moving coordinate system
 enum class Intrinsic {
-  ZYX
+  ZYX,
+  ZYZ
 };
 
 // Rotations occur about axes of fixed coordinate system
 // Note Extrinsic must be ordered correctly relative to Intrinsic
 enum class Extrinsic {
-  XYZ
+  XYZ,
+  ZYZ
 };
 
 class Frame {
