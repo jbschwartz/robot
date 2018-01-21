@@ -101,12 +101,20 @@ AngleSets positionSets(const Real& x, const Real& y, const Real& z, const std::v
   const auto l1 = joints[1].length();
   const auto l2 = std::sqrt((joints[2].length() * joints[2].length()) + (joints[3].offset() * joints[3].offset()));
 
+  const auto a1 = joints[2].length();
+  const auto a2 = joints[3].offset();
+
   const auto rs = rsCoordinates(x, y, z, shoulderOffset, baseOffset);
   const auto r = rs[0]; const auto s = rs[1];
 
   const auto waist = waistAngles(x, y, shoulderOffset);
-  const auto elbow = elbowAngles(r, s, l1, l2);
+  auto elbow = elbowAngles(r, s, l1, l2);
   const auto shoulder = shoulderAngles(r, s, l1, l2, elbow);
+
+  // Transform the elbow angles to actuator angles.
+  std::transform(elbow.begin(), elbow.end(), elbow.begin(), [a2, a1](auto angle) {
+    return std::atan(a2 / a1) + angle;
+  });
 
   // We could optimize by checking immediately following ____Angles() calls but this suffices for now
   // There are no solutions if any of these are empty; return an empty set
