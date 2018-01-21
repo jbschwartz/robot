@@ -20,7 +20,7 @@ public:
 
   virtual std::string describe() const override {
       std::ostringstream ss;
-      ss << "is equal to ";
+      ss << "is not equal to ";
       return ss.str();
   }
 };
