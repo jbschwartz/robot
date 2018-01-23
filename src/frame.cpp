@@ -24,6 +24,24 @@ Dual<Quaternion> Frame::pose() const {
   return this->p;
 }
 
+Vector3 Frame::xAxis() const {
+  const auto q = this->orientation();
+  const auto x = q * Quaternion(0, 1, 0, 0) * conjugate(q);
+  return Vector3({ x.x, x.y, x.z });
+}
+
+Vector3 Frame::yAxis() const {
+  const auto q = this->orientation();
+  const auto y = q * Quaternion(0, 0, 1, 0) * conjugate(q);
+  return Vector3({ y.x, y.y, y.z });
+}
+
+Vector3 Frame::zAxis() const {
+  const auto q = this->orientation();
+  const auto z = q * Quaternion(0, 0, 0, 1) * conjugate(q);
+  return Vector3({ z.x, z.y, z.z });
+}
+
 template<>
 EulerAngles euler<Intrinsic::ZYX>(const Frame& f) {
   const auto orientation = f.orientation();

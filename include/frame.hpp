@@ -32,6 +32,10 @@ public:
   Vector3 position() const;
   Quaternion orientation() const;
   Dual<Quaternion> pose() const;
+
+  Vector3 xAxis() const;
+  Vector3 yAxis() const;
+  Vector3 zAxis() const;
 };
 
 template <Intrinsic R>

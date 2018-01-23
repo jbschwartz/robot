@@ -1,9 +1,12 @@
 #include "third_party/catch.hpp"
 #include "matchers/array.hpp"
+#include "matchers/vector.hpp"
 #include "../include/frame.hpp"
 #include "../include/dual.hpp"
 #include "../include/quaternion.hpp"
 #include "../include/utilities.hpp"
+#include "../include/vector.hpp"
+#include "../include/transform.hpp"
 
 using rbt::Frame;
 using rbt::EulerAngles;
@@ -14,6 +17,8 @@ using rbt::Intrinsic;
 using rbt::Extrinsic;
 using rbt::euler;
 using rbt::toRadians;
+using rbt::Vector3;
+using rbt::Transform;
 
 TEST_CASE("Frame") {
   // Rotate around Z 45 degrees, rotation around new Y 135 degrees
@@ -59,4 +64,35 @@ TEST_CASE("Frame") {
       CHECK_THAT(result, ComponentsEqual(expected));
     }
   }
+
+  SECTION("Axis functions") {
+    const auto frame = Frame(Dual<Quaternion>(
+      Quaternion(0.92388, 0, 0, 0.38268),
+      Quaternion(0, 0, 0, 0)
+    ));
+    const auto t = Transform(Vector3({ 0, 0, 1 }), 45);
+
+    SECTION("xAxis") {
+      const auto result = frame.xAxis();
+      const auto expected = t(Vector3({ 1, 0, 0 }));
+
+      CHECK_THAT(result, ComponentsEqual(expected));
+    }
+
+    SECTION("yAxis") {
+      const auto result = frame.yAxis();
+      const auto expected = t(Vector3({ 0, 1, 0 }));
+
+      CHECK_THAT(result, ComponentsEqual(expected));
+    }
+
+    SECTION("zAxis") {
+      const auto result = frame.zAxis();
+      const auto expected = t(Vector3({ 0, 0, 1 }));
+
+      CHECK_THAT(result, ComponentsEqual(expected));
+    }
+  }
+
+
 }
