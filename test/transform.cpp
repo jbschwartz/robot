@@ -5,10 +5,11 @@
 
 using rbt::Transform;
 using rbt::Vector3;
+using rbt::toRadians;
 
 TEST_CASE("Transform") {
   const auto pureTranslate = Transform(Vector3({4, 2, 6}));
-  const auto pureRotate = Transform(Vector3({1, 0, 0}), 180);
+  const auto pureRotate = Transform(Vector3({1, 0, 0}), toRadians(180));
 
   const auto point = Vector3({3, 4, 5});
 
@@ -52,7 +53,7 @@ TEST_CASE("Transform") {
     }
 
     SECTION("by a-priori combination") {
-      const auto combined = Transform(Vector3({1, 0, 0}), 180, Vector3({4, 2, 6}));
+      const auto combined = Transform(Vector3({1, 0, 0}), toRadians(180), Vector3({4, 2, 6}));
       const auto result = combined(point);
 
       CHECK_THAT(result, ComponentsEqual(expected));

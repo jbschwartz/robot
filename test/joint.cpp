@@ -7,16 +7,18 @@
 using rbt::Joint;
 using rbt::Real;
 using rbt::Transform;
+using rbt::Vector2;
 using rbt::Vector3;
+using rbt::toRadians;
 
 TEST_CASE("Joint") {
   SECTION("Forward Kinematics") {
-    auto j1 = Joint(-90,	0, 		0, 		290);
-    auto j2 = Joint(0,   	270,	-90, 	0);
-    auto j3 = Joint(90,		-70, 	180,	0);
-    auto j4 = Joint(-90, 	0,  	0, 		302);
-    auto j5 = Joint(90, 	0, 		0, 		0);
-    auto j6 = Joint(0,   	0, 		0,   	72);
+    auto j1 = Joint(toRadians( -90),    0, toRadians(   0),  290, Vector2({ -165, 165 }));
+    auto j2 = Joint(toRadians(   0),  270, toRadians( -90),    0, Vector2({ -110, 110 }));
+    auto j3 = Joint(toRadians( -90),   70, toRadians(   0),    0, Vector2({  -90, 70  }));
+    auto j4 = Joint(toRadians(  90),    0, toRadians(   0),  302, Vector2({ -160, 160 }));
+    auto j5 = Joint(toRadians( -90),    0, toRadians(   0),    0, Vector2({ -120, 120 }));
+    auto j6 = Joint(toRadians(   0),    0, toRadians( 180),   72, Vector2({ -400, 400 }));
 
     auto j1t = j1.transform();
     auto j2t = j2.transform();

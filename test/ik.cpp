@@ -193,20 +193,19 @@ TEST_CASE("Inverse Kinematics") {
 
   SECTION("angles") {
     auto s = Serial({
-      Joint( -90,    0,    0,  290, Vector2({ -165, 165 })),
-      Joint(   0,  270,  -90,    0, Vector2({ -110, 110 })),
-      Joint( -90,   70,    0,    0, Vector2({  -90, 70  })),
-      Joint(  90,    0,    0,  302, Vector2({ -160, 160 })),
-      Joint( -90,    0,    0,    0, Vector2({ -120, 120 })),
-      Joint(   0,    0,  180,   72, Vector2({ -400, 400 }))
+      Joint(toRadians( -90),    0, toRadians(   0),  290, Vector2({ -165, 165 })),
+      Joint(toRadians(   0),  270, toRadians( -90),    0, Vector2({ -110, 110 })),
+      Joint(toRadians( -90),   70, toRadians(   0),    0, Vector2({  -90, 70  })),
+      Joint(toRadians(  90),    0, toRadians(   0),  302, Vector2({ -160, 160 })),
+      Joint(toRadians( -90),    0, toRadians(   0),    0, Vector2({ -120, 120 })),
+      Joint(toRadians(   0),    0, toRadians( 180),   72, Vector2({ -400, 400 }))
     });
-    const auto expectedDegrees = Angles({ 45, 45, 45, 45, 45, 45 });
-    const auto expectedRadians = Angles({ toRadians(45), toRadians(45), toRadians(45), toRadians(45), toRadians(45), toRadians(45) });
+    const auto expected = Angles({ toRadians(45), toRadians(45), toRadians(45), toRadians(45), toRadians(45), toRadians(45) });
 
-    const auto frame = s.pose(expectedDegrees);
+    const auto frame = s.pose(expected);
     const auto result = angles(frame, s.joints());
 
-    CHECK_THAT(result.front(), ComponentsEqual(expectedRadians));
+    CHECK_THAT(result.front(), ComponentsEqual(expected));
   }
 
   SECTION("rsCoordinates") {

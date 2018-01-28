@@ -98,7 +98,7 @@ Angles shoulderAngles(const Real& r, const Real& s, const Real& l1, const Real& 
 }
 
 int shoulderDirection(const Real& x, const Real& y, const Joint& shoulder, const Real& waistAngle) {
-  const auto shoulderFrame = Frame(shoulder.transform(toDegrees(waistAngle)).dual);
+  const auto shoulderFrame = Frame(shoulder.transform(waistAngle).dual);
   const auto zAxis = shoulderFrame.zAxis();
   // Take the cross product between the Z Axis and the point (x, y)
   const auto cross = zAxis[0] * y - zAxis[1] * x;
@@ -192,9 +192,9 @@ AngleSets angles(const Frame& pose, const std::vector<Joint>& joints) {
 
   for(auto&& set : angleSets) {
     auto t = Transform();
-    t *= joints[0].transform(toDegrees(set[0]));
-    t *= joints[1].transform(toDegrees(set[1]));
-    t *= joints[2].transform(toDegrees(set[2]));
+    t *= joints[0].transform(set[0]);
+    t *= joints[1].transform(set[1]);
+    t *= joints[2].transform(set[2]);
     t *= joints[3].transform();
     t *= joints[4].transform();
     t *= joints[5].transform();

@@ -19,6 +19,7 @@ using rbt::euler;
 using rbt::toRadians;
 using rbt::Vector3;
 using rbt::Transform;
+using rbt::toRadians;
 
 TEST_CASE("Frame") {
   // Rotate around Z 45 degrees, rotation around new Y 135 degrees
@@ -70,7 +71,7 @@ TEST_CASE("Frame") {
       Quaternion(0.92388, 0, 0, 0.38268),
       Quaternion(0, 0, 0, 0)
     ));
-    const auto t = Transform(Vector3({ 0, 0, 1 }), 45);
+    const auto t = Transform(Vector3({ 0, 0, 1 }), toRadians(45));
 
     SECTION("xAxis") {
       const auto result = frame.xAxis();
