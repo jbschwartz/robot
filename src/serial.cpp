@@ -6,11 +6,15 @@
 
 namespace rbt {
 
+std::vector<Joint> Serial::joints() const {
+  return this->j;
+}
+
 Frame Serial::pose(const std::vector<Real>& angles) {
   auto t = Transform();
   auto angle = angles.begin();
 
-  std::for_each(joints.begin(), joints.end(), [&t, &angle](auto& joint) {
+  std::for_each(this->j.begin(), this->j.end(), [&t, &angle](auto& joint) {
     t *= joint.transform(*angle++);
   });
 
@@ -22,7 +26,7 @@ std::vector<Frame> Serial::poses(const std::vector<Real>& angles) {
   auto angle = angles.begin();
   std::vector<Frame> frames;
 
-  std::for_each(joints.begin(), joints.end(), [&t, &angle, &frames](auto& joint) {
+  std::for_each(this->j.begin(), this->j.end(), [&t, &angle, &frames](auto& joint) {
     t *= joint.transform(*angle++);
     frames.emplace_back(Frame(t.dual));
   });
