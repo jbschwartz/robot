@@ -1,8 +1,11 @@
 #include "third_party/catch.hpp"
 #include "vector.hpp"
+#include <cmath>
 
 using rbt::Real;
 using rbt::Vector3;
+using rbt::length;
+using rbt::lengthSq;
 
 TEST_CASE("Vector") {
   const auto v1 = Vector3();
@@ -50,4 +53,17 @@ TEST_CASE("Vector") {
     }
   }
 
+  SECTION("lengthSq") {
+    const auto result = lengthSq(v2);
+    const auto expected = 14;
+
+    REQUIRE(result == expected);
+  }
+
+  SECTION("length") {
+    const auto result = length(v2);
+    const auto expected = std::sqrt(14);
+
+    REQUIRE(Approx(result) == expected);
+  }
 }

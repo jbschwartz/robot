@@ -2,6 +2,7 @@
 #define __VECTOR_H__
 
 #include <array>
+#include <cmath>
 
 #include "typedefs.hpp"
 
@@ -67,6 +68,22 @@ Vector<T, N> operator-(const Vector<T, N> a, const Vector<T, N> b) {
   }
 
   return v;
+}
+
+template <typename T, std::size_t N>
+T lengthSq(const Vector<T, N>& a) {
+  auto lengthSq = T();
+
+  for(std::size_t i = 0; i < N; ++i) {
+    lengthSq += a[i] * a[i];
+  }
+
+  return lengthSq;
+}
+
+template <typename T, std::size_t N>
+T length(const Vector<T, N>& a) {
+  return std::sqrt(rbt::lengthSq(a));
 }
 
 #ifdef DEBUG
