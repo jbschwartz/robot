@@ -7,6 +7,7 @@ using rbt::Vector3;
 TEST_CASE("Vector") {
   const auto v1 = Vector3();
   const auto v2 = Vector3({-1, 2, -3});
+  const auto v3 = Vector3({ 2, -5, 3 });
 
   SECTION("defaults to zero vector") {
     REQUIRE(v1[0] == 0);
@@ -36,4 +37,17 @@ TEST_CASE("Vector") {
 
     REQUIRE(result == expected);
   }
+
+  SECTION("dot") {
+    const auto result = v2 * v3;
+    const auto expected = -21;
+
+    REQUIRE(result == expected);
+
+    SECTION("is commutative") {
+      const auto commuted = v3 * v2;
+      REQUIRE(commuted == result);
+    }
+  }
+
 }

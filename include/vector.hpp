@@ -36,6 +36,17 @@ Vector<T, N> operator*(const U& s, const Vector<T, N>& a) {
   return v;
 }
 
+template <typename T, std::size_t N>
+T operator*(const Vector<T, N>& a, const Vector<T, N>& b) {
+  auto dot = T();
+
+  for(std::size_t i = 0; i < N; i++) {
+    dot += a[i] * b[i];
+  }
+
+  return dot;
+}
+
 template <typename T, typename U, std::size_t N>
 Vector<T, N> operator*(const Vector<T, N>& a, const U& s) {
   return s * a;
