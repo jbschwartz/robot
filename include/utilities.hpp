@@ -24,6 +24,8 @@ Real millimetersToInches(const Real& millimeters);
 bool approxZero(const Real& value);
 bool approxEqual(const Real& a, const Real& b);
 
+int sign(const Real& a);
+
 }
 
 #endif /* __UTILITIES_H_ */

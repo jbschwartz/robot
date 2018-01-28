@@ -26,4 +26,9 @@ bool approxEqual(const Real& a, const Real& b) {
   return approxZero(a - b);
 }
 
+int sign(const Real& a) {
+  const Real zero = Real(0);
+  return (zero < a) - (a < zero);
+}
+
 }
