@@ -21,9 +21,10 @@ TEST_CASE("Inverse Kinematics") {
 
       SECTION("calculates waist angles in radians") {
         const auto result = waistAngles(x, y);
+        const auto offset = (angle > 0) ? -180 : 180;
         const auto expected = Angles({
           toRadians(angle),
-          toRadians(angle + 180)
+          toRadians(angle + offset)
         });
 
         CHECK_THAT(result, ComponentsEqual(expected));
