@@ -5,6 +5,7 @@
 #include <cmath>
 
 #include "typedefs.hpp"
+#include "utilities.hpp"
 
 namespace rbt {
 
@@ -84,6 +85,14 @@ T lengthSq(const Vector<T, N>& a) {
 template <typename T, std::size_t N>
 T length(const Vector<T, N>& a) {
   return std::sqrt(rbt::lengthSq(a));
+}
+
+template <typename T, std::size_t N>
+T angleBetween(const Vector<T, N>& a, const Vector<T, N>& b) {
+  const auto dot = a * b;
+  if(approxZero(dot)) return toRadians(90);
+
+  return std::acos(dot / (length(a) * length(b)));
 }
 
 #ifdef DEBUG

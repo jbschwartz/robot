@@ -6,6 +6,7 @@ using rbt::Real;
 using rbt::Vector3;
 using rbt::length;
 using rbt::lengthSq;
+using rbt::toRadians;
 
 TEST_CASE("Vector") {
   const auto v1 = Vector3();
@@ -66,4 +67,34 @@ TEST_CASE("Vector") {
 
     REQUIRE(Approx(result) == expected);
   }
+
+  SECTION("angleBetween") {
+    SECTION("same vectors") {
+      const auto result = angleBetween(v2, 5 * v2);
+      const auto expected = 0;
+
+      REQUIRE(Approx(result) == expected);
+    }
+
+    SECTION("perpendicular vectors") {
+      const auto result = angleBetween(
+        Vector3({ 0, 1, 0 }),
+        Vector3({ 1, 0, 0 })
+      );
+      const auto expected = toRadians(90);
+
+      REQUIRE(Approx(result) == expected);
+    }
+
+    SECTION("any two vectors") {
+      const auto result = angleBetween(
+        Vector3({ 1, 0, 0 }),
+        Vector3({ 45, 45, 0 })
+      );
+      const auto expected = toRadians(45);
+
+      REQUIRE(Approx(result) == expected);
+    }
+  }
+
 }
