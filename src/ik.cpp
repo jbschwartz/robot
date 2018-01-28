@@ -1,6 +1,7 @@
 #include "../include/ik.hpp"
 #include "../include/vector.hpp"
 #include "../include/utilities.hpp"
+#include "../include/transform.hpp"
 
 #include <algorithm>
 #include <iterator>
@@ -96,6 +97,23 @@ Angles shoulderAngles(const Real& r, const Real& s, const Real& l1, const Real& 
   return Angles({ theta1 });
 }
 
+int shoulderDirection(const Real& x, const Real& y, const Joint& shoulder, const Real& waistAngle) {
+  const auto shoulderFrame = Frame(shoulder.transform(toDegrees(waistAngle)).dual);
+  const auto zAxis = shoulderFrame.zAxis();
+  // Take the cross product between the Z Axis and the point (x, y)
+  const auto cross = zAxis[0] * y - zAxis[1] * x;
+  // The sign determines which side the point is on: left or right
+  return sign(cross);
+}
+
+Real shoulderZero(const std::vector<Joint>& joints) {
+  const auto shoulderFrame = Frame(joints[0].transform().dual);
+  const auto elbowFrame = Frame((joints[0].transform() * joints[1].transform()).dual);
+
+  const auto shoulderLink = elbowFrame.position() - shoulderFrame.position();
+  return angleBetween(shoulderLink, Vector3({ 1, 0, 0 }));
+}
+
 AngleSets positionSets(const Real& x, const Real& y, const Real& z, const std::vector<Joint>& joints) {
   const auto shoulderOffset = joints[1].offset() + joints[2].offset();
   const auto baseOffset = joints[0].offset();
@@ -105,21 +123,31 @@ AngleSets positionSets(const Real& x, const Real& y, const Real& z, const std::v
   const auto a1 = joints[2].length();
   const auto a2 = joints[3].offset();
 
+  const auto waist = waistAngles(x, y, shoulderOffset);
+  if(waist.empty()) return AngleSets();
+
   const auto rs = rsCoordinates(x, y, z, shoulderOffset, baseOffset);
   const auto r = rs[0]; const auto s = rs[1];
 
-  const auto waist = waistAngles(x, y, shoulderOffset);
   auto elbow = elbowAngles(r, s, l1, l2);
-  const auto shoulder = shoulderAngles(r, s, l1, l2, elbow);
+  auto shoulder = shoulderAngles(r, s, l1, l2, elbow);
+
+  // Transform the shoulder angles based on where shoulder zero point is
+  const auto direction = shoulderDirection(x, y, joints[0], waist.front());
+  const auto shoulderAngleOffset = shoulderZero(joints);
+
+  std::transform(shoulder.begin(), shoulder.end(), shoulder.begin(), [direction, shoulderAngleOffset](auto angle) {
+    return (direction < 0) ? shoulderAngleOffset - angle : angle - shoulderAngleOffset;
+  });
 
   // Transform the elbow angles to actuator angles.
-  std::transform(elbow.begin(), elbow.end(), elbow.begin(), [a2, a1](auto angle) {
-    return std::atan(a2 / a1) + angle;
+  std::transform(elbow.begin(), elbow.end(), elbow.begin(), [a2, a1, direction](auto angle) {
+    return (direction < 0) ? -angle - std::atan(a2 / a1) : std::atan(a2 / a1) + angle;
   });
 
   // We could optimize by checking immediately following ____Angles() calls but this suffices for now
   // There are no solutions if any of these are empty; return an empty set
-  if(waist.empty() || elbow.empty() || shoulder.empty()) return AngleSets();
+  if(elbow.empty() || shoulder.empty()) return AngleSets();
 
   return buildPositionSets(waist, shoulder, elbow);
 }
@@ -143,6 +171,44 @@ AngleSets buildPositionSets(const Angles& waist, const Angles& shoulder, const A
   }
 
   return sets;
+}
+
+Vector3 wristCenterPoint(const Frame& pose, const Real& wristZOffset) {
+  // TODO: Handle tools
+  return pose.position() - pose.zAxis() * wristZOffset;
+}
+
+AngleSets angles(const Frame& pose, const std::vector<Joint>& joints) {
+  // Transform end-effector tip frame to wrist center frame
+  const auto wristCenter = wristCenterPoint(pose, joints[5].offset());
+
+  auto angleSets = positionSets(wristCenter[0], wristCenter[1], wristCenter[2], joints);
+  const auto limits = std::vector<Vector2>({ joints[0].limits(), joints[1].limits(), joints[2].limits() });
+
+  removeIfBeyondLimits(angleSets, limits);
+
+  // There are no solutions, return an empty set
+  if(angleSets.empty()) return AngleSets();
+
+  for(auto&& set : angleSets) {
+    auto t = Transform();
+    t *= joints[0].transform(toDegrees(set[0]));
+    t *= joints[1].transform(toDegrees(set[1]));
+    t *= joints[2].transform(toDegrees(set[2]));
+    t *= joints[3].transform();
+    t *= joints[4].transform();
+    t *= joints[5].transform();
+
+    const auto wristCenterFrame = Frame(t.dual);
+
+    const auto desiredWristPose = conjugate(wristCenterFrame.pose()) * pose.pose();
+
+    const auto angles = euler<Intrinsic::ZYZ>(desiredWristPose);
+
+    set.insert(set.end(), angles.begin(), angles.end());
+  }
+
+  return angleSets;
 }
 
 /* Project the problem onto a 2R manipulator. That is: find the wrist center on the RS plane

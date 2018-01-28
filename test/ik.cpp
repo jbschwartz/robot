@@ -6,6 +6,7 @@
 #include "../include/vector.hpp"
 #include "../include/joint.hpp"
 #include "../include/typedefs.hpp"
+#include "../include/serial.hpp"
 
 #include <algorithm>
 
@@ -188,6 +189,24 @@ TEST_CASE("Inverse Kinematics") {
         REQUIRE(true == true);
       }
     }
+  }
+
+  SECTION("angles") {
+    auto s = Serial({
+      Joint( -90,    0,    0,  290, Vector2({ -165, 165 })),
+      Joint(   0,  270,  -90,    0, Vector2({ -110, 110 })),
+      Joint( -90,   70,    0,    0, Vector2({  -90, 70  })),
+      Joint(  90,    0,    0,  302, Vector2({ -160, 160 })),
+      Joint( -90,    0,    0,    0, Vector2({ -120, 120 })),
+      Joint(   0,    0,  180,   72, Vector2({ -400, 400 }))
+    });
+    const auto expectedDegrees = Angles({ 45, 45, 45, 45, 45, 45 });
+    const auto expectedRadians = Angles({ toRadians(45), toRadians(45), toRadians(45), toRadians(45), toRadians(45), toRadians(45) });
+
+    const auto frame = s.pose(expectedDegrees);
+    const auto result = angles(frame, s.joints());
+
+    CHECK_THAT(result.front(), ComponentsEqual(expectedRadians));
   }
 
   SECTION("rsCoordinates") {

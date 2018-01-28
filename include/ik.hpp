@@ -5,6 +5,7 @@
 #include "vector.hpp"
 #include "utilities.hpp"
 #include "joint.hpp"
+#include "frame.hpp"
 
 #include <limits>
 #include <vector>
@@ -40,6 +41,9 @@ AngleSets positionSets(const Real& x, const Real& y, const Real& z, const std::v
 // Construct AngleSets by combining all individual solutions to the waist, shoulder, and elbow subproblems.
 AngleSets buildPositionSets(const Angles& waist, const Angles& shoulder, const Angles& elbow);
 
+// Get joint angles from a given pose (inverse kinematics)
+AngleSets angles(const Frame& pose, const std::vector<Joint>& joints);
+
 // calculate RS coordinates for the given XYZ position.
 Vector2 rsCoordinates(const Real& x, const Real& y, const Real& z, const Real& shoulderOffset, const Real& baseOffset);
 
@@ -48,6 +52,15 @@ void removeIfBeyondLimits(AngleSets& sets, const std::vector<Vector2>& limits);
 
 // Return true if the angle is within the given limits
 bool withinLimits(const Real& angle, const Vector2& limits);
+
+// Get wrist center point given the end-effector pose and offset along Z.
+Vector3 wristCenterPoint(const Frame& pose, const Real& wristZOffset);
+
+// Determine if the target point (x, y) is on the positive or negative side of the shoulder.
+int shoulderDirection(const Real& x, const Real& y, const Joint& shoulder, const Real& waistAngle);
+
+// Determine the zero position of the shoulder axis
+Real shoulderZero(const std::vector<Joint>& joints);
 }}
 
 #endif /* __IK_H_ */
