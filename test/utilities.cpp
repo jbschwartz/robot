@@ -6,6 +6,7 @@ using rbt::toRadians;
 using rbt::inchesToMillimeters;
 using rbt::millimetersToInches;
 using rbt::Real;
+using rbt::sign;
 
 TEST_CASE("Utilities") {
   const Real radians = 3 * rbt::PI / 4;
@@ -28,5 +29,32 @@ TEST_CASE("Utilities") {
   SECTION("millimetersToInches") {
     REQUIRE(Approx(millimetersToInches(millimeters)) == inches);
   }
+
+  SECTION("sign") {
+    SECTION("positive number") {
+      const auto value = 10;
+      const auto result = sign(value);
+      const auto expected = 1;
+
+      REQUIRE(result == expected);
+    }
+
+    SECTION("negative number") {
+      const auto value = -10;
+      const auto result = sign(value);
+      const auto expected = -1;
+
+      REQUIRE(result == expected);
+    }
+
+    SECTION("zero") {
+      const auto value = 0;
+      const auto result = sign(value);
+      const auto expected = 0;
+
+      REQUIRE(result == expected);
+    }
+  }
+
 
 }

@@ -9,7 +9,7 @@ namespace rbt {
 
 // Create transformation from Denavit-Hartenberg parameters
 // Transform = Translate_z(d) * Rotate_z(theta) * Translate_x(a) * Rotate_x(alpha);
-Transform Joint::transform(const Real& theta) {
+Transform Joint::transform(const Real& theta) const {
   auto transform = Transform();
   auto sum = this->theta + theta;
 

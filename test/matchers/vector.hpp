@@ -1,25 +1,35 @@
 #include "../third_party/catch.hpp"
 #include "../include/vector.hpp"
 
-using rbt::Vector3;
+template <std::size_t N>
+using Vector = rbt::Vector<rbt::Real, N>;
 
-class VectorMatcher : public Catch::MatcherBase<Vector3>
+template <std::size_t N>
+class VectorMatcher : public Catch::MatcherBase<Vector<N>>
 {
-  Vector3 a;
+  Vector<N> a;
 public:
-  VectorMatcher(const Vector3& a) : a(a) {};
+  VectorMatcher(const Vector<N>& a) : a(a) {};
 
-  virtual bool match(const Vector3& b) const override {
-    return a[0] == Approx(b[0]) && a[1] == Approx(b[1]) && a[2] == Approx(b[2]);
+  virtual bool match(const Vector<N>& b) const override {
+    for(std::size_t i = 0; i < N; ++i) {
+      if(Approx(a[i]) != b[i]) return false;
+    }
+    return true;
   }
 
   virtual std::string describe() const override {
       std::ostringstream ss;
-      ss << "is equal to " << a[0] << " " << a[1] << " " << a[2];
+      ss << "is not equal to { ";
+      for(std::size_t i = 0; i < N; ++i) {
+        ss << a[i] << " ";
+      }
+      ss << "}";
       return ss.str();
   }
 };
 
-inline VectorMatcher ComponentsEqual(const Vector3& a) {
-  return VectorMatcher(a);
+template <std::size_t N>
+inline VectorMatcher<N> ComponentsEqual(const Vector<N>& a) {
+  return VectorMatcher<N>(a);
 }
