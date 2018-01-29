@@ -97,4 +97,11 @@ TEST_CASE("Vector") {
     }
   }
 
+  SECTION("unit") {
+    const auto result = unit(v2);
+    const auto l = length(v2);
+    const auto expected = Vector3({ -1 / l, 2 / l, -3 / l });
+
+    REQUIRE(result == expected);
+  }
 }

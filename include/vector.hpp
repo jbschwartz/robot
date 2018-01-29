@@ -88,6 +88,11 @@ T length(const Vector<T, N>& a) {
 }
 
 template <typename T, std::size_t N>
+Vector<T, N> unit(const Vector<T,N>& a) {
+  return a / length(a);
+}
+
+template <typename T, std::size_t N>
 T angleBetween(const Vector<T, N>& a, const Vector<T, N>& b) {
   const auto dot = a * b;
   if(approxZero(dot)) return toRadians(90);
