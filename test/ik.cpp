@@ -1,6 +1,7 @@
 #include "third_party/catch.hpp"
 #include "matchers/angles.hpp"
 #include "matchers/vector.hpp"
+#include "robots/abb_irb_120.hpp"
 #include "../include/ik.hpp"
 #include "../include/utilities.hpp"
 #include "../include/vector.hpp"
@@ -171,15 +172,7 @@ TEST_CASE("Inverse Kinematics") {
   }
 
   SECTION("positionSets") {
-    auto j1 = Joint(-90,	0, 		0, 		290);
-    auto j2 = Joint(0,   	270,	-90, 	0);
-    auto j3 = Joint(90,		-70, 	180,	0);
-    auto j4 = Joint(-90, 	0,  	0, 		302);
-    auto j5 = Joint(90, 	0, 		0, 		0);
-    auto j6 = Joint(0,   	0, 		0,   	72);
-
-    std::vector<Joint> joints = {j1, j2, j3, j4, j5, j6};
-    const auto result = positionSets(302, 0, 630, joints);
+    const auto result = positionSets(302, 0, 630, ABB_IRB_120.joints());
 
     SECTION("calculates position solutions to inverse kinematics") {
       const auto expectedSize = 4;
@@ -192,18 +185,10 @@ TEST_CASE("Inverse Kinematics") {
   }
 
   SECTION("angles") {
-    auto s = Serial({
-      Joint(toRadians( -90),    0, toRadians(   0),  290, Vector2({ -165, 165 })),
-      Joint(toRadians(   0),  270, toRadians( -90),    0, Vector2({ -110, 110 })),
-      Joint(toRadians( -90),   70, toRadians(   0),    0, Vector2({  -90, 70  })),
-      Joint(toRadians(  90),    0, toRadians(   0),  302, Vector2({ -160, 160 })),
-      Joint(toRadians( -90),    0, toRadians(   0),    0, Vector2({ -120, 120 })),
-      Joint(toRadians(   0),    0, toRadians( 180),   72, Vector2({ -400, 400 }))
-    });
     const auto expected = Angles({ toRadians(45), toRadians(45), toRadians(45), toRadians(45), toRadians(45), toRadians(45) });
 
-    const auto frame = s.pose(expected);
-    const auto result = angles(frame, s.joints());
+    const auto frame = ABB_IRB_120.pose(expected);
+    const auto result = angles(frame, ABB_IRB_120);
 
     CHECK_THAT(result.front(), ComponentsEqual(expected));
   }
