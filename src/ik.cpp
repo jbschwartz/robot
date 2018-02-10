@@ -27,7 +27,7 @@ Angles waistAngles(const Real& x, const Real& y, const Real& offset) {
   if(approxZero(offset)) return waistAngles(x, y);
 
   // Shoulder offsets create potential for unreachable locations (so we check)
-  // A point is unreachable is x^2 + y^2 < d^2,
+  // A point is unreachable if x^2 + y^2 < d^2,
   //   i.e. if the point is "inside" the (circle produced by the) offset shoulder
   const auto delta = (x * x) + (y * y) - (offset * offset);
 
