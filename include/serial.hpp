@@ -1,5 +1,5 @@
-#ifndef __SERIAL_H_
-#define __SERIAL_H_
+#ifndef __SERIAL_HPP__
+#define __SERIAL_HPP__
 
 #include <vector>
 
@@ -23,4 +23,4 @@ public:
 
 }
 
-#endif /* __SERIAL_H_ */
+#endif /* __SERIAL_HPP__ */

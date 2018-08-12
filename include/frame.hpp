@@ -1,5 +1,5 @@
-#ifndef __FRAME_H_
-#define __FRAME_H_
+#ifndef __FRAME_HPP__
+#define __FRAME_HPP__
 
 #include "../include/typedefs.hpp"
 #include "../include/dual.hpp"
@@ -50,4 +50,4 @@ EulerAngles euler(const Frame& f) {
 
 }
 
-#endif /* __FRAME_H_ */
+#endif /* __FRAME_HPP__ */

@@ -1,5 +1,5 @@
-#ifndef __UTILITIES_H_
-#define __UTILITIES_H_
+#ifndef __UTILITIES_HPP__
+#define __UTILITIES_HPP__
 
 #include "typedefs.hpp"
 
@@ -28,4 +28,4 @@ int sign(const Real& a);
 
 }
 
-#endif /* __UTILITIES_H_ */
+#endif /* __UTILITIES_HPP__ */

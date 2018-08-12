@@ -1,5 +1,5 @@
-#ifndef __JOINT_H_
-#define __JOINT_H_
+#ifndef __JOINT_HPP__
+#define __JOINT_HPP__
 
 #include "typedefs.hpp"
 #include "utilities.hpp"
@@ -26,4 +26,4 @@ public:
 
 }
 
-#endif /* __JOINT_H_ */
+#endif /* __JOINT_HPP__ */

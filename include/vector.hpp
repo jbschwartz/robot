@@ -1,5 +1,5 @@
-#ifndef __VECTOR_H__
-#define __VECTOR_H__
+#ifndef __VECTOR_HPP__
+#define __VECTOR_HPP__
 
 #include <array>
 #include <cmath>
@@ -64,4 +64,4 @@ typedef Vector<Real, 3> Vector3;
 
 }
 
-#endif /* __VECTOR_H__ */
+#endif /* __VECTOR_HPP__ */

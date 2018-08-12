@@ -1,5 +1,5 @@
-#ifndef __DUAL_H__
-#define __DUAL_H__
+#ifndef __DUAL_HPP__
+#define __DUAL_HPP__
 
 #include "typedefs.hpp"
 #include "quaternion.hpp"
@@ -63,4 +63,4 @@ std::ostream& operator<<(std::ostream& os, const Dual<T>& a);
 
 }
 
-#endif /* __DUAL_H__ */
+#endif /* __DUAL_HPP__ */

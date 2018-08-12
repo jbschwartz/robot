@@ -1,5 +1,5 @@
-#ifndef __QUATERNION_H__
-#define __QUATERNION_H__
+#ifndef __QUATERNION_HPP__
+#define __QUATERNION_HPP__
 
 #include "typedefs.hpp"
 #include "vector.hpp"
@@ -44,4 +44,4 @@ std::ostream& operator<<(std::ostream& os, const Quaternion& a);
 
 }
 
-#endif /* __QUATERNION_H__ */
+#endif /* __QUATERNION_HPP__ */

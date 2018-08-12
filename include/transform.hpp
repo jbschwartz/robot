@@ -1,5 +1,5 @@
-#ifndef __TRANSFORM_H__
-#define __TRANSFORM_H__
+#ifndef __TRANSFORM_HPP__
+#define __TRANSFORM_HPP__
 
 #include "dual.hpp"
 #include "vector.hpp"
@@ -37,4 +37,4 @@ Transform operator*(const Transform& a, const Transform& b);
 
 }
 
-#endif /* __TRANSFORM_H__ */
+#endif /* __TRANSFORM_HPP__ */

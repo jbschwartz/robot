@@ -1,5 +1,5 @@
-#ifndef __IK_H_
-#define __IK_H_
+#ifndef __IK_HPP__
+#define __IK_HPP__
 
 #include "typedefs.hpp"
 #include "vector.hpp"
@@ -63,4 +63,4 @@ int shoulderDirection(const Real& x, const Real& y, const Joint& shoulder, const
 Real shoulderZero(const std::vector<Joint>& joints);
 }}
 
-#endif /* __IK_H_ */
+#endif /* __IK_HPP__ */
