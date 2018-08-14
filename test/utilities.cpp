@@ -7,6 +7,7 @@ using rbt::inchesToMillimeters;
 using rbt::millimetersToInches;
 using rbt::Real;
 using rbt::sign;
+using rbt::minusPiToPi;
 
 TEST_CASE("Utilities") {
   const Real radians = 3 * rbt::PI / 4;
@@ -56,5 +57,12 @@ TEST_CASE("Utilities") {
     }
   }
 
+  SECTION("minusPiToPi") {
+    const std::vector<Real> values    = { 30, -30, 190, -190, 750, -750 };
+    const std::vector<Real> expecteds = { 30, -30, -170, 170, 30, -30 };
 
+    for(unsigned int i = 0; i < values.size(); ++i) {
+      REQUIRE(Approx(minusPiToPi(toRadians(values[i]))) == toRadians(expecteds[i]));
+    }
+  }
 }

@@ -31,4 +31,15 @@ int sign(const Real& a) {
   return (zero < a) - (a < zero);
 }
 
+// Clamp angle to the range (-PI, PI]
+Real minusPiToPi(Real angle) {
+  const auto revolution = 2 * PI;
+
+  while(angle > PI) angle -= revolution;
+  while(angle <= -PI) angle += revolution;
+
+  return angle;
+}
+
+
 }

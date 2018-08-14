@@ -26,6 +26,8 @@ bool approxEqual(const Real& a, const Real& b);
 
 int sign(const Real& a);
 
+Real minusPiToPi(Real angle);
+
 }
 
 #endif /* __UTILITIES_HPP__ */
