@@ -28,7 +28,6 @@ Angles solveWaist(const Real& x, const Real& y, const Real& theta, const Real& o
   }
 
   // Give solutions for both "left" and "right" shoulder configurations
-  // TODO: Don't assume that "left" is the default configuration
   // Account for first theta DH parameter here
   const auto phi = std::atan2(y, x) - theta;
 

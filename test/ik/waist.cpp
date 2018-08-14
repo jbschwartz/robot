@@ -15,7 +15,7 @@ TEST_CASE("solveWaist") {
     // Solve with and without a shoulder offset:
     //    Prescribe the alpha angle and solve for shoulderOffset
     //    This makes the expected results easy to reason about
-    const std::vector<Real> alphas = { 0, 15 };
+    const std::vector<Real> alphas = { 0, 15, -15 };
 
     for(auto alpha : alphas) {
       alpha = toRadians(alpha);
