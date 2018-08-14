@@ -23,10 +23,8 @@ typedef std::vector<std::vector<Angle>> AngleSets;
 static_assert(std::numeric_limits<Real>::has_infinity, "Type Real does not have infinity value");
 const auto SINGULAR = std::numeric_limits<Real>::infinity();
 
-// Calculate the waist (joint 0) angles
-Angles waistAngles(const Real& x, const Real& y);
 // Calculate the waist (joint 0) angles with a shoulder offset
-Angles waistAngles(const Real& x, const Real& y, const Real& offset);
+Angles solveWaist(const Real& x, const Real& y, const Real& theta = 0, const Real& offset = 0);
 
 // Calculate the elbow (joint 2) angles
 Angles elbowAngles(const Real& r, const Real& s, const Real& l1, const Real& l2);

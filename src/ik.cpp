@@ -8,36 +8,35 @@
 
 namespace rbt { namespace ik {
 
-// Project the wrist center onto the XY plane, solve for the angle in the plane.
-Angles waistAngles(const Real& x, const Real& y) {
-  // No shoulder offset means possibility of shoulder singularities
-  // Shoulder singularities occur when the center of the wrist intersects the waist axis
-  bool shoulderIsSingular = approxZero(x) && approxZero(y);
-  if(shoulderIsSingular) return Angles({SINGULAR}); // Infinite possible solutions
-
-  const auto phi = std::atan2(y, x);
-
-  // Give solutions for both "left" and "right" shoulder configurations
-  // To abide by joint angle limits, make sure to provide the second solution in the opposite direction
-  return (phi > 0) ? Angles({phi, phi - PI}) : Angles({phi, phi + PI});
-}
-
 // Project the wrist center onto the XY plane, solve for the angle in the plane with a shoulder offset.
-Angles waistAngles(const Real& x, const Real& y, const Real& offset) {
-  if(approxZero(offset)) return waistAngles(x, y);
+Angles solveWaist(const Real& x, const Real& y, const Real& theta, const Real& offset) {
+  Real alpha = 0;
 
-  // Shoulder offsets create potential for unreachable locations (so we check)
-  // A point is unreachable if x^2 + y^2 < d^2,
-  //   i.e. if the point is "inside" the (circle produced by the) offset shoulder
-  const auto delta = (x * x) + (y * y) - (offset * offset);
+  const bool hasOffset = !approxZero(offset);
+  if(hasOffset)
+  {
+    // Shoulder offsets create potential for unreachable locations (so we check)
+    //    A point is unreachable if x^2 + y^2 < d^2,
+    //    i.e. if the point is "inside" the (circle produced by the) offset shoulder
+    const auto delta = (x * x) + (y * y) - (offset * offset);
+    if(delta < 0) return Angles(); // No solution
 
-  if(delta < 0) return Angles(); // No solution
-
-  const auto phi = std::atan2(y, x);
-  const auto alpha = std::atan2(offset, std::sqrt(delta));
+    alpha = std::atan2(offset, std::sqrt(delta));
+  } else {
+    const bool shoulderIsSingular = approxZero(x) && approxZero(y);
+    if(shoulderIsSingular) return Angles({ SINGULAR }); // Infinite possible solutions
+  }
 
   // Give solutions for both "left" and "right" shoulder configurations
-  return Angles({phi - alpha, phi + alpha + PI});
+  // TODO: Don't assume that "left" is the default configuration
+  // Account for first theta DH parameter here
+  const auto phi = std::atan2(y, x) - theta;
+
+  // Constrain solutions to (-PI, PI] as joint limits are typically symmetric about zero
+  const auto first = minusPiToPi(phi - alpha);
+  const auto second = minusPiToPi(phi + alpha + PI);
+
+  return Angles({first, second});
 }
 
 // This solves the first part of the inverse kinematics for a 2R manipulator.
@@ -123,7 +122,7 @@ AngleSets positionSets(const Real& x, const Real& y, const Real& z, const std::v
   const auto a1 = joints[2].length();
   const auto a2 = joints[3].offset();
 
-  const auto waist = waistAngles(x, y, shoulderOffset);
+  const auto waist = solveWaist(x, y, shoulderOffset);
   if(waist.empty()) return AngleSets();
 
   const auto rs = rsCoordinates(x, y, z, shoulderOffset, baseOffset);
