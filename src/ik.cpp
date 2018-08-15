@@ -35,7 +35,7 @@ Angles solveWaist(const Real& x, const Real& y, const Real& theta, const Real& o
   const auto first = minusPiToPi(phi - alpha);
   const auto second = minusPiToPi(phi + alpha + PI);
 
-  return Angles({first, second});
+  return Angles({ first, second });
 }
 
 // This solves the first part of the inverse kinematics for a 2R manipulator.
