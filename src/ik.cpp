@@ -50,7 +50,7 @@ Angles elbowAngles(const Real& r, const Real& s, const Real& l1, const Real& l2)
   // Arm is on the edge of the external boundary; upper and lower arms are colinear and not overlapping
   if(approxEqual(cosTheta, COS_MAX)) return Angles({ 0 });
   // Arm is on the edge of the internal boundary; upper and lower arms are colinear and overlapping
-  if(approxEqual(cosTheta, -COS_MAX)) return Angles({ toRadians(180), toRadians(-180) });
+  if(approxEqual(cosTheta, -COS_MAX)) return Angles({ PI, -PI });
 
   // Use atan instead of acos as atan performs better for very small angle values
   // Also the atan formulation naturally produces the elbow up and down solutions
