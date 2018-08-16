@@ -76,23 +76,19 @@ Angles shoulderAngles(const Real& r, const Real& s, const Real& l1, const Real& 
 
   if(isSingular) return Angles({ SINGULAR });
 
+  auto angles = Angles();
+
   const auto phi = std::atan2(s, r);
 
-  // Lambda for calculating a shoulder angle from one elbow angle
-  const auto shoulder = [phi, l1, l2](auto& elbow) {
-    return phi - std::atan2(l2 * std::sin(elbow), l1 + l2 * std::cos(elbow));
-  };
+  for(auto angle : elbow) {
+    const auto shoulder = phi - std::atan2(l2 * std::sin(angle), l1 + l2 * std::cos(angle));
+    angles.push_back(shoulder);
 
-  const auto theta1 = shoulder(elbow.front());
-
-  if(elbow.size() == 2) {
-    const auto theta2 = shoulder(elbow.back());
-    // Check if both elbow angles produce the same result
-    if(!approxEqual(theta1, theta2))
-      return Angles({ theta1, theta2 });
+    // If angle is either 0 or Pi, then both elbow angles will generate the same shoulder angle.
+    if(approxZero(angle) || approxEqual(angle, PI)) break;
   }
 
-  return Angles({ theta1 });
+  return angles;
 }
 
 int shoulderDirection(const Real& x, const Real& y, const Joint& shoulder, const Real& waistAngle) {
