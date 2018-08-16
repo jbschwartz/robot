@@ -40,7 +40,7 @@ Angles solveWaist(const Real& x, const Real& y, const Real& theta, const Real& o
 
 // This solves the first part of the inverse kinematics for a 2R manipulator.
 // Uses the law of cosines
-Angles elbowAngles(const Real& r, const Real& s, const Real& l1, const Real& l2) {
+Angles solveElbow(const Real& r, const Real& s, const Real& l1, const Real& l2) {
   // Law of cosines
   const auto cosTheta = ((r * r) + (s * s) - (l1 * l1) - (l2 * l2)) / (2 * l1 * l2);
 
@@ -123,7 +123,7 @@ AngleSets positionSets(const Real& x, const Real& y, const Real& z, const std::v
   const auto rs = rsCoordinates(x, y, z, shoulderOffset, baseOffset);
   const auto r = rs[0]; const auto s = rs[1];
 
-  auto elbow = elbowAngles(r, s, l1, l2);
+  auto elbow = solveElbow(r, s, l1, l2);
   auto shoulder = shoulderAngles(r, s, l1, l2, elbow);
 
   // Transform the shoulder angles based on where shoulder zero point is

@@ -27,7 +27,7 @@ TEST_CASE("shoulderAngles") {
   SECTION("returns one solution in radians") {
     SECTION("for a position on internal workspace boundary") {
       const auto internalBoundary = upperArmLength - foreArmLength;
-      const auto elbow = elbowAngles(internalBoundary, 0, upperArmLength, foreArmLength);
+      const auto elbow = solveElbow(internalBoundary, 0, upperArmLength, foreArmLength);
       const auto result = shoulderAngles(internalBoundary, 0, upperArmLength, foreArmLength, elbow);
       const auto expected = Angles({ 0.0f });
 
@@ -37,7 +37,7 @@ TEST_CASE("shoulderAngles") {
 
     SECTION("for a position on external workspace boundary") {
       const auto fullReach = upperArmLength + foreArmLength;
-      const auto elbow = elbowAngles(fullReach, 0, upperArmLength, foreArmLength);
+      const auto elbow = solveElbow(fullReach, 0, upperArmLength, foreArmLength);
       const auto result = shoulderAngles(fullReach, 0, upperArmLength, foreArmLength, elbow);
       const auto expected = Angles({ 0.0 });
 
@@ -47,7 +47,7 @@ TEST_CASE("shoulderAngles") {
   }
 
   SECTION("returns two solutions in radians for a position in the workspace") {
-    const auto elbow = elbowAngles(x, y, upperArmLength, foreArmLength);
+    const auto elbow = solveElbow(x, y, upperArmLength, foreArmLength);
     const auto result = shoulderAngles(x, y, upperArmLength, foreArmLength, elbow);
     const auto expected = Angles({
       theta[0],
@@ -60,7 +60,7 @@ TEST_CASE("shoulderAngles") {
 
   SECTION("returns many solutions (singular) for the origin (i.e. on shoulder axis)") {
     const auto sameLinkLength = upperArmLength;
-    const auto elbow = elbowAngles(0, 0, sameLinkLength, sameLinkLength);
+    const auto elbow = solveElbow(0, 0, sameLinkLength, sameLinkLength);
     const auto result = shoulderAngles(0, 0, sameLinkLength, sameLinkLength, elbow);
     const auto expected = Angles({ SINGULAR });
 

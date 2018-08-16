@@ -27,7 +27,7 @@ const auto SINGULAR = std::numeric_limits<Real>::infinity();
 Angles solveWaist(const Real& x, const Real& y, const Real& theta = 0, const Real& offset = 0);
 
 // Calculate the elbow (joint 2) angles
-Angles elbowAngles(const Real& r, const Real& s, const Real& l1, const Real& l2);
+Angles solveElbow(const Real& r, const Real& s, const Real& l1, const Real& l2);
 
 // Calculate the shoulder (joint 1) angles from elbow angles
 Angles shoulderAngles(const Real& r, const Real& s, const Real& l1, const Real& l2, const Angles& elbow);
