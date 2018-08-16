@@ -23,7 +23,15 @@ bool approxZero(const Real& value) {
 }
 
 bool approxEqual(const Real& a, const Real& b) {
+  if(isInf(a) && isInf(b)) return true;
+  if(isInf(a) && !isInf(b)) return false;
+  if(!isInf(b) && isInf(b)) return false;
+
   return approxZero(a - b);
+}
+
+bool isInf(const Real& value) {
+  return std::numeric_limits<Real>::has_infinity && (value == std::numeric_limits<Real>::infinity());
 }
 
 int sign(const Real& a) {
