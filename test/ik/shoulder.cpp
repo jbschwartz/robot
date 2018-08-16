@@ -7,7 +7,7 @@
 using namespace rbt;
 using namespace rbt::ik;
 
-TEST_CASE("shoulderAngles") {
+TEST_CASE("solveShoulder") {
   const auto upperArmLength = 10;
   const auto foreArmLength = 5;
 
@@ -18,7 +18,7 @@ TEST_CASE("shoulderAngles") {
 
   SECTION("returns no solutions") {
     SECTION("for empty elbow angles") {
-      const auto result = shoulderAngles(x, y, upperArmLength, foreArmLength, Angles());
+      const auto result = solveShoulder(x, y, upperArmLength, foreArmLength, Angles());
 
       REQUIRE(result.empty());
     }
@@ -28,7 +28,7 @@ TEST_CASE("shoulderAngles") {
     SECTION("for a position on internal workspace boundary") {
       const auto internalBoundary = upperArmLength - foreArmLength;
       const auto elbow = solveElbow(internalBoundary, 0, upperArmLength, foreArmLength);
-      const auto result = shoulderAngles(internalBoundary, 0, upperArmLength, foreArmLength, elbow);
+      const auto result = solveShoulder(internalBoundary, 0, upperArmLength, foreArmLength, elbow);
       const auto expected = Angles({ 0.0f });
 
       REQUIRE(result.size() == 1);
@@ -38,7 +38,7 @@ TEST_CASE("shoulderAngles") {
     SECTION("for a position on external workspace boundary") {
       const auto fullReach = upperArmLength + foreArmLength;
       const auto elbow = solveElbow(fullReach, 0, upperArmLength, foreArmLength);
-      const auto result = shoulderAngles(fullReach, 0, upperArmLength, foreArmLength, elbow);
+      const auto result = solveShoulder(fullReach, 0, upperArmLength, foreArmLength, elbow);
       const auto expected = Angles({ 0.0 });
 
       REQUIRE(result.size() == 1);
@@ -48,7 +48,7 @@ TEST_CASE("shoulderAngles") {
 
   SECTION("returns two solutions in radians for a position in the workspace") {
     const auto elbow = solveElbow(x, y, upperArmLength, foreArmLength);
-    const auto result = shoulderAngles(x, y, upperArmLength, foreArmLength, elbow);
+    const auto result = solveShoulder(x, y, upperArmLength, foreArmLength, elbow);
     const auto expected = Angles({
       theta[0],
       2 * std::atan2(y, x) - theta[0]
@@ -61,7 +61,7 @@ TEST_CASE("shoulderAngles") {
   SECTION("returns many solutions (singular) for the origin (i.e. on shoulder axis)") {
     const auto sameLinkLength = upperArmLength;
     const auto elbow = solveElbow(0, 0, sameLinkLength, sameLinkLength);
-    const auto result = shoulderAngles(0, 0, sameLinkLength, sameLinkLength, elbow);
+    const auto result = solveShoulder(0, 0, sameLinkLength, sameLinkLength, elbow);
     const auto expected = Angles({ SINGULAR });
 
     CHECK_THAT(result, ComponentsEqual(expected));

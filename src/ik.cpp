@@ -64,7 +64,7 @@ Angles solveElbow(const Real& r, const Real& s, const Real& l1, const Real& l2) 
 }
 
 // Does not do any checking for points out of reach as there would be no valid elbow angle to pass in.
-Angles shoulderAngles(const Real& r, const Real& s, const Real& l1, const Real& l2, const Angles& elbow) {
+Angles solveShoulder(const Real& r, const Real& s, const Real& l1, const Real& l2, const Angles& elbow) {
   // Must check this here as .front() and .back() are called below. Stay away UB!
   if(elbow.empty()) return Angles();
 
@@ -124,7 +124,7 @@ AngleSets positionSets(const Real& x, const Real& y, const Real& z, const std::v
   const auto r = rs[0]; const auto s = rs[1];
 
   auto elbow = solveElbow(r, s, l1, l2);
-  auto shoulder = shoulderAngles(r, s, l1, l2, elbow);
+  auto shoulder = solveShoulder(r, s, l1, l2, elbow);
 
   // Transform the shoulder angles based on where shoulder zero point is
   const auto direction = shoulderDirection(x, y, joints[0], waist.front());
