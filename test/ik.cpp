@@ -15,54 +15,6 @@ using namespace rbt;
 using namespace rbt::ik;
 
 TEST_CASE("Inverse Kinematics") {
-  SECTION("shoulderAngles") {
-    const auto theta = Vector2({ toRadians(10), toRadians(45) });
-    const auto l = Vector2({ 10, 10 });
-
-    const Real x = l[0] * std::cos(theta[0]) + l[1] * std::cos(theta[0] + theta[1]);
-    const Real y = l[0] * std::sin(theta[0]) + l[1] * std::sin(theta[0] + theta[1]);
-
-    SECTION("returns an empty set for empty elbow angles") {
-      const auto result = shoulderAngles(x, y, l[0], l[1], Angles());
-      const auto expected = Angles();
-
-      REQUIRE(result.size() == 0);
-      REQUIRE(result.empty());
-    }
-
-    SECTION("calculates shoulder angles in radians") {
-      const auto elbow = elbowAngles(x, y, l[0], l[1]);
-      const auto result = shoulderAngles(x, y, l[0], l[1], elbow);
-      const auto expected = Angles({
-        theta[0],
-        2 * std::atan2(y, x) - theta[0]
-      });
-
-      REQUIRE(result.size() == 2);
-      CHECK_THAT(result, ComponentsEqual(expected));
-    }
-
-    SECTION("returns two solutions for a position on internal workspace boundary") {
-      const auto elbow = elbowAngles(3, 0, l[0], l[1] + 3);
-      const auto result = shoulderAngles(3, 0, l[0], l[1] + 3, elbow);
-      const auto expected = Angles({ toRadians(180), toRadians(-180) });
-
-      REQUIRE(result.size() == 2);
-      CHECK_THAT(result, ComponentsEqual(expected));
-    }
-
-    SECTION("returns one solution for a position on external workspace boundary") {
-      const auto fullReach = l[0] + l[1];
-      const auto angle = toRadians(30);
-      const auto elbow = elbowAngles(std::cos(angle) * fullReach, std::sin(angle) * fullReach, l[0], l[1]);
-      const auto result = shoulderAngles(std::cos(angle) * fullReach, std::sin(angle) * fullReach, l[0], l[1], elbow);
-      const auto expected = Angles({ angle });
-
-      REQUIRE(result.size() == 1);
-      CHECK_THAT(result, ComponentsEqual(expected));
-    }
-  }
-
   SECTION("positionSets") {
     const auto result = positionSets(302, 0, 630, ABB_IRB_120.joints());
 
