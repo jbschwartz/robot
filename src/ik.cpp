@@ -23,7 +23,7 @@ Angles solveWaist(const Real& x, const Real& y, const Real& wristOffset) {
     alpha = std::atan2(wristOffset, std::sqrt(delta));
   } else {
     const bool shoulderIsSingular = approxZero(x) && approxZero(y);
-    if(shoulderIsSingular) return Angles({ SINGULAR }); // Infinite possible solutions
+    if(shoulderIsSingular) return Angles({ SINGULAR, SINGULAR }); // Infinite possible solutions
   }
 
   const auto phi = std::atan2(y, x);
@@ -38,41 +38,22 @@ Angles solveWaist(const Real& x, const Real& y, const Real& wristOffset) {
 
 // This solves the first part of the inverse kinematics for a 2R manipulator.
 // Uses the law of cosines
-Angles solveElbow(const Real& r, const Real& s, const Real& l1, const Real& l2) {
+Real solveElbow(const Real& r, const Real& s, const Real& upperArmLength, const Real& foreArmLength) {
   // Law of cosines
-  const auto cosTheta = ((r * r) + (s * s) - (l1 * l1) - (l2 * l2)) / (2 * l1 * l2);
-
-  // There is no solution if cosTheta is outside the range of (-1, 1) inclusive
-  if(!withinLimits(cosTheta, Vector2({ -COS_MAX, COS_MAX }))) return Angles();
-
-  // Arm is on the edge of the external boundary; upper and lower arms are colinear and not overlapping
-  if(approxEqual(cosTheta, COS_MAX)) return Angles({ 0 });
-  // Arm is on the edge of the internal boundary; upper and lower arms are colinear and overlapping
-  if(approxEqual(cosTheta, -COS_MAX)) return Angles({ PI, -PI });
+  const auto cosTheta = ((r * r) + (s * s) - (upperArmLength * upperArmLength) - (foreArmLength * foreArmLength)) / (2 * upperArmLength * foreArmLength);
 
   // Use atan instead of acos as atan performs better for very small angle values
-  // Also the atan formulation naturally produces the elbow up and down solutions
-  // i.e. +/- sqrt(1 - cosTheta^2)
-  const auto y = std::sqrt(1 - cosTheta * cosTheta);
-
-  const auto angle = std::atan2(y, cosTheta);
-
-  return Angles({
-    angle,
-    -angle
-  });
+  // This will return nan if the target location is unreachable (i.e. cosTheta is outside the range [-1, 1])
+  return std::atan2(std::sqrt(1 - cosTheta * cosTheta), cosTheta);
 }
 
 // Does not do any checking for points out of reach as there would be no valid elbow angle to pass in.
-Angles solveShoulder(const Real& r, const Real& s, const Real& l1, const Real& l2, const Angles& elbow) {
-  // Must check this here as .front() and .back() are called below. Stay away UB!
-  if(elbow.empty()) return Angles();
-
+Angles solveShoulder(const Real& r, const Real& s, const Real& upperArmLength, const Real& foreArmLength, const Real& elbow) {
   // A 2R manipulator is singular if the target point coincides with the shoulder axis
   bool isSingular =
     approxZero(r) &&
     approxZero(s) &&
-    approxEqual(l1, l2);
+    approxEqual(upperArmLength, foreArmLength);
 
   if(isSingular) return Angles({ SINGULAR });
 
@@ -80,10 +61,9 @@ Angles solveShoulder(const Real& r, const Real& s, const Real& l1, const Real& l
 
   const auto phi = std::atan2(s, r);
 
-  for(auto angle : elbow) {
-    const auto shoulder = phi - std::atan2(l2 * std::sin(angle), l1 + l2 * std::cos(angle));
+  for(auto angle : std::vector<Real>({elbow, -elbow})) {
+    const auto shoulder = phi - std::atan2(foreArmLength * std::sin(angle), upperArmLength + foreArmLength * std::cos(angle));
     angles.push_back(shoulder);
-
     // If angle is either 0 or Pi, then both elbow angles will generate the same shoulder angle.
     if(approxZero(angle) || approxEqual(angle, PI)) break;
   }
@@ -91,65 +71,32 @@ Angles solveShoulder(const Real& r, const Real& s, const Real& l1, const Real& l
   return angles;
 }
 
-AngleSets solveArm(const Vector3& target, const std::vector<Joint>& joints) {
+AngleSets solveArm(const Vector3& target, const Real& upperArmLength, const Real& foreArmLength, const Real& shoulderWristOffset, const Real& shoulderZOffset) {
   const Real& x = target[0];
   const Real& y = target[1];
   const Real& z = target[2];
 
-  const auto shoulderWristOffset = joints[1].offset() + joints[2].offset();
-
   const auto waist = solveWaist(x, y, shoulderWristOffset);
   if(waist.empty()) return AngleSets();
 
-  const auto baseOffset = joints[0].offset();
-  const auto rs = rsCoordinates(x, y, z, shoulderWristOffset, baseOffset);
+  const auto rs = rsCoordinates(x, y, z, shoulderWristOffset, shoulderZOffset);
   const auto r = rs[0]; const auto s = rs[1];
 
-  const auto l1 = joints[1].length();
-  const auto l2 = std::sqrt((joints[2].length() * joints[2].length()) + (joints[3].offset() * joints[3].offset()));
+  auto elbow = solveElbow(r, s, upperArmLength, foreArmLength);
+  if(std::isnan(elbow)) return AngleSets();
 
-  auto elbow = solveElbow(r, s, l1, l2);
-  if(elbow.empty()) return AngleSets();
-
-  auto shoulder = solveShoulder(r, s, l1, l2, elbow);
+  auto shoulder = solveShoulder(r, s, upperArmLength, foreArmLength, elbow);
   if(shoulder.empty()) return AngleSets();
 
-  return buildPositionSets(waist, shoulder, elbow, joints);
-}
-
-AngleSets buildPositionSets(const Angles& waist, const Angles& shoulder, const Angles& elbow, const std::vector<Joint>& joints) {
-  const auto shoulderDir = sign(joints[0].twist());
-  const auto shoulderZeroOffset = joints[1].angle();
-
-  const auto a1 = joints[2].length();
-  const auto a2 = joints[3].offset();
-
-  const auto elbowDir = (joints[1].twist() == PI) ? -shoulderDir : shoulderDir;
-  const auto elbowZeroOffset = std::atan(a2 / a1);
-
-
-  auto sets = AngleSets();
-
-  // When the shoulder switches handedness, it's necessary to flip shoulder and elbow angles
-  // We assume that the first waist angle is always in the "correct" quadrant
-  // TODO: write a function to check if waist angle is in the proper quadrant instead
-  bool flip = false;
-  for(auto w : waist) {
-    w -= joints[0].angle();
-    for(auto s = shoulder.begin(), e = elbow.begin(); s != shoulder.end(); ++s, ++e) {
-      const auto sNew = shoulderDir * *s - shoulderZeroOffset;
-      const auto eNew = elbowDir * (*e + elbowZeroOffset);
-
-      if(flip) {
-        sets.emplace_back(AngleSet({ w, PI - sNew, -eNew }));
-      } else {
-        sets.emplace_back(AngleSet({ w, sNew, eNew }));
-      }
-    }
-    flip = !flip;
-  }
-
-  return sets;
+  // The elbow can have an up and down configuration
+  // Flip the shoulder handedness for the second waist solution
+  // When the shoulder switches handedness, the elbow flips configuration
+  return AngleSets({
+    Angles({ waist[0], shoulder[0], elbow }),
+    Angles({ waist[0], shoulder[1], -elbow }),
+    Angles({ waist[1], PI - shoulder[0], -elbow }),
+    Angles({ waist[1], PI - shoulder[1], elbow }),
+  });
 }
 
 Vector3 wristCenterPoint(const Frame& pose, const Real& wristZOffset) {
@@ -159,9 +106,30 @@ Vector3 wristCenterPoint(const Frame& pose, const Real& wristZOffset) {
 
 AngleSets angles(const Frame& pose, const std::vector<Joint>& joints) {
   // Transform end-effector tip frame to wrist center frame
-  const auto wristCenter = wristCenterPoint(pose, joints[5].offset());
+  const auto target = wristCenterPoint(pose, joints[5].offset());
 
-  auto angleSets = solveArm(wristCenter, joints);
+  const auto upperArmLength = joints[1].length();
+  const auto foreArmLength = std::sqrt((joints[2].length() * joints[2].length()) + (joints[3].offset() * joints[3].offset()));
+  const auto shoulderWristOffset = joints[1].offset() + joints[2].offset();
+  const auto shoulderZOffset = joints[0].offset();
+
+  auto angleSets = solveArm(target, upperArmLength, foreArmLength, shoulderWristOffset, shoulderZOffset);
+
+  for(auto&& set : angleSets) {
+    const auto waistZeroOffset = joints[0].angle();
+    const auto shoulderDir = sign(joints[0].twist());
+    const auto shoulderZeroOffset = joints[1].angle();
+
+    const auto elbowDir = (joints[1].twist() == PI) ? -shoulderDir : shoulderDir;
+    const auto a1 = joints[2].length();
+    const auto a2 = joints[3].offset();
+    const auto elbowZeroOffset = std::atan(a2 / a1);
+
+    set[0] -= waistZeroOffset;
+    set[1] = shoulderDir * set[1] - shoulderZeroOffset;
+    set[2] = elbowDir * (set[2] + elbowZeroOffset);
+  }
+
   const auto limits = std::vector<Vector2>({ joints[0].limits(), joints[1].limits(), joints[2].limits() });
 
   removeIfBeyondLimits(angleSets, limits);

@@ -40,7 +40,7 @@ TEST_CASE("solveWaist") {
 
   SECTION("determines the singular position") {
     const auto result = solveWaist(0, 0);
-    const auto expected = Angles({ SINGULAR });
+    const auto expected = Angles({ SINGULAR, SINGULAR });
 
     CHECK_THAT(result, ComponentsEqual(expected));
   }

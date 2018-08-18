@@ -20,32 +20,27 @@ typedef std::vector<Angle> AngleSet;
 // (e.g. one for each solution to an inverse kinematics problem)
 typedef std::vector<std::vector<Angle>> AngleSets;
 
-static_assert(std::numeric_limits<Real>::has_infinity, "Type Real does not have infinity value");
 const auto SINGULAR = std::numeric_limits<Real>::infinity();
 
 // Calculate the waist (joint 0) angles with a shoulder-wrist offset
-Angles solveWaist(const Real& x, const Real& y, const Real& offset = 0);
+Angles solveWaist(const Real& x, const Real& y, const Real& wristOffset = 0);
 
-// Calculate the elbow (joint 2) angles
-Angles solveElbow(const Real& r, const Real& s, const Real& l1, const Real& l2);
+// Calculate one elbow (joint 2) angle. Callers will negate the returned value to get the other elbow configuration
+Real solveElbow(const Real& r, const Real& s, const Real& upperArmLength, const Real& foreArmLength);
 
-// Calculate the shoulder (joint 1) angles from elbow angles
-Angles solveShoulder(const Real& r, const Real& s, const Real& l1, const Real& l2, const Angles& elbow);
+// Calculate the shoulder (joint 1) angles from elbow angle
+Angles solveShoulder(const Real& r, const Real& s, const Real& upperArmLength, const Real& foreArmLength, const Real& elbow);
 
-// Get solutions for the first three joints. This determines the position of the wrist.
-// This may return solutions that are not physically achievable (i.e. joints may be beyond their limits)
-AngleSets solveArm(const Vector3& target, const std::vector<Joint>& joints);
-
-// Construct AngleSets by combining all individual solutions to the waist, shoulder, and elbow subproblems.
-AngleSets buildPositionSets(const Angles& waist, const Angles& shoulder, const Angles& elbow, const std::vector<Joint>& joints);
+// Get solutions for the first three joints of a canonical arm
+AngleSets solveArm(const Vector3& target, const Real& upperArmLength, const Real& foreArmLength, const Real& shoulderWristOffset, const Real& shoulderZOffset);
 
 // Get joint angles from a given pose (inverse kinematics)
 AngleSets angles(const Frame& pose, const std::vector<Joint>& joints);
 
-// calculate RS coordinates for the given XYZ position.
+// Calculate RS coordinates for the given XYZ position.
 Vector2 rsCoordinates(const Real& x, const Real& y, const Real& z, const Real& shoulderWristOffset, const Real& baseZOffset);
 
-// Check each solution against the joint limits and prune if any angles are outside their limit.
+// Check each solution against the joint limits and prune if any angles are outside their limit
 void removeIfBeyondLimits(AngleSets& sets, const std::vector<Vector2>& limits);
 
 // Return true if the angle is within the given limits

@@ -16,14 +16,6 @@ TEST_CASE("solveShoulder") {
   const Real x = upperArmLength * std::cos(theta[0]) + foreArmLength * std::cos(theta[0] + theta[1]);
   const Real y = upperArmLength * std::sin(theta[0]) + foreArmLength * std::sin(theta[0] + theta[1]);
 
-  SECTION("returns no solutions") {
-    SECTION("for empty elbow angles") {
-      const auto result = solveShoulder(x, y, upperArmLength, foreArmLength, Angles());
-
-      REQUIRE(result.empty());
-    }
-  }
-
   SECTION("returns one solution in radians") {
     SECTION("for a position on internal workspace boundary") {
       const auto internalBoundary = upperArmLength - foreArmLength;
