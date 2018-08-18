@@ -26,10 +26,9 @@ Angles solveWaist(const Real& x, const Real& y, const Real& wristOffset) {
     if(shoulderIsSingular) return Angles({ SINGULAR }); // Infinite possible solutions
   }
 
-  // Give solutions for both "left" and "right" shoulder configurations
-  // Account for first theta DH parameter here
   const auto phi = std::atan2(y, x);
 
+  // Give solutions for both "left" and "right" shoulder configurations
   // Constrain solutions to (-PI, PI] as joint limits are typically symmetric about zero
   const auto first = minusPiToPi(phi - alpha);
   const auto second = minusPiToPi(phi + alpha + PI);
