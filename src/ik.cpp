@@ -90,15 +90,6 @@ Angles solveShoulder(const Real& r, const Real& s, const Real& l1, const Real& l
   return angles;
 }
 
-int shoulderDirection(const Real& x, const Real& y, const Joint& shoulder, const Real& waistAngle) {
-  const auto shoulderFrame = Frame(shoulder.transform(waistAngle).dual);
-  const auto zAxis = shoulderFrame.zAxis();
-  // Take the cross product between the Z Axis and the point (x, y)
-  const auto cross = zAxis[0] * y - zAxis[1] * x;
-  // The sign determines which side the point is on: left or right
-  return sign(cross);
-}
-
 AngleSets positionSets(const Real& x, const Real& y, const Real& z, const std::vector<Joint>& joints) {
   const auto shoulderWristOffset = joints[1].offset() + joints[2].offset();
   const auto baseOffset = joints[0].offset();
@@ -117,15 +108,15 @@ AngleSets positionSets(const Real& x, const Real& y, const Real& z, const std::v
   const auto shoulderDir = sign(joints[0].twist());
   const auto shoulderZeroOffset = joints[1].angle();
 
+  const auto elbowDir = (joints[1].twist() == PI) ? -shoulderDir : shoulderDir;
+  const auto elbowZeroOffset = std::atan(a2 / a1);
+
   auto elbow = solveElbow(r, s, l1, l2);
   auto shoulder = solveShoulder(r, s, l1, l2, elbow, shoulderDir, shoulderZeroOffset);
 
-  // Transform the shoulder angles based on where shoulder zero point is
-  const auto direction = shoulderDirection(x, y, joints[0], waist.front());
-
   // Transform the elbow angles to actuator angles.
-  std::transform(elbow.begin(), elbow.end(), elbow.begin(), [a2, a1, direction](auto angle) {
-    return (direction < 0) ? -angle - std::atan(a2 / a1) : std::atan(a2 / a1) + angle;
+  std::transform(elbow.begin(), elbow.end(), elbow.begin(), [elbowDir, elbowZeroOffset](auto angle) {
+    return elbowDir * (angle + elbowZeroOffset);
   });
 
   // We could optimize by checking immediately following ____Angles() calls but this suffices for now

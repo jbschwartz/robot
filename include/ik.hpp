@@ -54,9 +54,6 @@ bool withinLimits(const Real& angle, const Vector2& limits);
 // Get wrist center point given the end-effector pose and offset along Z.
 Vector3 wristCenterPoint(const Frame& pose, const Real& wristZOffset);
 
-// Determine if the target point (x, y) is on the positive or negative side of the shoulder.
-int shoulderDirection(const Real& x, const Real& y, const Joint& shoulder, const Real& waistAngle);
-
 }}
 
 #endif /* __IK_HPP__ */
