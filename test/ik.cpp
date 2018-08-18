@@ -101,15 +101,15 @@ TEST_CASE("Inverse Kinematics") {
 
   SECTION("removeIfBeyondLimits") {
     auto sets = AngleSets({
-      AngleSet({ SINGULAR, 200, -100 }),  // Valid
-      AngleSet({ SINGULAR, 400, 0 }),     // Invalid
-      AngleSet({ 20, SINGULAR, -100 }),   // Valid
-      AngleSet({ 300, SINGULAR, -100 }),  // Invalid
-      AngleSet({ 20, 200, SINGULAR }),    // Valid
-      AngleSet({ 0, -200, SINGULAR }),    // Invalid
-      AngleSet({ 20, 200, -120 }),        // Valid
-      AngleSet({ 300, 0, -100 }),         // Invalid
-      AngleSet({ 20, 20, -20 }),          // Valid
+      Angles({ SINGULAR, 200, -100 }),  // Valid
+      Angles({ SINGULAR, 400, 0 }),     // Invalid
+      Angles({ 20, SINGULAR, -100 }),   // Valid
+      Angles({ 300, SINGULAR, -100 }),  // Invalid
+      Angles({ 20, 200, SINGULAR }),    // Valid
+      Angles({ 0, -200, SINGULAR }),    // Invalid
+      Angles({ 20, 200, -120 }),        // Valid
+      Angles({ 300, 0, -100 }),         // Invalid
+      Angles({ 20, 20, -20 }),          // Valid
     });
 
     const auto limits = std::vector<Vector2>({

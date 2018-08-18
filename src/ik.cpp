@@ -189,7 +189,7 @@ bool withinLimits(const Real& angle, const Vector2& limits) {
 }
 
 void removeIfBeyondLimits(AngleSets& sets, const std::vector<Vector2>& limits) {
-  const auto last = std::remove_if(sets.begin(), sets.end(), [limits](const AngleSet& set) {
+  const auto last = std::remove_if(sets.begin(), sets.end(), [limits](const Angles& set) {
     auto limIter = limits.begin();
     for(auto& angle : set) {
       if (!withinLimits(angle, *limIter++)) return true;
