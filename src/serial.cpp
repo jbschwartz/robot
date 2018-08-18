@@ -10,8 +10,9 @@ std::vector<Joint> Serial::joints() const {
   return this->j;
 }
 
-Frame Serial::pose(const std::vector<Real>& angles) const {
+Frame Serial::pose(Angles angles) const {
   auto t = Transform();
+  angles.resize(this->j.size());
   auto angle = angles.begin();
 
   std::for_each(this->j.begin(), this->j.end(), [&t, &angle](auto& joint) {
@@ -21,8 +22,9 @@ Frame Serial::pose(const std::vector<Real>& angles) const {
   return Frame(t.dual);
 }
 
-std::vector<Frame> Serial::poses(const std::vector<Real>& angles) const {
+std::vector<Frame> Serial::poses(Angles angles) const {
   auto t = Transform();
+  angles.resize(this->j.size());
   auto angle = angles.begin();
   std::vector<Frame> frames;
 

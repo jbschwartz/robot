@@ -5,6 +5,7 @@
 
 #include "joint.hpp"
 #include "frame.hpp"
+#include "typedefs.hpp"
 
 namespace rbt {
 
@@ -16,9 +17,9 @@ public:
   std::vector<Joint> joints() const;
 
   // Return the pose of the final joint
-  Frame pose(const std::vector<Real>& angles) const;
+  Frame pose(Angles angles) const;
   // Return the poses of all joints
-  std::vector<Frame> poses(const std::vector<Real>& angles) const;
+  std::vector<Frame> poses(Angles angles) const;
 };
 
 }
