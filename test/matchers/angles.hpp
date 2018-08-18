@@ -2,7 +2,7 @@
 #include "../include/ik.hpp"
 #include "../include/utilities.hpp"
 
-using rbt::ik::Angles;
+using rbt::Angles;
 using rbt::approxEqual;
 
 class AnglesMatcher : public Catch::MatcherBase<Angles>
