@@ -91,7 +91,11 @@ Angles solveShoulder(const Real& r, const Real& s, const Real& l1, const Real& l
   return angles;
 }
 
-AngleSets positionSets(const Real& x, const Real& y, const Real& z, const std::vector<Joint>& joints) {
+AngleSets solveArm(const Vector3& target, const std::vector<Joint>& joints) {
+  const Real& x = target[0];
+  const Real& y = target[1];
+  const Real& z = target[2];
+
   const auto shoulderWristOffset = joints[1].offset() + joints[2].offset();
 
   const auto waist = solveWaist(x, y, shoulderWristOffset);
@@ -157,7 +161,7 @@ AngleSets angles(const Frame& pose, const std::vector<Joint>& joints) {
   // Transform end-effector tip frame to wrist center frame
   const auto wristCenter = wristCenterPoint(pose, joints[5].offset());
 
-  auto angleSets = positionSets(wristCenter[0], wristCenter[1], wristCenter[2], joints);
+  auto angleSets = solveArm(wristCenter, joints);
   const auto limits = std::vector<Vector2>({ joints[0].limits(), joints[1].limits(), joints[2].limits() });
 
   removeIfBeyondLimits(angleSets, limits);

@@ -15,19 +15,6 @@ using namespace rbt;
 using namespace rbt::ik;
 
 TEST_CASE("Inverse Kinematics") {
-  SECTION("positionSets") {
-    const auto result = positionSets(302, 0, 630, ABB_IRB_120.joints());
-
-    SECTION("calculates position solutions to inverse kinematics") {
-      const auto expectedSize = 4;
-      REQUIRE(result.size() == expectedSize);
-
-      SECTION("needs tests") {
-        REQUIRE(true == true);
-      }
-    }
-  }
-
   SECTION("angles") {
     const auto expected = Angles({ toRadians(45), toRadians(45), toRadians(45), toRadians(45), toRadians(45), toRadians(45) });
 
