@@ -24,20 +24,20 @@ static_assert(std::numeric_limits<Real>::has_infinity, "Type Real does not have 
 const auto SINGULAR = std::numeric_limits<Real>::infinity();
 
 // Calculate the waist (joint 0) angles with a shoulder-wrist offset
-Angles solveWaist(const Real& x, const Real& y, const Real& zeroOffset = 0, const Real& offset = 0);
+Angles solveWaist(const Real& x, const Real& y, const Real& offset = 0);
 
 // Calculate the elbow (joint 2) angles
 Angles solveElbow(const Real& r, const Real& s, const Real& l1, const Real& l2);
 
 // Calculate the shoulder (joint 1) angles from elbow angles
-Angles solveShoulder(const Real& r, const Real& s, const Real& l1, const Real& l2, const Angles& elbow, const Real& direction = 1, const Real& zeroOffset = 0);
+Angles solveShoulder(const Real& r, const Real& s, const Real& l1, const Real& l2, const Angles& elbow);
 
 // Get angle sets for the first three joints. This determines the position of the wrist.
 // This may return AngleSets that are not physically achievable (i.e. joints may be beyond their limits)
 AngleSets positionSets(const Real& x, const Real& y, const Real& z, const std::vector<Joint>& joints);
 
 // Construct AngleSets by combining all individual solutions to the waist, shoulder, and elbow subproblems.
-AngleSets buildPositionSets(const Angles& waist, const Angles& shoulder, const Angles& elbow);
+AngleSets buildPositionSets(const Angles& waist, const Angles& shoulder, const Angles& elbow, const std::vector<Joint>& joints);
 
 // Get joint angles from a given pose (inverse kinematics)
 AngleSets angles(const Frame& pose, const std::vector<Joint>& joints);

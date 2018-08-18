@@ -16,28 +16,24 @@ TEST_CASE("solveWaist") {
     //    Prescribe the alpha angle and solve for shoulderOffset
     //    This makes the expected results easy to reason about
     const std::vector<Real> alphas = { 0, 15, -15 };
-    const std::vector<Real> thetas = { 0, 15, -15 };
 
-    for(auto theta : thetas) {
-      theta = toRadians(theta);
-      for(auto alpha : alphas) {
-        alpha = toRadians(alpha);
-        const Real shoulderOffset = armLength * std::sin(alpha);
+    for(auto alpha : alphas) {
+      alpha = toRadians(alpha);
+      const Real shoulderOffset = armLength * std::sin(alpha);
 
-        for(auto angle : angles) {
-          angle = toRadians(angle);
-          // Calculate target position
-          const Real y = armLength * sin(angle);
-          const Real x = armLength * cos(angle);
+      for(auto angle : angles) {
+        angle = toRadians(angle);
+        // Calculate target position
+        const Real y = armLength * sin(angle);
+        const Real x = armLength * cos(angle);
 
-          const auto result = solveWaist(x, y, theta, shoulderOffset);
-          const std::vector<Real> expected = {
-            minusPiToPi(angle - alpha - theta),
-            minusPiToPi(angle + alpha - theta + PI)
-          };
+        const auto result = solveWaist(x, y, shoulderOffset);
+        const std::vector<Real> expected = {
+          minusPiToPi(angle - alpha),
+          minusPiToPi(angle + alpha + PI)
+        };
 
-          CHECK_THAT(result, ComponentsEqual(expected));
-        }
+        CHECK_THAT(result, ComponentsEqual(expected));
       }
     }
   }

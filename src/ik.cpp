@@ -9,7 +9,7 @@
 namespace rbt { namespace ik {
 
 // Project the wrist center onto the XY plane, solve for the angle in the plane with a shoulder-wrist offset.
-Angles solveWaist(const Real& x, const Real& y, const Real& zeroOffset, const Real& wristOffset) {
+Angles solveWaist(const Real& x, const Real& y, const Real& wristOffset) {
   Real alpha = 0;
 
   if(!approxZero(wristOffset))
@@ -28,7 +28,7 @@ Angles solveWaist(const Real& x, const Real& y, const Real& zeroOffset, const Re
 
   // Give solutions for both "left" and "right" shoulder configurations
   // Account for first theta DH parameter here
-  const auto phi = std::atan2(y, x) - zeroOffset;
+  const auto phi = std::atan2(y, x);
 
   // Constrain solutions to (-PI, PI] as joint limits are typically symmetric about zero
   const auto first = minusPiToPi(phi - alpha);
@@ -63,7 +63,7 @@ Angles solveElbow(const Real& r, const Real& s, const Real& l1, const Real& l2) 
 }
 
 // Does not do any checking for points out of reach as there would be no valid elbow angle to pass in.
-Angles solveShoulder(const Real& r, const Real& s, const Real& l1, const Real& l2, const Angles& elbow, const Real& direction, const Real& zeroOffset) {
+Angles solveShoulder(const Real& r, const Real& s, const Real& l1, const Real& l2, const Angles& elbow) {
   // Must check this here as .front() and .back() are called below. Stay away UB!
   if(elbow.empty()) return Angles();
 
@@ -81,7 +81,7 @@ Angles solveShoulder(const Real& r, const Real& s, const Real& l1, const Real& l
 
   for(auto angle : elbow) {
     const auto shoulder = phi - std::atan2(l2 * std::sin(angle), l1 + l2 * std::cos(angle));
-    angles.push_back(direction * shoulder - zeroOffset);
+    angles.push_back(shoulder);
 
     // If angle is either 0 or Pi, then both elbow angles will generate the same shoulder angle.
     if(approxZero(angle) || approxEqual(angle, PI)) break;
@@ -92,53 +92,53 @@ Angles solveShoulder(const Real& r, const Real& s, const Real& l1, const Real& l
 
 AngleSets positionSets(const Real& x, const Real& y, const Real& z, const std::vector<Joint>& joints) {
   const auto shoulderWristOffset = joints[1].offset() + joints[2].offset();
+
+  const auto waist = solveWaist(x, y, shoulderWristOffset);
+  if(waist.empty()) return AngleSets();
+
   const auto baseOffset = joints[0].offset();
+  const auto rs = rsCoordinates(x, y, z, shoulderWristOffset, baseOffset);
+  const auto r = rs[0]; const auto s = rs[1];
+
   const auto l1 = joints[1].length();
   const auto l2 = std::sqrt((joints[2].length() * joints[2].length()) + (joints[3].offset() * joints[3].offset()));
+
+  auto elbow = solveElbow(r, s, l1, l2);
+  if(elbow.empty()) return AngleSets();
+
+  auto shoulder = solveShoulder(r, s, l1, l2, elbow);
+  if(shoulder.empty()) return AngleSets();
+
+  return buildPositionSets(waist, shoulder, elbow, joints);
+}
+
+AngleSets buildPositionSets(const Angles& waist, const Angles& shoulder, const Angles& elbow, const std::vector<Joint>& joints) {
+  const auto shoulderDir = sign(joints[0].twist());
+  const auto shoulderZeroOffset = joints[1].angle();
 
   const auto a1 = joints[2].length();
   const auto a2 = joints[3].offset();
 
-  const auto waist = solveWaist(x, y, joints[0].angle(), shoulderWristOffset);
-  if(waist.empty()) return AngleSets();
-
-  const auto rs = rsCoordinates(x, y, z, shoulderWristOffset, baseOffset);
-  const auto r = rs[0]; const auto s = rs[1];
-
-  const auto shoulderDir = sign(joints[0].twist());
-  const auto shoulderZeroOffset = joints[1].angle();
-
   const auto elbowDir = (joints[1].twist() == PI) ? -shoulderDir : shoulderDir;
   const auto elbowZeroOffset = std::atan(a2 / a1);
 
-  auto elbow = solveElbow(r, s, l1, l2);
-  auto shoulder = solveShoulder(r, s, l1, l2, elbow, shoulderDir, shoulderZeroOffset);
 
-  // Transform the elbow angles to actuator angles.
-  std::transform(elbow.begin(), elbow.end(), elbow.begin(), [elbowDir, elbowZeroOffset](auto angle) {
-    return elbowDir * (angle + elbowZeroOffset);
-  });
-
-  // We could optimize by checking immediately following ____Angles() calls but this suffices for now
-  // There are no solutions if any of these are empty; return an empty set
-  if(elbow.empty() || shoulder.empty()) return AngleSets();
-
-  return buildPositionSets(waist, shoulder, elbow);
-}
-
-AngleSets buildPositionSets(const Angles& waist, const Angles& shoulder, const Angles& elbow) {
   auto sets = AngleSets();
 
   // When the shoulder switches handedness, it's necessary to flip shoulder and elbow angles
   // We assume that the first waist angle is always in the "correct" quadrant
   // TODO: write a function to check if waist angle is in the proper quadrant instead
   bool flip = false;
-  for(auto w = waist.begin(); w != waist.end(); ++w) {
+  for(auto w : waist) {
+    w -= joints[0].angle();
     for(auto s = shoulder.begin(), e = elbow.begin(); s != shoulder.end(); ++s, ++e) {
+      const auto sNew = shoulderDir * *s - shoulderZeroOffset;
+      const auto eNew = elbowDir * (*e + elbowZeroOffset);
+
       if(flip) {
-        sets.emplace_back(AngleSet({ *w, PI - *s, -*e }));
+        sets.emplace_back(AngleSet({ w, PI - sNew, -eNew }));
       } else {
-        sets.emplace_back(AngleSet({ *w, *s, *e }));
+        sets.emplace_back(AngleSet({ w, sNew, eNew }));
       }
     }
     flip = !flip;
