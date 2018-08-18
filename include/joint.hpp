@@ -21,6 +21,8 @@ public:
 
   Real offset() const { return this->d; };
   Real length() const { return this->a; };
+  Real angle() const { return this->theta; };
+  Real twist() const { return this->alpha; };
   Vector2 limits() const { return this->lims; };
 };
 
