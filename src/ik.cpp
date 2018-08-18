@@ -55,9 +55,11 @@ Angles solveElbow(const Real& r, const Real& s, const Real& l1, const Real& l2) 
   // i.e. +/- sqrt(1 - cosTheta^2)
   const auto y = std::sqrt(1 - cosTheta * cosTheta);
 
+  const auto angle = std::atan2(y, cosTheta);
+
   return Angles({
-    std::atan2(y, cosTheta),
-    std::atan2(-y, cosTheta)
+    angle,
+    -angle
   });
 }
 
