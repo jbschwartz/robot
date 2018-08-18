@@ -30,7 +30,7 @@ Angles solveWaist(const Real& x, const Real& y, const Real& theta = 0, const Rea
 Angles solveElbow(const Real& r, const Real& s, const Real& l1, const Real& l2);
 
 // Calculate the shoulder (joint 1) angles from elbow angles
-Angles solveShoulder(const Real& r, const Real& s, const Real& l1, const Real& l2, const Angles& elbow);
+Angles solveShoulder(const Real& r, const Real& s, const Real& l1, const Real& l2, const Angles& elbow, const Real& direction = 1, const Real& zeroOffset = 0);
 
 // Get angle sets for the first three joints. This determines the position of the wrist.
 // This may return AngleSets that are not physically achievable (i.e. joints may be beyond their limits)
@@ -57,8 +57,6 @@ Vector3 wristCenterPoint(const Frame& pose, const Real& wristZOffset);
 // Determine if the target point (x, y) is on the positive or negative side of the shoulder.
 int shoulderDirection(const Real& x, const Real& y, const Joint& shoulder, const Real& waistAngle);
 
-// Determine the zero position of the shoulder axis
-Real shoulderZero(const std::vector<Joint>& joints);
 }}
 
 #endif /* __IK_HPP__ */

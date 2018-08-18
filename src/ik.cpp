@@ -64,7 +64,7 @@ Angles solveElbow(const Real& r, const Real& s, const Real& l1, const Real& l2) 
 }
 
 // Does not do any checking for points out of reach as there would be no valid elbow angle to pass in.
-Angles solveShoulder(const Real& r, const Real& s, const Real& l1, const Real& l2, const Angles& elbow) {
+Angles solveShoulder(const Real& r, const Real& s, const Real& l1, const Real& l2, const Angles& elbow, const Real& direction, const Real& zeroOffset) {
   // Must check this here as .front() and .back() are called below. Stay away UB!
   if(elbow.empty()) return Angles();
 
@@ -82,7 +82,7 @@ Angles solveShoulder(const Real& r, const Real& s, const Real& l1, const Real& l
 
   for(auto angle : elbow) {
     const auto shoulder = phi - std::atan2(l2 * std::sin(angle), l1 + l2 * std::cos(angle));
-    angles.push_back(shoulder);
+    angles.push_back(direction * shoulder - zeroOffset);
 
     // If angle is either 0 or Pi, then both elbow angles will generate the same shoulder angle.
     if(approxZero(angle) || approxEqual(angle, PI)) break;
@@ -100,14 +100,6 @@ int shoulderDirection(const Real& x, const Real& y, const Joint& shoulder, const
   return sign(cross);
 }
 
-Real shoulderZero(const std::vector<Joint>& joints) {
-  const auto shoulderFrame = Frame(joints[0].transform().dual);
-  const auto elbowFrame = Frame((joints[0].transform() * joints[1].transform()).dual);
-
-  const auto shoulderLink = elbowFrame.position() - shoulderFrame.position();
-  return angleBetween(shoulderLink, Vector3({ 1, 0, 0 }));
-}
-
 AngleSets positionSets(const Real& x, const Real& y, const Real& z, const std::vector<Joint>& joints) {
   const auto shoulderOffset = joints[1].offset() + joints[2].offset();
   const auto baseOffset = joints[0].offset();
@@ -117,22 +109,20 @@ AngleSets positionSets(const Real& x, const Real& y, const Real& z, const std::v
   const auto a1 = joints[2].length();
   const auto a2 = joints[3].offset();
 
-  const auto waist = solveWaist(x, y, shoulderOffset);
+  const auto waist = solveWaist(x, y, joints[0].angle(), shoulderOffset);
   if(waist.empty()) return AngleSets();
 
   const auto rs = rsCoordinates(x, y, z, shoulderOffset, baseOffset);
   const auto r = rs[0]; const auto s = rs[1];
 
+  const auto shoulderDir = sign(joints[0].twist());
+  const auto shoulderZeroOffset = joints[1].angle();
+
   auto elbow = solveElbow(r, s, l1, l2);
-  auto shoulder = solveShoulder(r, s, l1, l2, elbow);
+  auto shoulder = solveShoulder(r, s, l1, l2, elbow, shoulderDir, shoulderZeroOffset);
 
   // Transform the shoulder angles based on where shoulder zero point is
   const auto direction = shoulderDirection(x, y, joints[0], waist.front());
-  const auto shoulderAngleOffset = shoulderZero(joints);
-
-  std::transform(shoulder.begin(), shoulder.end(), shoulder.begin(), [direction, shoulderAngleOffset](auto angle) {
-    return (direction < 0) ? shoulderAngleOffset - angle : angle - shoulderAngleOffset;
-  });
 
   // Transform the elbow angles to actuator angles.
   std::transform(elbow.begin(), elbow.end(), elbow.begin(), [a2, a1, direction](auto angle) {
