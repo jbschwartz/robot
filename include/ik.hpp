@@ -23,8 +23,8 @@ typedef std::vector<std::vector<Angle>> AngleSets;
 static_assert(std::numeric_limits<Real>::has_infinity, "Type Real does not have infinity value");
 const auto SINGULAR = std::numeric_limits<Real>::infinity();
 
-// Calculate the waist (joint 0) angles with a shoulder offset
-Angles solveWaist(const Real& x, const Real& y, const Real& theta = 0, const Real& offset = 0);
+// Calculate the waist (joint 0) angles with a shoulder-wrist offset
+Angles solveWaist(const Real& x, const Real& y, const Real& zeroOffset = 0, const Real& offset = 0);
 
 // Calculate the elbow (joint 2) angles
 Angles solveElbow(const Real& r, const Real& s, const Real& l1, const Real& l2);
@@ -43,7 +43,7 @@ AngleSets buildPositionSets(const Angles& waist, const Angles& shoulder, const A
 AngleSets angles(const Frame& pose, const std::vector<Joint>& joints);
 
 // calculate RS coordinates for the given XYZ position.
-Vector2 rsCoordinates(const Real& x, const Real& y, const Real& z, const Real& shoulderOffset, const Real& baseOffset);
+Vector2 rsCoordinates(const Real& x, const Real& y, const Real& z, const Real& shoulderWristOffset, const Real& baseZOffset);
 
 // Check each solution against the joint limits and prune if any angles are outside their limit.
 void removeIfBeyondLimits(AngleSets& sets, const std::vector<Vector2>& limits);

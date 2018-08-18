@@ -8,20 +8,19 @@
 
 namespace rbt { namespace ik {
 
-// Project the wrist center onto the XY plane, solve for the angle in the plane with a shoulder offset.
-Angles solveWaist(const Real& x, const Real& y, const Real& theta, const Real& offset) {
+// Project the wrist center onto the XY plane, solve for the angle in the plane with a shoulder-wrist offset.
+Angles solveWaist(const Real& x, const Real& y, const Real& zeroOffset, const Real& wristOffset) {
   Real alpha = 0;
 
-  const bool hasOffset = !approxZero(offset);
-  if(hasOffset)
+  if(!approxZero(wristOffset))
   {
-    // Shoulder offsets create potential for unreachable locations (so we check)
+    // Shoulder-wrist offsets create potential for unreachable locations (so we check)
     //    A point is unreachable if x^2 + y^2 < d^2,
-    //    i.e. if the point is "inside" the (circle produced by the) offset shoulder
-    const auto delta = (x * x) + (y * y) - (offset * offset);
+    //    i.e. if the point is "inside" the (circle produced by the) offset wrist
+    const auto delta = (x * x) + (y * y) - (wristOffset * wristOffset);
     if(delta < 0) return Angles(); // No solution
 
-    alpha = std::atan2(offset, std::sqrt(delta));
+    alpha = std::atan2(wristOffset, std::sqrt(delta));
   } else {
     const bool shoulderIsSingular = approxZero(x) && approxZero(y);
     if(shoulderIsSingular) return Angles({ SINGULAR }); // Infinite possible solutions
@@ -29,7 +28,7 @@ Angles solveWaist(const Real& x, const Real& y, const Real& theta, const Real& o
 
   // Give solutions for both "left" and "right" shoulder configurations
   // Account for first theta DH parameter here
-  const auto phi = std::atan2(y, x) - theta;
+  const auto phi = std::atan2(y, x) - zeroOffset;
 
   // Constrain solutions to (-PI, PI] as joint limits are typically symmetric about zero
   const auto first = minusPiToPi(phi - alpha);
@@ -101,7 +100,7 @@ int shoulderDirection(const Real& x, const Real& y, const Joint& shoulder, const
 }
 
 AngleSets positionSets(const Real& x, const Real& y, const Real& z, const std::vector<Joint>& joints) {
-  const auto shoulderOffset = joints[1].offset() + joints[2].offset();
+  const auto shoulderWristOffset = joints[1].offset() + joints[2].offset();
   const auto baseOffset = joints[0].offset();
   const auto l1 = joints[1].length();
   const auto l2 = std::sqrt((joints[2].length() * joints[2].length()) + (joints[3].offset() * joints[3].offset()));
@@ -109,10 +108,10 @@ AngleSets positionSets(const Real& x, const Real& y, const Real& z, const std::v
   const auto a1 = joints[2].length();
   const auto a2 = joints[3].offset();
 
-  const auto waist = solveWaist(x, y, joints[0].angle(), shoulderOffset);
+  const auto waist = solveWaist(x, y, joints[0].angle(), shoulderWristOffset);
   if(waist.empty()) return AngleSets();
 
-  const auto rs = rsCoordinates(x, y, z, shoulderOffset, baseOffset);
+  const auto rs = rsCoordinates(x, y, z, shoulderWristOffset, baseOffset);
   const auto r = rs[0]; const auto s = rs[1];
 
   const auto shoulderDir = sign(joints[0].twist());
@@ -206,9 +205,9 @@ AngleSets angles(const Frame& pose, const std::vector<Joint>& joints) {
  *   offset    =====                           offset ||   _ /   \
  *      |      || ||                             |    || /        sqrt(x^2 + y^2)
  *   ---V--- ----|---------> X                ---V--- (O)-----------> X */
-Vector2 rsCoordinates(const Real& x, const Real& y, const Real& z, const Real& shoulderOffset, const Real& baseOffset) {
-  const auto r = std::sqrt(x * x + y * y - shoulderOffset * shoulderOffset);
-  const auto s = z - baseOffset;
+Vector2 rsCoordinates(const Real& x, const Real& y, const Real& z, const Real& shoulderWristOffset, const Real& baseZOffset) {
+  const auto r = std::sqrt(x * x + y * y - shoulderWristOffset * shoulderWristOffset);
+  const auto s = z - baseZOffset;
 
   return Vector2({ r, s });
 }
