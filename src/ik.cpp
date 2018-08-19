@@ -104,40 +104,43 @@ Vector3 wristCenterPoint(const Frame& pose, const Real& wristZOffset) {
   return pose.position() - pose.zAxis() * wristZOffset;
 }
 
-AngleSets angles(const Frame& pose, const std::vector<Joint>& joints) {
-  // Transform end-effector tip frame to wrist center frame
-  const auto target = wristCenterPoint(pose, joints[5].offset());
+void transformAnglesToRobot(AngleSets& angleSets, const Serial& robot) {
+  const auto waistZero = robot.waistZero();
+  const auto shoulderDirection = robot.shoulderDirection();
+  const auto shoulderZero = robot.shoulderZero();
+  const auto elbowDirection = robot.elbowDirection();
+  const auto elbowZero = robot.elbowZero();
 
-  const auto upperArmLength = joints[1].length();
-  const auto foreArmLength = std::sqrt((joints[2].length() * joints[2].length()) + (joints[3].offset() * joints[3].offset()));
-  const auto shoulderWristOffset = joints[1].offset() + joints[2].offset();
-  const auto shoulderZOffset = joints[0].offset();
-
-  auto angleSets = solveArm(target, upperArmLength, foreArmLength, shoulderWristOffset, shoulderZOffset);
-
-  for(auto&& set : angleSets) {
-    const auto waistZeroOffset = joints[0].angle();
-    const auto shoulderDir = sign(joints[0].twist());
-    const auto shoulderZeroOffset = joints[1].angle();
-
-    const auto elbowDir = (joints[1].twist() == PI) ? -shoulderDir : shoulderDir;
-    const auto a1 = joints[2].length();
-    const auto a2 = joints[3].offset();
-    const auto elbowZeroOffset = std::atan(a2 / a1);
-
-    set[0] -= waistZeroOffset;
-    set[1] = shoulderDir * set[1] - shoulderZeroOffset;
-    set[2] = elbowDir * (set[2] + elbowZeroOffset);
+  for(auto&& angles : angleSets) {
+    angles[0] -= waistZero;
+    angles[1] = shoulderDirection * angles[1] - shoulderZero;
+    angles[2] = elbowDirection * (angles[2] + elbowZero);
   }
+}
+
+AngleSets angles(const Frame& pose, const Serial& robot) {
+  // Transform end-effector tip frame to wrist center frame
+  const auto target = wristCenterPoint(pose, robot.wristLength());
+
+  auto solutions = solveArm(
+    target,
+    robot.upperArmLength(),
+    robot.foreArmLength(),
+    robot.shoulderWristOffset(),
+    robot.shoulderZ()
+  );
+
+  transformAnglesToRobot(solutions, robot);
+
+  const auto joints = robot.joints();
 
   const auto limits = std::vector<Vector2>({ joints[0].limits(), joints[1].limits(), joints[2].limits() });
 
-  removeIfBeyondLimits(angleSets, limits);
+  removeIfBeyondLimits(solutions, limits);
 
-  // There are no solutions, return an empty set
-  if(angleSets.empty()) return AngleSets();
+  if(solutions.empty()) return AngleSets();
 
-  for(auto&& set : angleSets) {
+  for(auto&& set : solutions) {
     auto t = Transform();
     t *= joints[0].transform(set[0]);
     t *= joints[1].transform(set[1]);
@@ -155,7 +158,7 @@ AngleSets angles(const Frame& pose, const std::vector<Joint>& joints) {
     set.insert(set.end(), angles.begin(), angles.end());
   }
 
-  return angleSets;
+  return solutions;
 }
 
 /* Project the problem onto a 2R manipulator. That is: find the wrist center on the RS plane

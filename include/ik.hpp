@@ -6,6 +6,7 @@
 #include "utilities.hpp"
 #include "joint.hpp"
 #include "frame.hpp"
+#include "serial.hpp"
 
 #include <limits>
 
@@ -26,7 +27,10 @@ Angles solveShoulder(const Real& r, const Real& s, const Real& upperArmLength, c
 AngleSets solveArm(const Vector3& target, const Real& upperArmLength, const Real& foreArmLength, const Real& shoulderWristOffset, const Real& shoulderZOffset);
 
 // Get joint angles from a given pose (inverse kinematics)
-AngleSets angles(const Frame& pose, const std::vector<Joint>& joints);
+AngleSets angles(const Frame& pose, const Serial& joints);
+
+// Take canonical angles and transform them to the Robot joint space
+void transformAnglesToRobot(AngleSets& angleSets, const Serial& robot);
 
 // Calculate RS coordinates for the given XYZ position.
 Vector2 rsCoordinates(const Real& x, const Real& y, const Real& z, const Real& shoulderWristOffset, const Real& baseZOffset);

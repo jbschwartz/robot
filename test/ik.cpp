@@ -19,7 +19,7 @@ TEST_CASE("Inverse Kinematics") {
     const auto expected = Angles({ toRadians(45), toRadians(45), toRadians(45), toRadians(45), toRadians(45), toRadians(45) });
 
     const auto frame = ABB_IRB_120.pose(expected);
-    const auto result = angles(frame, ABB_IRB_120.joints());
+    const auto result = angles(frame, ABB_IRB_120);
 
     CHECK_THAT(result.front(), ComponentsEqual(expected));
   }
