@@ -131,22 +131,13 @@ AngleSets angles(const Frame& pose, const Serial& robot) {
   );
 
   transformAnglesToRobot(solutions, robot);
-  
+
   removeIfBeyondLimits(solutions, robot.limits());
 
   if(solutions.empty()) return AngleSets();
 
-  const auto joints = robot.joints();
   for(auto&& set : solutions) {
-    auto t = Transform();
-    t *= joints[0].transform(set[0]);
-    t *= joints[1].transform(set[1]);
-    t *= joints[2].transform(set[2]);
-    t *= joints[3].transform();
-    t *= joints[4].transform();
-    t *= joints[5].transform();
-
-    const auto wristCenterFrame = Frame(t.dual);
+    const auto wristCenterFrame = robot.pose(set);
 
     const auto desiredWristPose = conjugate(wristCenterFrame.pose()) * pose.pose();
 
