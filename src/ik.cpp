@@ -131,15 +131,12 @@ AngleSets angles(const Frame& pose, const Serial& robot) {
   );
 
   transformAnglesToRobot(solutions, robot);
-
-  const auto joints = robot.joints();
-
-  const auto limits = std::vector<Vector2>({ joints[0].limits(), joints[1].limits(), joints[2].limits() });
-
-  removeIfBeyondLimits(solutions, limits);
+  
+  removeIfBeyondLimits(solutions, robot.limits());
 
   if(solutions.empty()) return AngleSets();
 
+  const auto joints = robot.joints();
   for(auto&& set : solutions) {
     auto t = Transform();
     t *= joints[0].transform(set[0]);

@@ -44,6 +44,14 @@ public:
   };
   inline Real elbowZero() const { return std::atan(this->j[3].offset() / this->j[2].length()); };
 
+  inline std::vector<Vector2> limits() const {
+    std::vector<Vector2> limits;
+    for(auto joint : this->j) {
+      limits.push_back(joint.limits());
+    }
+    return limits;
+  }
+
 };
 
 }
