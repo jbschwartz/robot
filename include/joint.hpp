@@ -10,20 +10,14 @@ namespace rbt {
 class Transform;
 
 class Joint {
-  Real alpha, a, theta, d;
-  Vector2 lims;
 public:
-  Joint(const Real& alpha, const Real& a, const Real& theta, const Real& d, const Vector2& limits = Vector2({-360.f, 360.f})) : alpha(alpha), a(a), theta(theta), d(d), lims(limits) {
-    lims[0] = toRadians(lims[0]);
-    lims[1] = toRadians(lims[1]);
+  Real alpha, a, theta, d;
+  Vector2 limits;
+  Joint(const Real& alpha, const Real& a, const Real& theta, const Real& d, Vector2 limits = Vector2({-360.f, 360.f})) : alpha(alpha), a(a), theta(theta), d(d), limits(limits) {
+    limits[0] = toRadians(limits[0]);
+    limits[1] = toRadians(limits[1]);
   };
   Transform transform(const Real& theta = 0.0) const;
-
-  Real offset() const { return this->d; };
-  Real length() const { return this->a; };
-  Real angle() const { return this->theta; };
-  Real twist() const { return this->alpha; };
-  Vector2 limits() const { return this->lims; };
 };
 
 }

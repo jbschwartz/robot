@@ -22,32 +22,32 @@ public:
   // Return the poses of all joints
   std::vector<Frame> poses(Angles angles) const;
 
-  inline Real upperArmLength() const { return this->j[1].length(); };
+  inline Real upperArmLength() const { return this->j[1].a; };
   inline Real foreArmLength() const {
-    const auto y = this->j[2].length();
-    const auto x = this->j[3].offset();
+    const auto y = this->j[2].a;
+    const auto x = this->j[3].d;
     return std::sqrt(y * y + x * x);
   };
 
-  inline Real wristLength() const { return this->j[5].offset(); };
+  inline Real wristLength() const { return this->j[5].d; };
 
-  inline Real waistZero() const { return this->j[0].angle(); };
+  inline Real waistZero() const { return this->j[0].theta; };
 
-  inline Real shoulderDirection() const { return sign(this->j[0].twist()); };
-  inline Real shoulderZero() const { return this->j[1].angle(); };
-  inline Real shoulderWristOffset() const { return this->j[1].offset() + this->j[2].offset(); };
-  inline Real shoulderZ() const { return this->j[0].offset(); };
+  inline Real shoulderDirection() const { return sign(this->j[0].alpha); };
+  inline Real shoulderZero() const { return this->j[1].theta; };
+  inline Real shoulderWristOffset() const { return this->j[1].d + this->j[2].d; };
+  inline Real shoulderZ() const { return this->j[0].d; };
 
   inline Real elbowDirection() const {
     const auto shoulderDirection = this->shoulderDirection();
-    return (this->j[1].twist() == PI) ? -shoulderDirection : shoulderDirection;
+    return (this->j[1].alpha == PI) ? -shoulderDirection : shoulderDirection;
   };
-  inline Real elbowZero() const { return std::atan(this->j[3].offset() / this->j[2].length()); };
+  inline Real elbowZero() const { return std::atan(this->j[3].d / this->j[2].a); };
 
   inline std::vector<Vector2> limits() const {
     std::vector<Vector2> limits;
     for(auto joint : this->j) {
-      limits.push_back(joint.limits());
+      limits.push_back(joint.limits);
     }
     return limits;
   }
