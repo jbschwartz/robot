@@ -22,6 +22,9 @@ public:
   Dual<T>& operator-=(const Dual<T>& a);
 };
 
+template <>
+Dual<Quaternion>::Dual();
+
 template <typename T>
 Dual<T> operator+(const Dual<T>& a, const Dual<T>& b);
 

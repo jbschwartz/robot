@@ -81,7 +81,7 @@ TEST_CASE("Inverse Kinematics") {
     }
 
     SECTION("returns true if limits are infinite") {
-      const auto infiniteLimits = Vector2({-INFINITY, INFINITY});
+      const auto infiniteLimits = Vector2({-std::numeric_limits<Real>::infinity(), std::numeric_limits<Real>::infinity()});
 
       REQUIRE(withinLimits(low, infiniteLimits));
       REQUIRE(withinLimits(high, infiniteLimits));
