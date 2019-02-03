@@ -71,10 +71,10 @@ Angles solveShoulder(const Real& r, const Real& s, const Real& upperArmLength, c
   return angles;
 }
 
-AngleSets solveArm(const Vector3& target, const Real& upperArmLength, const Real& foreArmLength, const Real& shoulderWristOffset, const Real& shoulderZOffset) {
-  const Real& x = target[0];
-  const Real& y = target[1];
-  const Real& z = target[2];
+AngleSets solveArm(const Vector3& wristCenter, const Real& upperArmLength, const Real& foreArmLength, const Real& shoulderWristOffset, const Real& shoulderZOffset) {
+  const Real& x = wristCenter[0];
+  const Real& y = wristCenter[1];
+  const Real& z = wristCenter[2];
 
   const auto waist = solveWaist(x, y, shoulderWristOffset);
   if(waist.empty()) return AngleSets();

@@ -24,7 +24,7 @@ Real solveElbow(const Real& r, const Real& s, const Real& upperArmLength, const 
 Angles solveShoulder(const Real& r, const Real& s, const Real& upperArmLength, const Real& foreArmLength, const Real& elbow);
 
 // Get solutions for the first three joints of a canonical arm
-AngleSets solveArm(const Vector3& target, const Real& upperArmLength, const Real& foreArmLength, const Real& shoulderWristOffset, const Real& shoulderZOffset);
+AngleSets solveArm(const Vector3& wristCenter, const Real& upperArmLength, const Real& foreArmLength, const Real& shoulderWristOffset, const Real& shoulderZOffset);
 
 // Get joint angles from a given pose (inverse kinematics)
 AngleSets angles(const Frame& pose, const Serial& joints);
