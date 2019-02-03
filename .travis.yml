@@ -8,8 +8,8 @@ before_install:
 
 install:
   # C++14
-  - sudo apt-get install -qq g++-5
-  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 90
+  - sudo apt-get install -qq g++-8
+  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 90
 
 notifications:
   email: false
