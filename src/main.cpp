@@ -3,10 +3,13 @@
 #include "spatial/dual.hpp"
 #include "spatial/quaternion.hpp"
 #include "spatial/transform.hpp"
+#include "spatial/triangle.hpp"
 #include "spatial/vector.hpp"
 #include "utils/timer.hpp"
+#include "visual/file_types/stl/stl_parser.hpp"
 
 #include <iostream>
+#include <vector>
 
 using rbt::Transform;
 using rbt::Vector3;
@@ -15,6 +18,7 @@ using rbt::Serial;
 using rbt::Joint;
 using rbt::toRadians;
 using rbt::Timer;
+using rbt::Triangle;
 
 int main() {
   Timer t("Program main");
@@ -33,4 +37,10 @@ int main() {
 
   std::cout << result.position() << std::endl;
   std::cout << result.orientation() << std::endl;
+
+  rbt::visual::STLParser p;
+  // p.parse("..\\meshes\\abb_irb_120.stl");
+  std::vector<Triangle> triangles;
+  p.parse("C:\\Users\\James\\Documents\\Projects\\robot\\meshes\\abb_irb_120.stl", triangles);
+
 }

@@ -32,8 +32,8 @@ ENDIF(DEFINE_DEBUG)
 include_directories(include)
 add_subdirectory(test)
 
-file(GLOB HEADERS "include/*.hpp")
-file(GLOB SOURCES "src/*.cpp" "src/spatial/*.cpp" "src/utils/*.cpp")
+file(GLOB HEADERS "include/*.hpp" "include/spatial/*.hpp")
+file(GLOB SOURCES "src/*.cpp" "src/spatial/*.cpp" "src/utils/*.cpp" "src/visual/file_types/stl/*.cpp")
 list(REMOVE_ITEM SOURCES "${CMAKE_SOURCE_DIR}/src/main.cpp")
 
 add_library(RobotLib ${HEADERS} ${SOURCES})
