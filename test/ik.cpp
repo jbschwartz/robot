@@ -2,12 +2,12 @@
 #include "matchers/angles.hpp"
 #include "matchers/vector.hpp"
 #include "robots/abb_irb_120.hpp"
-#include "../include/ik.hpp"
-#include "../include/utilities.hpp"
-#include "../include/vector.hpp"
-#include "../include/joint.hpp"
-#include "../include/typedefs.hpp"
-#include "../include/serial.hpp"
+#include "ik.hpp"
+#include "joint.hpp"
+#include "serial.hpp"
+#include "typedefs.hpp"
+#include "utilities.hpp"
+#include "spatial/vector.hpp"
 
 #include <algorithm>
 

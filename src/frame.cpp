@@ -1,6 +1,6 @@
-#include "../include/frame.hpp"
-#include "../include/utilities.hpp"
-#include "../include/vector.hpp"
+#include "frame.hpp"
+#include "utilities.hpp"
+#include "spatial/vector.hpp"
 #include <cmath>
 #include <algorithm>
 

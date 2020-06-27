@@ -1,9 +1,9 @@
 #ifndef __FRAME_HPP__
 #define __FRAME_HPP__
 
-#include "../include/typedefs.hpp"
-#include "../include/dual.hpp"
-#include "../include/quaternion.hpp"
+#include "typedefs.hpp"
+#include "spatial/dual.hpp"
+#include "spatial/quaternion.hpp"
 
 #include <algorithm>
 

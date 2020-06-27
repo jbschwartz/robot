@@ -1,6 +1,6 @@
 #include <cmath>
 
-#include "../include/quaternion.hpp"
+#include "spatial/quaternion.hpp"
 
 #ifdef DEBUG
 #include <iostream>

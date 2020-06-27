@@ -1,7 +1,7 @@
 #include "third_party/catch.hpp"
 #include "matchers/vector.hpp"
 
-#include "../include/transform.hpp"
+#include "spatial/transform.hpp"
 
 using rbt::Transform;
 using rbt::Vector3;

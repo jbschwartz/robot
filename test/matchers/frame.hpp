@@ -1,6 +1,6 @@
 #include "../third_party/catch.hpp"
-#include "../include/frame.hpp"
-#include "../include/quaternion.hpp"
+#include "frame.hpp"
+#include "spatial/quaternion.hpp"
 
 using rbt::Frame;
 using rbt::Quaternion;

@@ -2,11 +2,11 @@
 #define __IK_HPP__
 
 #include "typedefs.hpp"
-#include "vector.hpp"
 #include "utilities.hpp"
 #include "joint.hpp"
 #include "frame.hpp"
 #include "serial.hpp"
+#include "spatial/vector.hpp"
 
 #include <limits>
 

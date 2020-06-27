@@ -1,7 +1,7 @@
-#include "../include/ik.hpp"
-#include "../include/vector.hpp"
-#include "../include/utilities.hpp"
-#include "../include/transform.hpp"
+#include "ik.hpp"
+#include "utilities.hpp"
+#include "spatial/transform.hpp"
+#include "spatial/vector.hpp"
 
 #include <algorithm>
 #include <iterator>

@@ -1,9 +1,9 @@
-#include "../include/quaternion.hpp"
-#include "../include/dual.hpp"
-#include "../include/serial.hpp"
-#include "../include/joint.hpp"
-#include "../include/vector.hpp"
-#include "../include/transform.hpp"
+#include "serial.hpp"
+#include "joint.hpp"
+#include "spatial/dual.hpp"
+#include "spatial/quaternion.hpp"
+#include "spatial/transform.hpp"
+#include "spatial/vector.hpp"
 
 #include <iostream>
 

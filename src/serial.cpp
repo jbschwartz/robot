@@ -1,6 +1,6 @@
-#include "../include/serial.hpp"
-#include "../include/joint.hpp"
-#include "../include/transform.hpp"
+#include "serial.hpp"
+#include "joint.hpp"
+#include "spatial/transform.hpp"
 
 #include <algorithm>
 

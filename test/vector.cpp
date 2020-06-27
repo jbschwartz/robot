@@ -1,5 +1,5 @@
 #include "third_party/catch.hpp"
-#include "vector.hpp"
+#include "spatial/vector.hpp"
 #include <cmath>
 
 using rbt::Real;

@@ -1,12 +1,12 @@
 #include "third_party/catch.hpp"
 #include "matchers/array.hpp"
 #include "matchers/vector.hpp"
-#include "../include/frame.hpp"
-#include "../include/dual.hpp"
-#include "../include/quaternion.hpp"
-#include "../include/utilities.hpp"
-#include "../include/vector.hpp"
-#include "../include/transform.hpp"
+#include "frame.hpp"
+#include "utilities.hpp"
+#include "spatial/dual.hpp"
+#include "spatial/quaternion.hpp"
+#include "spatial/vector.hpp"
+#include "spatial/transform.hpp"
 
 using rbt::Frame;
 using rbt::EulerAngles;

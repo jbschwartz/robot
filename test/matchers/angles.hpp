@@ -1,6 +1,6 @@
 #include "../third_party/catch.hpp"
-#include "../include/ik.hpp"
-#include "../include/utilities.hpp"
+#include "ik.hpp"
+#include "utilities.hpp"
 
 using rbt::Angles;
 using rbt::approxEqual;

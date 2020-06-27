@@ -1,7 +1,7 @@
-#include "../../include/serial.hpp"
-#include "../../include/joint.hpp"
-#include "../../include/utilities.hpp"
-#include "../../include/vector.hpp"
+#include "joint.hpp"
+#include "serial.hpp"
+#include "utilities.hpp"
+#include "spatial/vector.hpp"
 
 namespace rbt {
 

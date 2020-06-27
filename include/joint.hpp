@@ -3,7 +3,7 @@
 
 #include "typedefs.hpp"
 #include "utilities.hpp"
-#include "vector.hpp"
+#include "spatial/vector.hpp"
 
 namespace rbt {
 

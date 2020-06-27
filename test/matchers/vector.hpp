@@ -1,5 +1,5 @@
 #include "../third_party/catch.hpp"
-#include "../include/vector.hpp"
+#include "spatial/vector.hpp"
 
 template <std::size_t N>
 using Vector = rbt::Vector<rbt::Real, N>;

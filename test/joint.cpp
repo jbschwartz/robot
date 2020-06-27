@@ -1,9 +1,9 @@
 #include "third_party/catch.hpp"
 #include "matchers/vector.hpp"
 #include "robots/abb_irb_120.hpp"
-#include "../include/joint.hpp"
-#include "../include/transform.hpp"
-#include "../include/vector.hpp"
+#include "joint.hpp"
+#include "spatial/transform.hpp"
+#include "spatial/vector.hpp"
 
 using rbt::Joint;
 using rbt::Real;
