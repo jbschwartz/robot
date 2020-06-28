@@ -33,7 +33,7 @@ include_directories(include)
 add_subdirectory(test)
 
 file(GLOB HEADERS "include/*.hpp")
-file(GLOB SOURCES "src/*.cpp" "src/spatial/*.cpp")
+file(GLOB SOURCES "src/*.cpp" "src/spatial/*.cpp" "src/utils/*.cpp")
 list(REMOVE_ITEM SOURCES "${CMAKE_SOURCE_DIR}/src/main.cpp")
 
 add_library(RobotLib ${HEADERS} ${SOURCES})

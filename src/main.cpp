@@ -4,6 +4,7 @@
 #include "spatial/quaternion.hpp"
 #include "spatial/transform.hpp"
 #include "spatial/vector.hpp"
+#include "utils/timer.hpp"
 
 #include <iostream>
 
@@ -13,8 +14,10 @@ using rbt::Vector2;
 using rbt::Serial;
 using rbt::Joint;
 using rbt::toRadians;
+using rbt::Timer;
 
 int main() {
+  Timer t("Program main");
   // ABB IRB120
   const auto ABB_IRB_120 = Serial({
     Joint(toRadians( -90),    0, toRadians(   0),  290, Vector2({ toRadians(-165), toRadians(165) })),
