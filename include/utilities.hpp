@@ -3,8 +3,11 @@
 
 #include "typedefs.hpp"
 
+#include <cassert>
 #include <cmath>
 #include <limits>
+
+#define assert_msg(exp, msg) assert(((void)msg, exp))
 
 namespace rbt {
 
