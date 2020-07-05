@@ -41,6 +41,6 @@ int main() {
   rbt::visual::STLParser p;
   // p.parse("..\\meshes\\abb_irb_120.stl");
   std::vector<Triangle> triangles;
-  p.parse("C:\\Users\\James\\Documents\\Projects\\robot\\meshes\\abb_irb_120.stl", triangles);
+  p.parse("..\\assets\\meshes\\abb_irb_120.stl", triangles);
 
 }
